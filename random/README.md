@@ -18,7 +18,9 @@ The script does not need HTTPS access.
 
 ```text
 /random integer [minimum] [maximum] [count]
+/random integer <int8|uint8|int16|uint16|int32|uint32|int64|uint64|int128|uint128|safeint> [count]
 /random float [count]
+/random float <float32|float64> [unit|finite|normal|subnormal|special|all] [count]
 /random boolean [count]
 /random string [length] [lower|upper|letters|alphanumeric|hex|symbols|all] [count]
 /random uuid [count]
@@ -35,7 +37,7 @@ The script does not need HTTPS access.
 /random dice [NdN]
 /random ip [v4|v6]
 /random mac [count]
-/random timestamp [start-year] [end-year]
+/random timestamp [unix32|start-year [end-year]]
 /random remote <on|off|status>
 ```
 
@@ -48,7 +50,32 @@ output. Optional defaults and every named option are shown explicitly.
 |---|---|---|
 | `integer` defaults | `/random integer` | `46` |
 | `integer` bounds and count | `/random integer -10 10 3` | `6`<br>`-7`<br>`-4` |
-| `float` count | `/random float 2` | `0.5190133217256516`<br>`0.8854133631102741` |
+| `integer int8` | `/random integer int8 2` | `-9`<br>`-22` |
+| `integer uint8` | `/random integer uint8 2` | `193`<br>`44` |
+| `integer int16` | `/random integer int16` | `-29029` |
+| `integer uint16` | `/random integer uint16` | `29502` |
+| `integer int32` | `/random integer int32` | `1779401093` |
+| `integer uint32` | `/random integer uint32` | `4073751840` |
+| `integer int64` | `/random integer int64` | `2751829112578345810` |
+| `integer uint64` | `/random integer uint64` | `2341223684516387412` |
+| `integer int128` | `/random integer int128` | `-80520808395249882196632926343013955384` |
+| `integer uint128` | `/random integer uint128` | `100437630979565975846613913246018913404` |
+| `integer safeint` | `/random integer safeint` | `-912365223219441` |
+| legacy `float` count | `/random float 2` | `0.5190133217256516`<br>`0.8854133631102741` |
+| `float32 unit` | `/random float float32 unit 2` | `0.9416046738624573`<br>`0.46060729026794434` |
+| `float32` default (`finite`) | `/random float float32 2` | `-4.110397450441665e-25`<br>`921.3787841796875` |
+| `float32 finite` | `/random float float32 finite 2` | `-9.072006486651854e-31`<br>`-1.678225917609022e-12` |
+| `float32 normal` | `/random float float32 normal 2` | `-69400177512808450`<br>`0.0001842977071646601` |
+| `float32 subnormal` | `/random float float32 subnormal 2` | `5.078042190601844e-39`<br>`-6.999876791574008e-39` |
+| `float32 special` | `/random float float32 special 3` | `Infinity`<br>`-0`<br>`NaN` |
+| `float32 all` | `/random float float32 all 2` | `0.0042761387303471565`<br>`77246.21875` |
+| `float64 unit` | `/random float float64 unit 2` | `0.0789720225147903`<br>`0.7929071225225925` |
+| `float64` default (`finite`) | `/random float float64 2` | `-2.129617708236184e+73`<br>`7.118297469922065e-231` |
+| `float64 finite` | `/random float float64 finite 2` | `4.141884027911739e-195`<br>`-3.781453604125919e-297` |
+| `float64 normal` | `/random float float64 normal 2` | `1.663757382199476e-169`<br>`4.171567804675023e-198` |
+| `float64 subnormal` | `/random float float64 subnormal 2` | `-7.79261871258891e-309`<br>`9.464435088308985e-309` |
+| `float64 special` | `/random float float64 special 3` | `0`<br>`NaN`<br>`Infinity` |
+| `float64 all` | `/random float float64 all 2` | `-5.193876439504581e+94`<br>`-3.0594835242783924e+236` |
 | `boolean` count | `/random boolean 3` | `true`<br>`true`<br>`false` |
 | `string` defaults | `/random string` | `FhzqmRAs2LuBCE6X` |
 | `string lower` | `/random string 8 lower` | `lpodruwp` |
@@ -77,10 +104,13 @@ output. Optional defaults and every named option are shown explicitly.
 | `shuffle` | `/random shuffle alpha \| beta \| gamma` | `gamma \| beta \| alpha` |
 | `dice` default | `/random dice` | `1d6: [3] = 3` |
 | `dice` notation | `/random dice 4d6` | `4d6: [1, 1, 3, 1] = 6` |
+| `dice` maximum safe sides | `/random dice 1d9007199254740991` | `1d9007199254740991: [4681445284208869] = 4681445284208869` |
 | `ip` default / `v4` | `/random ip v4` | `129.8.170.32` |
 | `ip v6` | `/random ip v6` | `9839:5fcc:6e2c:3b62:3483:6476:f011:3c68` |
 | `mac` count | `/random mac 2` | `a2:b1:7f:70:88:e4`<br>`fa:df:e3:69:0f:12` |
-| `timestamp` defaults | `/random timestamp` | `2011-01-23T15:11:06.263Z` |
+| `timestamp` default | `/random timestamp` | `1967-04-11T11:59:57.016Z` |
+| `timestamp unix32` | `/random timestamp unix32` | `2022-09-08T03:07:19.221Z` |
+| `timestamp` one-year interval | `/random timestamp 2020` | `2020-07-30T19:54:31.069Z` |
 | `timestamp` year range | `/random timestamp 2020 2028` | `2020-12-01T15:40:20.485Z` |
 | `remote status` | `/random remote status` | `Remote @mention use is disabled.` |
 | `remote on` | `/random remote on` | `Remote @mention use is enabled.` |
@@ -99,10 +129,19 @@ Counts are capped to keep accidental commands from flooding a transcript.
 
 ## Generator reference
 
-- `integer` uses inclusive bounds, defaults to 0-100, and permits bounds from
-  -1,000,000,000 through 1,000,000,000.
-- `float` produces fractions from zero inclusive to one exclusive. `boolean`
-  produces `true` or `false`.
+- `integer` uses inclusive bounds and defaults to 0-100. Custom bounds may use
+  the complete JavaScript safe-integer interval, -9,007,199,254,740,991 through
+  9,007,199,254,740,991. Named types generate across their complete signed
+  two's-complement or unsigned 8-, 16-, 32-, 64-, or 128-bit interval.
+  `safeint` covers the complete safe-integer interval. Large values are printed
+  as exact base-10 integers without JavaScript's `n` suffix.
+- Legacy `float [count]` produces binary64 fractions from zero inclusive to one
+  exclusive. Typed `float32` and `float64` modes are `unit` for that same
+  interval, `finite` for any finite bit pattern, `normal` for normalized finite
+  values, `subnormal` for nonzero subnormal values, `special` for positive or
+  negative zero, infinity, or NaN, and `all` for unrestricted IEEE 754 bit
+  patterns. Bit-pattern modes are uniform over encodings, not uniformly spaced
+  over numeric magnitude. `boolean` produces `true` or `false`.
 - `string` defaults to 16 alphanumeric characters. Length is 1-512; sets are
   `lower`, `upper`, `letters`, `alphanumeric`, `hex`, `symbols`, and `all`.
 - `uuid` emits UUID-formatted version-4 values with RFC variant bits.
@@ -115,15 +154,21 @@ Counts are capped to keep accidental commands from flooding a transcript.
 - `bytes`, `hex`, and `base64` default to 16 bytes and permit 1-256.
 - `choice` selects one non-empty pipe-separated item. `shuffle` randomizes all
   supplied items with Fisher-Yates.
-- `dice` defaults to `1d6`, permitting 1-100 dice and 2-1,000,000 sides.
+- `dice` defaults to `1d6`, permitting 1-100 dice and 2 through
+  9,007,199,254,740,991 sides. Rolls and totals remain exact.
 - `ip` emits syntactically formatted IPv4 or IPv6 fixture data.
 - `mac` creates locally administered unicast addresses.
-- `timestamp` emits ISO 8601 UTC, defaulting to years 2000 through 2030.
+- `timestamp` emits ISO 8601 UTC. Its default and explicit `unix32` mode cover
+  the complete signed-32-bit Unix-time interval:
+  1901-12-13T20:45:52.000Z through 2038-01-19T03:14:07.000Z. One year selects
+  that calendar year; two years define a half-open year interval.
 
 Examples:
 
 ```text
 /random integer -10 10 3
+/random integer uint64 3
+/random float float32 subnormal 2
 /random string 32 hex 2
 /random unicode 12
 /random sentence 8 2
@@ -135,6 +180,20 @@ Examples:
 /random ip v6
 /random timestamp 2020 2028
 ```
+
+## Range and limit rationale
+
+Machine-oriented ranges follow recognizable representations: two's-complement
+and unsigned integer widths, JavaScript's exact safe-integer interval, IEEE 754
+binary32/binary64 encodings, and signed 32-bit Unix time. UUID, IP, MAC, CSS
+color, hexadecimal, and Base64 shapes likewise follow their named formats.
+
+Other caps are operational safeguards, not standards: at most 20 generated
+items, 512 characters per string, 256 random bytes, 100 dice, 30 words per
+sentence, 12 sentences per paragraph, and four remote lines of 400 characters.
+Palette saturation/lightness and prose vocabulary are deliberately aesthetic
+choices. The repository-wide audit and classification are recorded in
+[Numeric limits and defaults](../LIMITS.md).
 
 ## Optional remote use
 
@@ -181,7 +240,7 @@ session identifiers, password-reset links, or anything protecting access.
 ## Script identity and updates
 
 - ID: `com.github.aipokalyptik.birc-utils.random`
-- Version: `1.0.0`
+- Version: `1.1.0`
 
 Generation remains entirely local. If optional HTTPS permission is enabled, a
 load-time check consults the public bIRC Utils version manifest at most once

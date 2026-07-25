@@ -157,19 +157,23 @@ function findNamedCallCycle(callsByFunctionName) {
     return null;
 }
 
-test("pasteable hash script stays within bIRC's 200-function limit", () => {
-    const inspection = inspectScript("hash/birc-hash.js");
-
-    assert.ok(
-        inspection.functionCount <= 200,
-        "hash/birc-hash.js defines " + inspection.functionCount + " functions"
-    );
-});
-
 for (const scriptPath of [
     "codec/birc-codec.js",
-    "hash/birc-hash.js"
+    "giphy/birc-giphy.js",
+    "hash/birc-hash.js",
+    "random/birc-random.js",
+    "text-art/birc-text-art.js",
+    "text-effects/birc-text-effects.js"
 ]) {
+    test(scriptPath + " stays within bIRC's 200-function limit", () => {
+        const inspection = inspectScript(scriptPath);
+
+        assert.ok(
+            inspection.functionCount <= 200,
+            scriptPath + " defines " + inspection.functionCount + " functions"
+        );
+    });
+
     test(scriptPath + " has no named direct or mutual recursion", () => {
         const inspection = inspectScript(scriptPath);
         const cycle = findNamedCallCycle(inspection.callsByFunctionName);

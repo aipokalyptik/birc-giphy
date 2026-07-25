@@ -101,6 +101,74 @@ test("integer generation includes both configured bounds", () => {
     assert.deepEqual(maximumHarness.printedLines, ["[Random] 5"]);
 });
 
+test("typed integers cover standard signed and unsigned widths exactly", () => {
+    const minimumHarness = createRandomScriptHarness([0]);
+    const maximumHarness = createRandomScriptHarness([
+        0.9999999999999999
+    ]);
+    const expectedRanges = {
+        int8: ["-128", "127"],
+        uint8: ["0", "255"],
+        int16: ["-32768", "32767"],
+        uint16: ["0", "65535"],
+        int32: ["-2147483648", "2147483647"],
+        uint32: ["0", "4294967295"],
+        int64: ["-9223372036854775808", "9223372036854775807"],
+        uint64: ["0", "18446744073709551615"],
+        int128: [
+            "-170141183460469231731687303715884105728",
+            "170141183460469231731687303715884105727"
+        ],
+        uint128: [
+            "0",
+            "340282366920938463463374607431768211455"
+        ]
+    };
+
+    for (const [typeName, expectedRange] of Object.entries(expectedRanges)) {
+        minimumHarness.runRandomCommand("integer " + typeName);
+        maximumHarness.runRandomCommand("integer " + typeName);
+
+        assert.equal(
+            minimumHarness.printedLines.pop(),
+            "[Random] " + expectedRange[0]
+        );
+        assert.equal(
+            maximumHarness.printedLines.pop(),
+            "[Random] " + expectedRange[1]
+        );
+    }
+});
+
+test("typed float modes produce the requested IEEE categories", () => {
+    const unitHarness = createRandomScriptHarness([0.1]);
+    const specialHarness = createRandomScriptHarness([
+        0,
+        0.9999999999999999
+    ]);
+    const subnormalHarness = createRandomScriptHarness([0.5]);
+
+    unitHarness.runRandomCommand("float float32 unit");
+    specialHarness.runRandomCommand("float float64 special");
+    subnormalHarness.runRandomCommand("float float32 subnormal");
+    subnormalHarness.runRandomCommand("float float64 subnormal");
+
+    const float32Unit = Number(
+        unitHarness.printedLines[0].slice("[Random] ".length)
+    );
+    const float32Subnormal = Math.abs(Number(
+        subnormalHarness.printedLines[0].slice("[Random] ".length)
+    ));
+    const float64Subnormal = Math.abs(Number(
+        subnormalHarness.printedLines[1].slice("[Random] ".length)
+    ));
+
+    assert.equal(float32Unit, Math.fround(0.1));
+    assert.equal(specialHarness.printedLines[0], "[Random] NaN");
+    assert.ok(float32Subnormal > 0 && float32Subnormal < 2 ** -126);
+    assert.ok(float64Subnormal > 0 && float64Subnormal < 2 ** -1022);
+});
+
 test("remote random use is opt-in and replies in the request channel", () => {
     const harness = createRandomScriptHarness([0]);
     const event = {
@@ -254,6 +322,30 @@ test("dice output reports individual rolls and their total", () => {
     ]);
 });
 
+test("dice supports the complete JavaScript safe-integer side range", () => {
+    const harness = createRandomScriptHarness([0]);
+
+    harness.runRandomCommand("dice 1d9007199254740991");
+
+    assert.deepEqual(harness.printedLines, [
+        "[Random] 1d9007199254740991: [1] = 1"
+    ]);
+});
+
+test("timestamp defaults to the signed 32-bit Unix interval", () => {
+    const harness = createRandomScriptHarness([0]);
+
+    harness.runRandomCommand("timestamp");
+    harness.runRandomCommand("timestamp unix32");
+    harness.runRandomCommand("timestamp 2020");
+
+    assert.deepEqual(harness.printedLines, [
+        "[Random] 1901-12-13T20:45:52.000Z",
+        "[Random] 1901-12-13T20:45:52.000Z",
+        "[Random] 2020-01-01T00:00:00.000Z"
+    ]);
+});
+
 test("command completion exposes generator names", () => {
     const harness = createRandomScriptHarness([0.5]);
 
@@ -326,6 +418,11 @@ test("in-client help documents every generator and the security boundary", () =>
         "Math.random()",
         "never use it for secrets",
         "min=0",
+        "int128",
+        "float32",
+        "subnormal",
+        "9007199254740991",
+        "signed 32-bit Unix interval",
         "length=16",
         "/random integer -10 10 3",
         "/random say color 2",

@@ -34,7 +34,7 @@ const scripts = [
     },
     {
         id: "com.github.aipokalyptik.birc-utils.random",
-        version: "1.0.0",
+        version: "1.1.0",
         path: "random/birc-random.js",
         tagPrefix: "birc-utils-random-v"
     },

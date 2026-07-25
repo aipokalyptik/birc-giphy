@@ -11,14 +11,14 @@
  * encryption keys, session identifiers, or any other security boundary.
  *
  * Script ID: com.github.aipokalyptik.birc-utils.random
- * Script version: 1.0.0
+ * Script version: 1.1.0
  */
 
 (function registerBircRandomDeveloperDataScript() {
     "use strict";
 
     var SCRIPT_ID = "com.github.aipokalyptik.birc-utils.random";
-    var SCRIPT_VERSION = "1.0.0";
+    var SCRIPT_VERSION = "1.1.0";
     var SCRIPT_UPDATE_PAGE_URL =
         "https://github.com/aipokalyptik/birc-utils/tree/main/random";
     var SCRIPT_UPDATE_FILE_URL =
@@ -39,6 +39,10 @@
     var MAXIMUM_SENTENCE_WORDS = 30;
     var MAXIMUM_REMOTE_LINES = 4;
     var MAXIMUM_REMOTE_LINE_LENGTH = 400;
+    var MAXIMUM_SAFE_INTEGER = Number.MAX_SAFE_INTEGER;
+    var MINIMUM_SAFE_INTEGER = Number.MIN_SAFE_INTEGER;
+    var UNIX_32_MINIMUM_MILLISECONDS = -2147483648 * 1000;
+    var UNIX_32_MAXIMUM_MILLISECONDS = 2147483647 * 1000;
     var REMOTE_STORE_KEY = "random.remote.enabled";
     var remoteReplyContext = null;
 
@@ -256,6 +260,76 @@
         var possibleValueCount = maximum - minimum + 1;
 
         return minimum + Math.floor(randomFraction() * possibleValueCount);
+    }
+
+    function randomUnsigned32BitInteger() {
+        return Math.floor(randomFraction() * 0x100000000);
+    }
+
+    function randomUnsignedBigInteger(bitWidth) {
+        var bitsRemaining = bitWidth;
+        var generatedValue = 0n;
+        var nextChunk;
+        var nextChunkWidth;
+
+        while (bitsRemaining > 0) {
+            nextChunkWidth = Math.min(bitsRemaining, 32);
+            nextChunk = BigInt(randomUnsigned32BitInteger());
+
+            if (nextChunkWidth < 32) {
+                nextChunk &= (1n << BigInt(nextChunkWidth)) - 1n;
+            }
+
+            generatedValue =
+                (generatedValue << BigInt(nextChunkWidth)) |
+                nextChunk;
+            bitsRemaining -= nextChunkWidth;
+        }
+
+        return generatedValue;
+    }
+
+    function bigIntegerBitWidth(value) {
+        var bitWidth = 0;
+        var remainingValue = value - 1n;
+
+        while (remainingValue > 0n) {
+            bitWidth += 1;
+            remainingValue >>= 1n;
+        }
+
+        return Math.max(bitWidth, 1);
+    }
+
+    /*
+     * Rejection sampling avoids the modulo bias that occurs when a power-of-two
+     * random source is reduced into a differently sized interval.
+     */
+    function randomBigIntegerBelow(exclusiveMaximum) {
+        var bitWidth = bigIntegerBitWidth(exclusiveMaximum);
+        var candidate;
+
+        do {
+            candidate = randomUnsignedBigInteger(bitWidth);
+        } while (candidate >= exclusiveMaximum);
+
+        return candidate;
+    }
+
+    function randomBigIntegerInclusive(minimum, maximum) {
+        var possibleValueCount = maximum - minimum + 1n;
+
+        return minimum + randomBigIntegerBelow(possibleValueCount);
+    }
+
+    function randomSafeIntegerInclusive(minimum, maximum) {
+        if (maximum - minimum + 1 <= 0x100000000) {
+            return randomIntegerInclusive(minimum, maximum);
+        }
+
+        return Number(
+            randomBigIntegerInclusive(BigInt(minimum), BigInt(maximum))
+        );
     }
 
     function chooseRandomArrayItem(items) {
@@ -514,20 +588,112 @@
         return base64Text;
     }
 
+    function getIntegerTypeDefinition(typeName) {
+        var match = /^(u?)int(8|16|32|64|128)$/.exec(typeName);
+        var bitWidth;
+
+        if (typeName === "safeint") {
+            return {
+                bitWidth: 54,
+                maximum: BigInt(MAXIMUM_SAFE_INTEGER),
+                minimum: BigInt(MINIMUM_SAFE_INTEGER),
+                name: "safeint"
+            };
+        }
+
+        if (match === null) {
+            return null;
+        }
+
+        bitWidth = Number(match[2]);
+
+        if (match[1] === "u") {
+            return {
+                bitWidth: bitWidth,
+                maximum: (1n << BigInt(bitWidth)) - 1n,
+                minimum: 0n,
+                name: typeName
+            };
+        }
+
+        return {
+            bitWidth: bitWidth,
+            maximum: (1n << BigInt(bitWidth - 1)) - 1n,
+            minimum: -(1n << BigInt(bitWidth - 1)),
+            name: typeName
+        };
+    }
+
+    function generateTypedIntegerLines(typeDefinition, countText) {
+        var countResult = parseIntegerInRange(
+            countText,
+            "Count",
+            1,
+            1,
+            MAXIMUM_ITEM_COUNT
+        );
+        var generatedLines = [];
+        var valueIndex;
+
+        if (!countResult.succeeded) {
+            return failedRandomResult(countResult.error);
+        }
+
+        for (valueIndex = 0; valueIndex < countResult.value; valueIndex += 1) {
+            generatedLines.push(
+                randomBigIntegerInclusive(
+                    typeDefinition.minimum,
+                    typeDefinition.maximum
+                ).toString()
+            );
+        }
+
+        return successfulRandomResult(generatedLines);
+    }
+
     function generateRandomIntegerLines(argumentsText) {
         var countResult;
         var generatedLines = [];
+        var integerType;
         var maximumResult;
         var minimumResult;
         var valueIndex;
         var words = splitWords(argumentsText);
 
+        integerType = getIntegerTypeDefinition(
+            words[0] === undefined ? "" : words[0].toLowerCase()
+        );
+
+        if (integerType !== null) {
+            if (words.length > 2) {
+                return failedRandomResult(
+                    "Typed integer usage is: integer <type> [count]."
+                );
+            }
+
+            return generateTypedIntegerLines(integerType, words[1]);
+        }
+
+        if (/^(?:u?int|safeint)/i.test(words[0] || "")) {
+            return failedRandomResult(
+                "Integer type must be int8, uint8, int16, uint16, int32, " +
+                "uint32, int64, uint64, int128, uint128, or safeint."
+            );
+        }
+
+        if (words.length > 3) {
+            return failedRandomResult(
+                "Bounded integer usage is: integer " +
+                "[minimum] [maximum] [count]."
+            );
+        }
+
         minimumResult = parseIntegerInRange(
             words[0],
             "Minimum",
             0,
-            -1000000000,
-            1000000000
+            MINIMUM_SAFE_INTEGER,
+            MAXIMUM_SAFE_INTEGER
         );
 
         if (!minimumResult.succeeded) {
@@ -538,8 +704,8 @@
             words[1],
             "Maximum",
             100,
-            -1000000000,
-            1000000000
+            MINIMUM_SAFE_INTEGER,
+            MAXIMUM_SAFE_INTEGER
         );
 
         if (!maximumResult.succeeded) {
@@ -567,7 +733,7 @@
         for (valueIndex = 0; valueIndex < countResult.value; valueIndex += 1) {
             generatedLines.push(
                 String(
-                    randomIntegerInclusive(
+                    randomSafeIntegerInclusive(
                         minimumResult.value,
                         maximumResult.value
                     )
@@ -578,23 +744,155 @@
         return successfulRandomResult(generatedLines);
     }
 
+    function randomFloat32(modeName) {
+        var bits;
+        var dataView = new DataView(new ArrayBuffer(4));
+        var exponent;
+        var fraction;
+        var sign = randomUnsigned32BitInteger() & 0x80000000;
+
+        if (modeName === "unit") {
+            dataView.setFloat32(0, randomFraction());
+            return dataView.getFloat32(0);
+        }
+
+        if (modeName === "special") {
+            return chooseRandomArrayItem([
+                0,
+                -0,
+                Infinity,
+                -Infinity,
+                NaN
+            ]);
+        }
+
+        if (modeName === "subnormal") {
+            fraction = randomIntegerInclusive(1, 0x7fffff);
+            bits = sign | fraction;
+        } else {
+            do {
+                bits = randomUnsigned32BitInteger();
+                exponent = (bits >>> 23) & 0xff;
+            } while (
+                (modeName === "finite" && exponent === 0xff) ||
+                (modeName === "normal" && (exponent === 0 || exponent === 0xff))
+            );
+        }
+
+        dataView.setUint32(0, bits);
+        return dataView.getFloat32(0);
+    }
+
+    function randomFloat64(modeName) {
+        var dataView = new DataView(new ArrayBuffer(8));
+        var exponent;
+        var highBits;
+        var lowBits;
+        var fractionIsZero;
+        var sign = randomUnsigned32BitInteger() & 0x80000000;
+
+        if (modeName === "unit") {
+            return randomFraction();
+        }
+
+        if (modeName === "special") {
+            return chooseRandomArrayItem([
+                0,
+                -0,
+                Infinity,
+                -Infinity,
+                NaN
+            ]);
+        }
+
+        if (modeName === "subnormal") {
+            do {
+                highBits = sign | (randomUnsigned32BitInteger() & 0xfffff);
+                lowBits = randomUnsigned32BitInteger();
+                fractionIsZero =
+                    (highBits & 0xfffff) === 0 &&
+                    lowBits === 0;
+            } while (fractionIsZero);
+        } else {
+            do {
+                highBits = randomUnsigned32BitInteger();
+                lowBits = randomUnsigned32BitInteger();
+                exponent = (highBits >>> 20) & 0x7ff;
+            } while (
+                (modeName === "finite" && exponent === 0x7ff) ||
+                (modeName === "normal" && (exponent === 0 || exponent === 0x7ff))
+            );
+        }
+
+        dataView.setUint32(0, highBits);
+        dataView.setUint32(4, lowBits);
+        return dataView.getFloat64(0);
+    }
+
+    function formatRandomFloat(value) {
+        if (value === 0 && 1 / value === -Infinity) {
+            return "-0";
+        }
+
+        return String(value);
+    }
+
     function generateRandomFloatLines(argumentsText) {
-        var countResult = parseIntegerInRange(
-            splitWords(argumentsText)[0],
+        var countResult;
+        var countText;
+        var floatType = "float64";
+        var generatedLines = [];
+        var modeName = "unit";
+        var valueIndex;
+        var words = splitWords(argumentsText);
+
+        if (words[0] === "float32" || words[0] === "float64") {
+            floatType = words.shift();
+            modeName = "finite";
+
+            if (
+                words[0] === "unit" ||
+                words[0] === "finite" ||
+                words[0] === "normal" ||
+                words[0] === "subnormal" ||
+                words[0] === "special" ||
+                words[0] === "all"
+            ) {
+                modeName = words.shift();
+            }
+        }
+
+        countText = words.shift();
+
+        if (words.length > 0) {
+            return failedRandomResult(
+                "Float usage is: float [float32|float64] " +
+                "[unit|finite|normal|subnormal|special|all] [count]."
+            );
+        }
+
+        countResult = parseIntegerInRange(
+            countText,
             "Count",
             1,
             1,
             MAXIMUM_ITEM_COUNT
         );
-        var generatedLines = [];
-        var valueIndex;
 
         if (!countResult.succeeded) {
             return failedRandomResult(countResult.error);
         }
 
         for (valueIndex = 0; valueIndex < countResult.value; valueIndex += 1) {
-            generatedLines.push(String(randomFraction()));
+            if (floatType === "float32") {
+                generatedLines.push(
+                    formatRandomFloat(randomFloat32(modeName))
+                );
+            } else {
+                generatedLines.push(
+                    formatRandomFloat(randomFloat64(modeName))
+                );
+            }
         }
 
         return successfulRandomResult(generatedLines);
@@ -1018,7 +1316,7 @@
         var diceText = argumentsText.trim();
         var dieIndex;
         var dieResults = [];
-        var dieTotal = 0;
+        var dieTotal = 0n;
         var numberOfDice;
         var sidesPerDie;
 
@@ -1047,19 +1345,28 @@
             return failedRandomResult("The number of sides is invalid.");
         }
 
-        if (sidesPerDie < 2 || sidesPerDie > 1000000) {
+        if (
+            sidesPerDie < 2 ||
+            sidesPerDie > MAXIMUM_SAFE_INTEGER ||
+            !Number.isSafeInteger(sidesPerDie)
+        ) {
             return failedRandomResult(
-                "Each die must have between 2 and 1000000 sides."
+                "Each die must have between 2 and " +
+                    MAXIMUM_SAFE_INTEGER +
+                    " sides."
             );
         }
 
         for (dieIndex = 0; dieIndex < numberOfDice; dieIndex += 1) {
-            dieResults.push(randomIntegerInclusive(1, sidesPerDie));
+            dieResults.push(
+                BigInt(randomSafeIntegerInclusive(1, sidesPerDie))
+            );
             dieTotal += dieResults[dieIndex];
         }
 
         return successfulRandomResult([
-            diceText + ": [" + dieResults.join(", ") + "] = " + dieTotal
+            diceText + ": [" + dieResults.join(", ") + "] = " +
+                dieTotal.toString()
         ]);
     }
 
@@ -1126,10 +1433,35 @@
         var startYearResult;
         var words = splitWords(argumentsText);
 
+        if (words.length === 0 || words[0] === "unix32") {
+            if (words.length > 1) {
+                return failedRandomResult(
+                    "Timestamp usage is: timestamp [unix32] or " +
+                    "timestamp <start-year> <end-year>."
+                );
+            }
+
+            generatedDate = new Date(
+                randomSafeIntegerInclusive(
+                    UNIX_32_MINIMUM_MILLISECONDS,
+                    UNIX_32_MAXIMUM_MILLISECONDS
+                )
+            );
+
+            return successfulRandomResult([generatedDate.toISOString()]);
+        }
+
+        if (words.length > 2) {
+            return failedRandomResult(
+                "Timestamp usage is: timestamp [unix32] or " +
+                "timestamp <start-year> [end-year]."
+            );
+        }
+
         startYearResult = parseIntegerInRange(
             words[0],
             "Start year",
-            2000,
+            1970,
             1970,
             9998
         );
@@ -1141,7 +1473,7 @@
         endYearResult = parseIntegerInRange(
             words[1],
             "End year",
-            2030,
+            startYearResult.value + 1,
             1971,
             9999
         );
@@ -1176,8 +1508,16 @@
         printRandomStatus("/random say <generator> ... — send results to the active conversation");
         printRandomStatus("Counts default to 1 and are limited to 20 unless stated otherwise.");
         printRandomStatus("NUMBERS AND VALUES");
-        printRandomStatus("/random integer [min=0] [max=100] [count=1] — inclusive integer bounds");
-        printRandomStatus("/random float [count=1] — JavaScript fraction in [0, 1)");
+        printRandomStatus("/random integer [min=0] [max=100] [count=1] — inclusive safe-integer bounds");
+        printRandomStatus(
+            "/random integer <int8|uint8|int16|uint16|int32|uint32|int64|uint64|int128|uint128|safeint> [count=1]"
+        );
+        printRandomStatus(
+            "/random float [count=1] — backward-compatible float64 fraction in [0, 1)"
+        );
+        printRandomStatus(
+            "/random float <float32|float64> [unit|finite|normal|subnormal|special|all] [count=1]"
+        );
         printRandomStatus("/random boolean [count=1] — true or false");
         printRandomStatus(
             "/random string [length=16] [set=alphanumeric] [count=1]"
@@ -1202,23 +1542,37 @@
         );
         printRandomStatus("/random choice <item> | <item> [...] — select one non-empty item");
         printRandomStatus("/random shuffle <item> | <item> [...] — Fisher-Yates shuffle");
-        printRandomStatus("/random dice [NdN=1d6] — 1-100 dice, 2-1000000 sides");
+        printRandomStatus(
+            "/random dice [NdN=1d6] — 1-100 dice, 2-9007199254740991 sides"
+        );
         printRandomStatus("/random ip [v4|v6] — syntactically formatted address; default v4");
         printRandomStatus("/random mac [count=1] — locally administered unicast address");
-        printRandomStatus("/random timestamp [start-year=2000] [end-year=2030] — ISO 8601 UTC");
+        printRandomStatus(
+            "/random timestamp [unix32] — ISO 8601 UTC across the complete signed 32-bit Unix interval"
+        );
+        printRandomStatus(
+            "/random timestamp <start-year> [end-year=start+1] — custom ISO year interval"
+        );
         printRandomStatus("REMOTE USE");
         printRandomStatus("/random remote <on|off|status>");
         printRandomStatus("When enabled: @YourNick random integer 1 100");
         printRandomStatus("Remote requests ignore self/backlog, reply in context, and cap output at 4 lines of 400 characters.");
         printRandomStatus("EXAMPLES");
         printRandomStatus("/random integer -10 10 3");
+        printRandomStatus("/random integer uint64 3");
+        printRandomStatus("/random float float32 subnormal 3");
         printRandomStatus("/random string 32 hex 2");
         printRandomStatus("/random palette complementary");
         printRandomStatus("/random choice deploy | wait | rollback");
         printRandomStatus("/random dice 4d6");
         printRandomStatus("/random say color 2");
         printRandomStatus("LIMITS AND SECURITY");
-        printRandomStatus("Integer bounds are -1000000000 through 1000000000.");
+        printRandomStatus(
+            "Arbitrary integer bounds cover JavaScript safe integers. int64/int128 and unsigned variants print exact decimal BigInt values."
+        );
+        printRandomStatus(
+            "Float bit-pattern modes follow IEEE-754 binary32/binary64 categories; special may emit 0, -0, Infinity, -Infinity, or NaN."
+        );
         printRandomStatus(
             "All output uses Math.random() and is non-cryptographic; never use it for secrets, passwords, tokens, keys, or authentication."
         );
@@ -1455,7 +1809,11 @@
             "help", "integer", "float", "boolean", "string", "uuid",
             "unicode", "sentence", "paragraph", "color", "palette", "bytes",
             "hex", "base64", "choice", "shuffle", "dice", "ip", "mac",
-            "timestamp", "say", "remote", "on", "off", "status"
+            "timestamp", "say", "remote", "on", "off", "status",
+            "int8", "uint8", "int16", "uint16", "int32", "uint32",
+            "int64", "uint64", "int128", "uint128", "safeint",
+            "float32", "float64", "unit", "finite", "normal", "subnormal",
+            "special", "all", "unix32"
         ];
         var completions = [];
         var lowerWord = word.toLowerCase();

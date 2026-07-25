@@ -34,6 +34,9 @@ semantic version. At load time it can check this repository's small
 downloading or executing code. Checks, privacy behavior, caching, and the
 release procedure are documented in [UPDATES.md](UPDATES.md).
 
+Numeric ranges, provider boundaries, safety caps, and aesthetic defaults are
+classified in [Numeric limits and defaults](LIMITS.md).
+
 ## Development
 
 The contract tests execute the scripts in isolated JavaScript contexts with a
