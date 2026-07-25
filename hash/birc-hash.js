@@ -3312,9 +3312,13 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
     "use strict";
     var PHPASS_ALPHABET = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     var MAXIMUM_INPUT_LENGTH = 4096;
+    var MAXIMUM_REMOTE_LINES = 4;
+    var MAXIMUM_REMOTE_LINE_LENGTH = 400;
+    var REMOTE_STORE_KEY = "hash.remote.enabled";
     var bcryptDataDownloadInProgress = false;
     var bcryptTablesReady = false;
     var bcryptTablesStatus = "not loaded";
+    var remoteReplyContext = null;
     function extractWordsFromBlowfishArray(sourceText, arrayName) {
       var arrayMatch;
       var hexadecimalWords;
@@ -3447,6 +3451,20 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
       fetchAndCacheHashData();
     }
     function printHashStatus(message) {
+      if (remoteReplyContext !== null) {
+        if (remoteReplyContext.linesSent >= MAXIMUM_REMOTE_LINES) {
+          return;
+        }
+        if (message.length > MAXIMUM_REMOTE_LINE_LENGTH) {
+          message = "Result is too long to send remotely (" + message.length + " characters).";
+        }
+        birc.say(
+          remoteReplyContext.target,
+          remoteReplyContext.nick + ": " + message
+        );
+        remoteReplyContext.linesSent += 1;
+        return;
+      }
       birc.print("[Hash] " + message);
     }
     function splitFirstWord(input) {
@@ -3912,6 +3930,7 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
       printHashStatus("/hash password crypt <2-char-salt> | <password>");
       printHashStatus("/hash verify <encoded-password-hash> | <password>");
       printHashStatus("/hash data <status|refresh>");
+      printHashStatus("/hash remote <on|off|status>");
       printHashStatus("Salts are required because bIRC exposes no cryptographic random source.");
       printHashStatus("MD5, SHA-1, phpass, and DES crypt are legacy-only; never choose them for new security.");
     }
@@ -3940,7 +3959,10 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
         "fnv1a32",
         "bcrypt",
         "phpass",
-        "crypt"
+        "crypt",
+        "remote",
+        "on",
+        "off"
       ];
       var completions = [];
       var lowerWord = word.toLowerCase();
@@ -4036,6 +4058,9 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
             printHashStatus("Data operation must be status or refresh.");
             return;
         }
+      } else if (operation === "remote") {
+        handleHashRemoteConfiguration(firstPart.remainder);
+        return;
       } else {
         printHashStatus("Unknown operation. Run /hash help.");
         return;
@@ -4046,8 +4071,83 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
       }
       printHashStatus(result);
     }
+    function remoteUseIsEnabled() {
+      return birc.store.get(REMOTE_STORE_KEY) === true;
+    }
+    function handleHashRemoteConfiguration(argumentsText) {
+      var setting = argumentsText.trim().toLowerCase();
+      if (setting === "on") {
+        birc.store.set(REMOTE_STORE_KEY, true);
+        printHashStatus("Remote @mention use is enabled.");
+        return;
+      }
+      if (setting === "off") {
+        birc.store.delete(REMOTE_STORE_KEY);
+        printHashStatus("Remote @mention use is disabled.");
+        return;
+      }
+      if (setting === "status" || setting.length === 0) {
+        if (remoteUseIsEnabled()) {
+          printHashStatus("Remote @mention use is enabled.");
+        } else {
+          printHashStatus("Remote @mention use is disabled.");
+        }
+        return;
+      }
+      printHashStatus("Remote setting must be on, off, or status.");
+    }
+    function handleRemoteHashRequest(event) {
+      var commandPart;
+      var hashOperation;
+      var mentionPart;
+      var replyTarget;
+      if (!remoteUseIsEnabled()) {
+        return;
+      }
+      if (!event || event.isMe || event.isBacklog) {
+        return;
+      }
+      if (typeof event.text !== "string" || typeof event.nick !== "string") {
+        return;
+      }
+      mentionPart = splitFirstWord(event.text);
+      if (mentionPart.word.charAt(0) !== "@") {
+        return;
+      }
+      if (!birc.sameNick(mentionPart.word.slice(1), birc.nick)) {
+        return;
+      }
+      commandPart = splitFirstWord(mentionPart.remainder);
+      if (commandPart.word.toLowerCase().replace(/^\//, "") !== "hash") {
+        return;
+      }
+      replyTarget = event.channel;
+      if (typeof replyTarget !== "string" || replyTarget.length === 0) {
+        replyTarget = event.nick;
+      }
+      remoteReplyContext = {
+        linesSent: 0,
+        nick: event.nick,
+        target: replyTarget
+      };
+      try {
+        hashOperation = splitFirstWord(
+          commandPart.remainder
+        ).word.toLowerCase();
+        if (hashOperation !== "digest" && hashOperation !== "checksum") {
+          printHashStatus(
+            "Remote use is limited to digest and checksum operations."
+          );
+          return;
+        }
+        runHashCommand(commandPart.remainder);
+      } finally {
+        remoteReplyContext = null;
+      }
+    }
     birc.onCommand("hash", runHashCommand);
     birc.onComplete(completeHashCommand);
+    birc.on("message", handleRemoteHashRequest);
     birc.on("load", function printHashLoadMessage() {
       printHashStatus("Loaded. Run /hash help.");
       loadHashData();

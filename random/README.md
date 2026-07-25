@@ -34,6 +34,7 @@ The script does not need HTTPS access.
 /random ip [v4|v6]
 /random mac [count]
 /random timestamp [start-year] [end-year]
+/random remote <on|off|status>
 ```
 
 Output is printed locally by default. Prefix a generator with `say` to send its
@@ -44,6 +45,23 @@ result to the active conversation:
 ```
 
 Counts are capped to keep accidental commands from flooding a transcript.
+
+## Optional remote use
+
+Remote use is disabled by default. Enable it with `/random remote on`; the
+setting persists for this script. Another user can then address your current
+nick at the beginning of a live message:
+
+```text
+@YourNick random integer 1 100
+@YourNick /random color
+```
+
+The response is sent to the originating channel, or back to the sender for a
+direct message, and is prefixed with their nick. Self-authored and backlog
+messages are ignored. Remote replies are limited to four lines and 400
+characters per line; `say` is not accepted remotely. Disable the listener with
+`/random remote off`.
 
 ## Security boundary
 

@@ -14,8 +14,10 @@ const scriptSource = fs.readFileSync(
 function createRandomScriptHarness(randomValues) {
     const commandHandlers = {};
     const completionHandlers = [];
+    const eventHandlers = {};
     const printedLines = [];
     const sentMessages = [];
+    const storedValues = new Map();
     let randomValueIndex = 0;
 
     const controlledMath = Object.create(Math);
@@ -28,6 +30,7 @@ function createRandomScriptHarness(randomValues) {
     };
 
     const birc = {
+        nick: "UtilityBot",
         target: "#default",
         print(text) {
             printedLines.push(text);
@@ -41,7 +44,23 @@ function createRandomScriptHarness(randomValues) {
         onComplete(handler) {
             completionHandlers.push(handler);
         },
-        on() {}
+        on(type, handler) {
+            eventHandlers[type] = handler;
+        },
+        sameNick(first, second) {
+            return first.toLowerCase() === second.toLowerCase();
+        },
+        store: {
+            get(key) {
+                return storedValues.get(key);
+            },
+            set(key, value) {
+                storedValues.set(key, value);
+            },
+            delete(key) {
+                storedValues.delete(key);
+            }
+        }
     };
 
     vm.runInNewContext(
@@ -63,6 +82,9 @@ function createRandomScriptHarness(randomValues) {
         complete(word) {
             return completionHandlers[0](word);
         },
+        receiveMessage(event) {
+            eventHandlers.message(event);
+        },
         printedLines,
         sentMessages
     };
@@ -77,6 +99,50 @@ test("integer generation includes both configured bounds", () => {
 
     assert.deepEqual(minimumHarness.printedLines, ["[Random] -5"]);
     assert.deepEqual(maximumHarness.printedLines, ["[Random] 5"]);
+});
+
+test("remote random use is opt-in and replies in the request channel", () => {
+    const harness = createRandomScriptHarness([0]);
+    const event = {
+        channel: "#developers",
+        isBacklog: false,
+        isMe: false,
+        nick: "Ada",
+        text: "@UtilityBot random integer 1 10"
+    };
+
+    harness.receiveMessage(event);
+    assert.equal(harness.sentMessages.length, 0);
+
+    harness.runRandomCommand("remote on");
+    harness.receiveMessage(event);
+    assert.deepEqual(harness.sentMessages, [
+        { target: "#developers", text: "Ada: 1" }
+    ]);
+});
+
+test("remote random requests ignore backlog and route direct messages to sender", () => {
+    const harness = createRandomScriptHarness([0.5]);
+
+    harness.runRandomCommand("remote on");
+    harness.receiveMessage({
+        isBacklog: true,
+        isMe: false,
+        nick: "Ada",
+        target: "UtilityBot",
+        text: "@utilitybot random boolean"
+    });
+    harness.receiveMessage({
+        isBacklog: false,
+        isMe: false,
+        nick: "Ada",
+        target: "UtilityBot",
+        text: "@utilitybot /random boolean"
+    });
+
+    assert.deepEqual(harness.sentMessages, [
+        { target: "Ada", text: "Ada: true" }
+    ]);
 });
 
 test("UUID output has version four and RFC variant markers", () => {

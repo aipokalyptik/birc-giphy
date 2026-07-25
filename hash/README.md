@@ -15,6 +15,7 @@ in bIRC and run `/hash help`.
 /hash password crypt <2-character-salt> | <password>
 /hash verify <encoded-password-hash> | <password>
 /hash data <status|refresh>
+/hash remote <on|off|status>
 ```
 
 The generic password form accepts the common stored representation directly:
@@ -23,6 +24,24 @@ bcrypt `$2a$`, `$2b$`, and `$2y$` settings or complete hashes; portable phpass
 two-character settings or complete 13-character hashes. When given a complete
 hash, the script reuses its embedded algorithm parameters and salt and emits a
 new hash for the supplied password. The explicit forms remain available.
+
+## Optional remote use
+
+Remote use is disabled by default. Enable it with `/hash remote on`; the
+setting persists for this script. Another user can then use:
+
+```text
+@YourNick hash digest sha256 hello
+@YourNick /hash checksum crc32 123456789
+```
+
+The response is sent to the originating channel, or back to the sender for a
+direct message, and is prefixed with their nick. Self-authored and backlog
+messages are ignored. Remote use is deliberately limited to digest and
+checksum operations: HMAC, password hashing, verification, and data-management
+commands could expose secrets or consume excessive work. Replies are limited
+to four lines and 400 characters per line. Disable the listener with
+`/hash remote off`.
 
 The first `|` separates fields for HMAC and password commands. Values containing
 a literal pipe cannot be represented by those commands.

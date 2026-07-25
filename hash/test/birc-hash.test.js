@@ -52,6 +52,7 @@ function createHashHarness(options = {}) {
     const eventHandlers = {};
     const fetchUrls = [];
     const printedLines = [];
+    const sentMessages = [];
     const storedValues = new Map();
 
     if (options.cachedData !== false) {
@@ -59,8 +60,12 @@ function createHashHarness(options = {}) {
     }
 
     const birc = {
+        nick: "UtilityBot",
         print(text) {
             printedLines.push(text);
+        },
+        say(target, text) {
+            sentMessages.push({ target, text });
         },
         onCommand(name, handler) {
             commands[name] = handler;
@@ -68,6 +73,9 @@ function createHashHarness(options = {}) {
         onComplete() {},
         on(type, handler) {
             eventHandlers[type] = handler;
+        },
+        sameNick(first, second) {
+            return first.toLowerCase() === second.toLowerCase();
         },
         fetch(url) {
             fetchUrls.push(url);
@@ -84,6 +92,9 @@ function createHashHarness(options = {}) {
             },
             set(key, value) {
                 storedValues.set(key, value);
+            },
+            delete(key) {
+                storedValues.delete(key);
             }
         },
         setTimeout
@@ -97,11 +108,50 @@ function createHashHarness(options = {}) {
             commands.hash(input);
             return printedLines[printedLines.length - 1].slice("[Hash] ".length);
         },
+        receiveMessage(event) {
+            eventHandlers.message(event);
+        },
         fetchUrls,
         printedLines,
-        storedValues
+        storedValues,
+        sentMessages
     };
 }
+
+test("remote hash use is opt-in and limited to non-secret operations", () => {
+    const harness = createHashHarness();
+    const event = {
+        channel: "#developers",
+        isBacklog: false,
+        isMe: false,
+        nick: "Ada",
+        text: "@UtilityBot hash digest sha256 abc"
+    };
+
+    harness.receiveMessage(event);
+    assert.equal(harness.sentMessages.length, 0);
+
+    harness.run("remote on");
+    harness.receiveMessage(event);
+    harness.receiveMessage({
+        channel: "#developers",
+        isBacklog: false,
+        isMe: false,
+        nick: "Ada",
+        text: "@UtilityBot hash hmac sha256 secret | message"
+    });
+
+    assert.deepEqual(harness.sentMessages, [
+        {
+            target: "#developers",
+            text: "Ada: ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+        },
+        {
+            target: "#developers",
+            text: "Ada: Remote use is limited to digest and checksum operations."
+        }
+    ]);
+});
 
 test("standard digest vectors match their published values", () => {
     const harness = createHashHarness();

@@ -22,6 +22,10 @@
     var MAXIMUM_PHP_SERIALIZATION_DEPTH = 64;
     var MAXIMUM_PHP_SERIALIZATION_ITEMS = 1000;
     var MAXIMUM_PHP_STRING_BYTE_LENGTH = MAXIMUM_INPUT_LENGTH * 4;
+    var MAXIMUM_REMOTE_LINES = 4;
+    var MAXIMUM_REMOTE_LINE_LENGTH = 400;
+    var REMOTE_STORE_KEY = "codec.remote.enabled";
+    var remoteReplyContext = null;
     var PUNYCODE_BASE = 36;
     var PUNYCODE_DAMP = 700;
     var PUNYCODE_DELIMITER = "-";
@@ -48,6 +52,26 @@
     }
 
     function printCodecStatus(message) {
+        if (remoteReplyContext !== null) {
+            if (remoteReplyContext.linesSent >= MAXIMUM_REMOTE_LINES) {
+                return;
+            }
+
+            if (message.length > MAXIMUM_REMOTE_LINE_LENGTH) {
+                message =
+                    "Result is too long to send remotely (" +
+                    message.length +
+                    " characters).";
+            }
+
+            birc.say(
+                remoteReplyContext.target,
+                remoteReplyContext.nick + ": " + message
+            );
+            remoteReplyContext.linesSent += 1;
+            return;
+        }
+
         birc.print("[Codec] " + message);
     }
 
@@ -2479,6 +2503,7 @@
             "Prefix an operation with 'say' to send its result: /codec say encode base64 hello"
         );
         printCodecStatus("/codec formats lists every supported format.");
+        printCodecStatus("/codec remote <on|off|status>");
         printCodecStatus("Examples:");
         printCodecStatus("/codec encode hex Hello");
         printCodecStatus("/codec decode hex 48656C6C6F");
@@ -2511,6 +2536,11 @@
 
         if (operation === "formats") {
             printCodecFormats();
+            return;
+        }
+
+        if (operation === "remote") {
+            handleCodecRemoteConfiguration(firstPart.remainder);
             return;
         }
 
@@ -2583,6 +2613,93 @@
         printCodecStatus("Operation must be encode, decode, convert, or say.");
     }
 
+    function remoteUseIsEnabled() {
+        return birc.store.get(REMOTE_STORE_KEY) === true;
+    }
+
+    function handleCodecRemoteConfiguration(argumentsText) {
+        var setting = argumentsText.trim().toLowerCase();
+
+        if (setting === "on") {
+            birc.store.set(REMOTE_STORE_KEY, true);
+            printCodecStatus("Remote @mention use is enabled.");
+            return;
+        }
+
+        if (setting === "off") {
+            birc.store.delete(REMOTE_STORE_KEY);
+            printCodecStatus("Remote @mention use is disabled.");
+            return;
+        }
+
+        if (setting === "status" || setting.length === 0) {
+            if (remoteUseIsEnabled()) {
+                printCodecStatus("Remote @mention use is enabled.");
+            } else {
+                printCodecStatus("Remote @mention use is disabled.");
+            }
+            return;
+        }
+
+        printCodecStatus("Remote setting must be on, off, or status.");
+    }
+
+    function handleRemoteCodecRequest(event) {
+        var commandPart;
+        var mentionPart;
+        var operation;
+        var replyTarget;
+
+        if (!remoteUseIsEnabled()) {
+            return;
+        }
+
+        if (!event || event.isMe || event.isBacklog) {
+            return;
+        }
+
+        if (typeof event.text !== "string" || typeof event.nick !== "string") {
+            return;
+        }
+
+        mentionPart = splitFirstWord(event.text);
+        if (mentionPart.word.charAt(0) !== "@") {
+            return;
+        }
+
+        if (!birc.sameNick(mentionPart.word.slice(1), birc.nick)) {
+            return;
+        }
+
+        commandPart = splitFirstWord(mentionPart.remainder);
+        if (commandPart.word.toLowerCase().replace(/^\//, "") !== "codec") {
+            return;
+        }
+
+        replyTarget = event.channel;
+        if (typeof replyTarget !== "string" || replyTarget.length === 0) {
+            replyTarget = event.nick;
+        }
+
+        remoteReplyContext = {
+            linesSent: 0,
+            nick: event.nick,
+            target: replyTarget
+        };
+        try {
+            operation = splitFirstWord(commandPart.remainder).word.toLowerCase();
+            if (operation === "remote" || operation === "say") {
+                printCodecStatus(
+                    "Remote configuration and 'say' are local-only."
+                );
+                return;
+            }
+            runCodecCommand(commandPart.remainder, event);
+        } finally {
+            remoteReplyContext = null;
+        }
+    }
+
     function completeCodecCommand(word) {
         var candidateIndex;
         var candidates = [
@@ -2591,7 +2708,8 @@
             "base58", "binary", "bits", "bytes", "decimal", "integer",
             "url", "percent", "html", "json", "unicode", "codepoints",
             "rot13", "quoted-printable", "qp", "mime-b", "mime-q",
-            "punycode", "php-serialize", "php"
+            "punycode", "php-serialize", "php",
+            "remote", "on", "off", "status"
         ];
         var completions = [];
         var lowerWord = word.toLowerCase();
@@ -2611,6 +2729,7 @@
 
     birc.onCommand("codec", runCodecCommand);
     birc.onComplete(completeCodecCommand);
+    birc.on("message", handleRemoteCodecRequest);
 
     birc.on("load", function printCodecScriptLoadMessage() {
         printCodecStatus("Loaded. Run /codec help.");

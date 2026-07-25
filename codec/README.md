@@ -19,6 +19,7 @@ The script makes no network requests and needs no HTTPS permission.
 /codec decode <format> <encoded-data>
 /codec convert <input-format> <output-format> <encoded-data>
 /codec formats
+/codec remote <on|off|status>
 ```
 
 Encoding and decoding operate between UTF-8 text and the selected format.
@@ -37,6 +38,22 @@ NUL byte, `say` refuses output containing NUL, carriage return, or line feed.
 The same result can still be inspected locally without `say`.
 
 Input is limited to 4,096 characters to avoid accidental transcript stalls.
+
+## Optional remote use
+
+Remote use is disabled by default. Enable it with `/codec remote on`; the
+setting persists for this script. Another user can then use:
+
+```text
+@YourNick codec encode base64 hello
+@YourNick /codec decode hex 48656c6c6f
+```
+
+The response is sent to the originating channel, or back to the sender for a
+direct message, and is prefixed with their nick. Self-authored and backlog
+messages are ignored. Remote replies are limited to four lines and 400
+characters per line; `say` is not accepted remotely. Disable the listener with
+`/codec remote off`.
 
 ## Byte formats
 

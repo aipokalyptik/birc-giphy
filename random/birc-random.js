@@ -18,6 +18,10 @@
     var MAXIMUM_STRING_LENGTH = 512;
     var MAXIMUM_PARAGRAPH_SENTENCES = 12;
     var MAXIMUM_SENTENCE_WORDS = 30;
+    var MAXIMUM_REMOTE_LINES = 4;
+    var MAXIMUM_REMOTE_LINE_LENGTH = 400;
+    var REMOTE_STORE_KEY = "random.remote.enabled";
+    var remoteReplyContext = null;
 
     var LOWERCASE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
     var UPPERCASE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -47,6 +51,26 @@
     ];
 
     function printRandomStatus(message) {
+        if (remoteReplyContext !== null) {
+            if (remoteReplyContext.linesSent >= MAXIMUM_REMOTE_LINES) {
+                return;
+            }
+
+            if (message.length > MAXIMUM_REMOTE_LINE_LENGTH) {
+                message =
+                    "Result is too long to send remotely (" +
+                    message.length +
+                    " characters).";
+            }
+
+            birc.say(
+                remoteReplyContext.target,
+                remoteReplyContext.nick + ": " + message
+            );
+            remoteReplyContext.linesSent += 1;
+            return;
+        }
+
         birc.print("[Random] " + message);
     }
 
@@ -1009,6 +1033,7 @@
         printRandomStatus("/random shuffle first | second | third");
         printRandomStatus("/random dice [NdN] | ip [v4|v6] | mac [count]");
         printRandomStatus("/random timestamp [start-year] [end-year]");
+        printRandomStatus("/random remote <on|off|status>");
         printRandomStatus(
             "Prefix a generator with 'say' to send its output to the active conversation."
         );
@@ -1126,6 +1151,11 @@
             return;
         }
 
+        if (generatorName === "remote") {
+            handleRandomRemoteConfiguration(generatorArguments);
+            return;
+        }
+
         if (generatorName === "say") {
             sendOutput = true;
             firstPart = splitFirstWord(generatorArguments);
@@ -1144,13 +1174,102 @@
         outputRandomResult(result, sendOutput, commandEvent);
     }
 
+    function remoteUseIsEnabled() {
+        return birc.store.get(REMOTE_STORE_KEY) === true;
+    }
+
+    function handleRandomRemoteConfiguration(argumentsText) {
+        var setting = argumentsText.trim().toLowerCase();
+
+        if (setting === "on") {
+            birc.store.set(REMOTE_STORE_KEY, true);
+            printRandomStatus("Remote @mention use is enabled.");
+            return;
+        }
+
+        if (setting === "off") {
+            birc.store.delete(REMOTE_STORE_KEY);
+            printRandomStatus("Remote @mention use is disabled.");
+            return;
+        }
+
+        if (setting === "status" || setting.length === 0) {
+            if (remoteUseIsEnabled()) {
+                printRandomStatus("Remote @mention use is enabled.");
+            } else {
+                printRandomStatus("Remote @mention use is disabled.");
+            }
+            return;
+        }
+
+        printRandomStatus("Remote setting must be on, off, or status.");
+    }
+
+    function handleRemoteRandomRequest(event) {
+        var commandPart;
+        var generatorName;
+        var mentionPart;
+        var replyTarget;
+
+        if (!remoteUseIsEnabled()) {
+            return;
+        }
+
+        if (!event || event.isMe || event.isBacklog) {
+            return;
+        }
+
+        if (typeof event.text !== "string" || typeof event.nick !== "string") {
+            return;
+        }
+
+        mentionPart = splitFirstWord(event.text);
+        if (mentionPart.word.charAt(0) !== "@") {
+            return;
+        }
+
+        if (!birc.sameNick(mentionPart.word.slice(1), birc.nick)) {
+            return;
+        }
+
+        commandPart = splitFirstWord(mentionPart.remainder);
+        if (commandPart.word.toLowerCase().replace(/^\//, "") !== "random") {
+            return;
+        }
+
+        replyTarget = event.channel;
+        if (typeof replyTarget !== "string" || replyTarget.length === 0) {
+            replyTarget = event.nick;
+        }
+
+        remoteReplyContext = {
+            linesSent: 0,
+            nick: event.nick,
+            target: replyTarget
+        };
+        try {
+            generatorName = splitFirstWord(
+                commandPart.remainder
+            ).word.toLowerCase();
+            if (generatorName === "remote" || generatorName === "say") {
+                printRandomStatus(
+                    "Remote configuration and 'say' are local-only."
+                );
+                return;
+            }
+            runRandomCommand(commandPart.remainder, event);
+        } finally {
+            remoteReplyContext = null;
+        }
+    }
+
     function completeRandomCommand(word) {
         var candidateIndex;
         var candidates = [
             "help", "integer", "float", "boolean", "string", "uuid",
             "unicode", "sentence", "paragraph", "color", "palette", "bytes",
             "hex", "base64", "choice", "shuffle", "dice", "ip", "mac",
-            "timestamp", "say"
+            "timestamp", "say", "remote", "on", "off", "status"
         ];
         var completions = [];
         var lowerWord = word.toLowerCase();
@@ -1170,6 +1289,7 @@
 
     birc.onCommand("random", runRandomCommand);
     birc.onComplete(completeRandomCommand);
+    birc.on("message", handleRemoteRandomRequest);
 
     birc.on("load", function printRandomScriptLoadMessage() {
         printRandomStatus("Loaded. Run /random help.");

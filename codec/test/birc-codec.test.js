@@ -14,10 +14,13 @@ const scriptSource = fs.readFileSync(
 function createCodecScriptHarness() {
     const commandHandlers = {};
     const completionHandlers = [];
+    const eventHandlers = {};
     const printedLines = [];
     const sentMessages = [];
+    const storedValues = new Map();
 
     const birc = {
+        nick: "UtilityBot",
         target: "#default",
         print(text) {
             printedLines.push(text);
@@ -31,7 +34,23 @@ function createCodecScriptHarness() {
         onComplete(handler) {
             completionHandlers.push(handler);
         },
-        on() {}
+        on(type, handler) {
+            eventHandlers[type] = handler;
+        },
+        sameNick(first, second) {
+            return first.toLowerCase() === second.toLowerCase();
+        },
+        store: {
+            get(key) {
+                return storedValues.get(key);
+            },
+            set(key, value) {
+                storedValues.set(key, value);
+            },
+            delete(key) {
+                storedValues.delete(key);
+            }
+        }
     };
 
     vm.runInNewContext(
@@ -52,10 +71,47 @@ function createCodecScriptHarness() {
         complete(word) {
             return completionHandlers[0](word);
         },
+        receiveMessage(event) {
+            eventHandlers.message(event);
+        },
         printedLines,
         sentMessages
     };
 }
+
+test("remote codec use is opt-in and replies in channel or direct-message context", () => {
+    const harness = createCodecScriptHarness();
+
+    harness.receiveMessage({
+        channel: "#developers",
+        isBacklog: false,
+        isMe: false,
+        nick: "Ada",
+        text: "@UtilityBot codec encode hex Hi"
+    });
+    assert.equal(harness.sentMessages.length, 0);
+
+    harness.runCodecCommand("remote on");
+    harness.receiveMessage({
+        channel: "#developers",
+        isBacklog: false,
+        isMe: false,
+        nick: "Ada",
+        text: "@utilitybot /codec encode hex Hi"
+    });
+    harness.receiveMessage({
+        isBacklog: false,
+        isMe: false,
+        nick: "Grace",
+        target: "UtilityBot",
+        text: "@UtilityBot codec decode hex 4869"
+    });
+
+    assert.deepEqual(harness.sentMessages, [
+        { target: "#developers", text: "Ada: 4869" },
+        { target: "Grace", text: "Grace: Hi" }
+    ]);
+});
 
 function runOneCodecCommand(argumentsText) {
     const harness = createCodecScriptHarness();
