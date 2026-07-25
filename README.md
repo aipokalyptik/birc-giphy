@@ -10,8 +10,6 @@ independently through bIRC's Scripts window (`⌘⌥S`).
   send only the selected GIF.
 - [Random Developer Data](random/README.md) — generate random sample values,
   text, colors, identifiers, encodings, and network-shaped data locally.
-- [Random Capability Report](random-capabilities/README.md) — report the
-  JavaScript and bIRC APIs available for random-data generation.
 
 Each subdirectory contains the importable `.js` file and its complete usage,
 configuration, and security notes.
