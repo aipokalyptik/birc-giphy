@@ -405,7 +405,10 @@
             );
         }
 
-        printAscii("Use /ascii info <number>, /ascii send <number>, or /ascii cancel.");
+        printAscii(
+            "Use /ascii preview <number>, /ascii info <number>, " +
+            "/ascii send <number>, or /ascii cancel."
+        );
     }
 
     function searchAscii(query, commandEvent) {
@@ -541,9 +544,8 @@
         };
     }
 
-    function sendValidatedAscii(item, content, commandEvent) {
+    function printValidatedAsciiPreview(item, content) {
         var validation = validateAsciiContent(content);
-        var target;
         var lineIndex;
 
         if (!validation.succeeded) {
@@ -551,14 +553,24 @@
             return;
         }
 
-        if (!requireSearchContext(currentAsciiSearch, commandEvent, printAscii)) {
-            return;
+        printAscii(
+            "Local preview of " + item.name + " (" + validation.lines.length +
+            " lines; nothing will be sent):"
+        );
+
+        for (lineIndex = 0; lineIndex < validation.lines.length; lineIndex += 1) {
+            birc.print(validation.lines[lineIndex]);
         }
 
-        target = getCommandTarget(commandEvent);
+        printAscii("Source: Artscii, MIT License. Use /ascii send <number> to send it.");
+    }
 
-        if (target.length === 0) {
-            printAscii("Open a channel or query before sending ASCII art.");
+    function sendValidatedAscii(item, content, target) {
+        var validation = validateAsciiContent(content);
+        var lineIndex;
+
+        if (!validation.succeeded) {
+            printAscii(validation.error);
             return;
         }
 
@@ -572,21 +584,16 @@
         );
     }
 
-    function sendAsciiSelection(selectionText, commandEvent) {
-        var item = requireAsciiSelection(selectionText, commandEvent);
+    function loadAsciiContent(item, afterLoad) {
         var contentStoreKey;
         var cachedContent;
         var contentUrl;
-
-        if (item === null) {
-            return;
-        }
 
         contentStoreKey = ASCII_CONTENT_STORE_PREFIX + item.id;
         cachedContent = birc.store.get(contentStoreKey);
 
         if (typeof cachedContent === "string") {
-            sendValidatedAscii(item, cachedContent, commandEvent);
+            afterLoad(cachedContent);
             return;
         }
 
@@ -613,10 +620,71 @@
             }
 
             birc.store.set(contentStoreKey, response.text);
-            sendValidatedAscii(item, response.text, commandEvent);
+            afterLoad(response.text);
         }).catch(function handleAsciiContentFailure(error) {
             console.error("Could not download ASCII art", error);
             printAscii("The selected art could not be downloaded.");
+        });
+    }
+
+    function previewAsciiSelection(selectionText, commandEvent) {
+        var item = requireAsciiSelection(selectionText, commandEvent);
+        var searchSnapshot;
+        var searchContext;
+
+        if (item === null) {
+            return;
+        }
+
+        searchSnapshot = currentAsciiSearch;
+        searchContext = searchSnapshot.context;
+
+        loadAsciiContent(item, function previewLoadedAscii(content) {
+            if (currentAsciiSearch !== searchSnapshot) {
+                printAscii("The search results changed while the art was downloading.");
+                return;
+            }
+
+            if (!contextsMatch(searchContext, getCommandContext(commandEvent))) {
+                printAscii("The preview context changed while the art was downloading.");
+                return;
+            }
+
+            printValidatedAsciiPreview(item, content);
+        });
+    }
+
+    function sendAsciiSelection(selectionText, commandEvent) {
+        var item = requireAsciiSelection(selectionText, commandEvent);
+        var searchSnapshot;
+        var searchContext;
+        var target;
+
+        if (item === null) {
+            return;
+        }
+
+        searchSnapshot = currentAsciiSearch;
+        searchContext = searchSnapshot.context;
+        target = getCommandTarget(commandEvent);
+
+        if (target.length === 0) {
+            printAscii("Open a channel or query before sending ASCII art.");
+            return;
+        }
+
+        loadAsciiContent(item, function sendLoadedAscii(content) {
+            if (currentAsciiSearch !== searchSnapshot) {
+                printAscii("The search results changed while the art was downloading.");
+                return;
+            }
+
+            if (!contextsMatch(searchContext, getCommandContext(commandEvent))) {
+                printAscii("The send context changed while the art was downloading.");
+                return;
+            }
+
+            sendValidatedAscii(item, content, target);
         });
     }
 
@@ -929,10 +997,15 @@
         printAscii("SEARCH AND SEND");
         printAscii("/ascii search <terms> — search the locally cached Artscii catalog");
         printAscii("/ascii <terms> — shorthand for /ascii search <terms>");
+        printAscii(
+            "/ascii preview <number> — download if needed and print the art locally"
+        );
         printAscii("/ascii info <number> — show metadata, dimensions, source, and license");
         printAscii("/ascii send <number> — validate, cache, and send the selected text art");
         printAscii("/ascii cancel — discard the current results");
-        printAscii("Examples: /ascii cat; /ascii info 1; /ascii send 1");
+        printAscii(
+            "Examples: /ascii cat; /ascii preview 1; /ascii info 1; /ascii send 1"
+        );
         printAscii("CACHE AND CONFIGURATION");
         printAscii("/ascii cache status — describe the persistent catalog cache");
         printAscii("/ascii cache refresh — deliberately download a fresh catalog");
@@ -1000,6 +1073,9 @@
             case "info":
                 showAsciiInformation(actionArguments, commandEvent);
                 return;
+            case "preview":
+                previewAsciiSelection(actionArguments, commandEvent);
+                return;
             case "send":
                 sendAsciiSelection(actionArguments, commandEvent);
                 return;
@@ -1064,6 +1140,7 @@
     birc.onComplete(function completeTextArtCommand(word) {
         var candidates = [
             "search",
+            "preview",
             "info",
             "send",
             "cancel",

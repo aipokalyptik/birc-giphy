@@ -24,6 +24,7 @@ and a selected ASCII item.
 
 ```text
 /ascii cat
+/ascii preview 1
 /ascii info 1
 /ascii send 1
 
@@ -39,8 +40,9 @@ An ASCII search is printed locally:
 [ASCII] Use /ascii info <number>, /ascii send <number>, or /ascii cancel.
 ```
 
-`/ascii send 1` then downloads that item once, validates it, saves it in the
-per-script data store, and sends its lines to the conversation.
+`/ascii preview 1` downloads that item once, validates it, saves it in the
+per-script data store, and prints its lines only in the active bIRC window.
+Nothing is sent to IRC. A later `/ascii send 1` reuses the validated cache.
 
 An ANSI search prints links rather than injecting escape sequences or artwork:
 
@@ -55,6 +57,7 @@ An ANSI search prints links rather than injecting escape sequences or artwork:
 ```text
 /ascii search <terms>
 /ascii <terms>
+/ascii preview <number>
 /ascii info <number>
 /ascii send <number>
 /ascii cancel
@@ -75,17 +78,18 @@ Searches match every normalized query word against the item's name, identifier,
 category, description, and tags. Exact names rank first. At most eight results
 are shown.
 
-Before sending, the script rejects:
+Before previewing, caching, or sending, the script rejects:
 
 - control characters other than line breaks;
 - more than 20 lines;
 - lines wider than 80 characters; and
 - empty or malformed responses.
 
-It never silently crops or rewrites the artist's work. Each line is passed to
-`birc.say` only after the whole item has passed validation. Sending twenty IRC
-messages can still be too fast for a particular network; use judgment and
-respect channel rules.
+It never silently crops or rewrites the artist's work. Preview uses
+`birc.print`, which is local to bIRC. Each line is passed to `birc.say` only
+after the whole item has passed validation and only when the user separately
+runs `/ascii send`. Sending twenty IRC messages can still be too fast for a
+particular network; use judgment and respect channel rules.
 
 Artscii is distributed under the MIT License. `/ascii info <number>` and the
 post-send status identify the source and license. The full upstream license is

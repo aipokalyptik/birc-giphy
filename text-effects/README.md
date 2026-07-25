@@ -18,6 +18,18 @@ Every effect previews locally by default:
 /text block HELLO
 ```
 
+The explicit `preview` form is useful when showing the distinction in aliases,
+documentation, or command history:
+
+```text
+/text preview leet classic Hack the planet
+/text preview scheme catppuccin Hello IRC
+/text preview block small HELLO
+```
+
+Both forms render through the same parser and safety limits and print only
+inside bIRC. They never send a message to a channel or user.
+
 Add `say` to send the result to the active channel or query:
 
 ```text

@@ -1190,6 +1190,9 @@
         printTextStatus("bIRC Text Effects help");
         printTextStatus("PREVIEW OR SEND");
         printTextStatus("/text <effect> <arguments> — preview locally");
+        printTextStatus(
+            "/text preview <effect> <arguments> — explicit local-only preview"
+        );
         printTextStatus("/text say <effect> <arguments> — send to the active conversation");
         printTextStatus("WORD EFFECTS");
         printTextStatus("/text leet <light|classic|extreme> <text>");
@@ -1247,10 +1250,16 @@
             firstPart = splitFirstWord(effectArguments);
             effectName = firstPart.word.toLowerCase();
             effectArguments = firstPart.remainder;
+        } else if (effectName === "preview") {
+            firstPart = splitFirstWord(effectArguments);
+            effectName = firstPart.word.toLowerCase();
+            effectArguments = firstPart.remainder;
         }
 
         if (effectName.length === 0) {
-            printTextStatus("Choose an effect after 'say'. Run /text help.");
+            printTextStatus(
+                "Choose an effect after 'preview' or 'say'. Run /text help."
+            );
             return;
         }
 
@@ -1262,7 +1271,7 @@
 
     birc.onComplete(function completeTextCommand(word) {
         var candidates = [
-            "help", "say", "leet", "alternating", "mock", "reverse",
+            "help", "preview", "say", "leet", "alternating", "mock", "reverse",
             "upsidedown", "clap", "fullwidth", "vaporwave", "circled",
             "smallcaps", "regional", "bold", "italic", "monospace",
             "zalgo", "schemes", "scheme", "rainbow", "color", "ircbold", "ircitalic",

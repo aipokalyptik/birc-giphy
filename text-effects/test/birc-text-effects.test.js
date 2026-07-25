@@ -155,6 +155,17 @@ test("say sends ordinary and IRC-formatted effects to the command target", () =>
     ]);
 });
 
+test("explicit preview renders locally without sending", () => {
+    const harness = createScriptHarness();
+
+    harness.runTextCommand("preview smallcaps Hello", {
+        target: "#small"
+    });
+
+    assert.equal(lastPrintedPayload(harness), "ʜᴇʟʟᴏ");
+    assert.deepEqual(harness.sentMessages, []);
+});
+
 test("ANSI notation is visible and cannot be sent to IRC", () => {
     const harness = createScriptHarness();
 
@@ -268,6 +279,7 @@ test("help documents every effect family examples limits and compatibility", () 
 
     const completeHelp = harness.printedLines.join("\n");
     const requiredTerms = [
+        "/text preview",
         "/text say",
         "leet <light|classic|extreme>",
         "zalgo <low|medium|high>",
@@ -301,6 +313,7 @@ test("completion exposes effect and command names", () => {
     const harness = createScriptHarness();
 
     assert.deepEqual(Array.from(harness.complete("zal")), ["zalgo"]);
+    assert.deepEqual(Array.from(harness.complete("pre")), ["preview"]);
     assert.deepEqual(
         Array.from(harness.complete("irc")),
         ["ircbold", "ircitalic", "ircunderline", "ircstrike"]

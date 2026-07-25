@@ -103,6 +103,7 @@ test("registers separate ascii and ansi commands with complete help", () => {
     environment.commandHandlers.ascii("help", commandEvent());
     environment.commandHandlers.ansi("help", commandEvent());
 
+    assert.ok(environment.printed.some((line) => line.includes("/ascii preview <number>")));
     assert.ok(environment.printed.some((line) => line.includes("/ascii send <number>")));
     assert.ok(environment.printed.some((line) => line.includes("/ansi cache refresh <terms>")));
     assert.ok(environment.printed.some((line) => line.includes("never downloads")));
@@ -163,6 +164,41 @@ test("fetches selected ASCII once, validates it, then sends cached content", asy
     });
 });
 
+test("ASCII preview prints locally, sends nothing, and warms the content cache", async () => {
+    let contentFetchCount = 0;
+    const environment = createEnvironment((url) => {
+        if (url.endsWith("/arts/index.json")) {
+            return Promise.resolve({
+                status: 200,
+                text: JSON.stringify(sampleAsciiIndex)
+            });
+        }
+
+        contentFetchCount += 1;
+        return Promise.resolve({
+            status: 200,
+            text: " /\\_/\\\\\n( o.o )"
+        });
+    });
+
+    environment.commandHandlers.ascii("cat", commandEvent());
+    await waitForPromises();
+    environment.commandHandlers.ascii("preview 1", commandEvent());
+    await waitForPromises();
+
+    assert.equal(contentFetchCount, 1);
+    assert.equal(environment.said.length, 0);
+    assert.ok(environment.printed.includes(" /\\_/\\\\"));
+    assert.ok(environment.printed.includes("( o.o )"));
+    assert.ok(environment.printed.some((line) => line.includes("nothing will be sent")));
+
+    environment.commandHandlers.ascii("send 1", commandEvent());
+    await waitForPromises();
+
+    assert.equal(contentFetchCount, 1);
+    assert.equal(environment.said.length, 2);
+});
+
 test("rejects unsafe or oversized ASCII before sending or caching it", async () => {
     const environment = createEnvironment((url) => {
         if (url.endsWith("/arts/index.json")) {
@@ -207,6 +243,35 @@ test("strict context prevents sending a result from another conversation", async
 
     assert.equal(environment.said.length, 0);
     assert.ok(environment.printed.some((line) => line.includes("another network or conversation")));
+});
+
+test("an in-flight ASCII selection is discarded when search results change", async () => {
+    let resolveContentRequest;
+    const environment = createEnvironment((url) => {
+        if (url.endsWith("/arts/index.json")) {
+            return Promise.resolve({
+                status: 200,
+                text: JSON.stringify(sampleAsciiIndex)
+            });
+        }
+
+        return new Promise((resolve) => {
+            resolveContentRequest = resolve;
+        });
+    });
+
+    environment.commandHandlers.ascii("cat", commandEvent());
+    await waitForPromises();
+    environment.commandHandlers.ascii("send 1", commandEvent());
+    environment.commandHandlers.ascii("dog", commandEvent());
+
+    resolveContentRequest({status: 200, text: "cat"});
+    await waitForPromises();
+
+    assert.equal(environment.said.length, 0);
+    assert.ok(environment.printed.some((line) => {
+        return line.includes("search results changed");
+    }));
 });
 
 test("anywhere context is an explicit opt-out", async () => {
