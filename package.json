@@ -1,8 +1,8 @@
 {
-  "name": "birc-giphy",
+  "name": "birc-utils",
   "version": "0.1.0",
   "private": true,
-  "description": "A configurable GIPHY search script for bIRC.",
+  "description": "A collection of utility scripts for bIRC.",
   "scripts": {
     "test": "node --test"
   },
