@@ -48,6 +48,7 @@ const schemes = [
     scheme("molokai", "Molokai", "dark", "#1b1d1e", "#f8f8f2", "#f92672", "https://github.com/tomasr/molokai", "MIT", "Molokai Normal background, foreground, and pink"),
     scheme("zenburn", "Zenburn", "dark", "#3f3f3f", "#dcdccc", "#f0dfaf", "https://github.com/jnurmine/Zenburn", "GPL-2.0", "Zenburn Normal background, foreground, and yellow"),
     scheme("jellybeans", "Jellybeans", "dark", "#151515", "#e8e8d3", "#8197bf", "https://github.com/nanotech/jellybeans.vim", "MIT", "Jellybeans background, foreground, and blue"),
+    scheme("vividchalk", "Vividchalk", "dark", "#000000", "#eeeeee", "#ffcc00", "https://github.com/tpope/vim-vividchalk", "Vim License", "Vividchalk Normal background, foreground, and Identifier yellow"),
     scheme("papercolor-dark", "PaperColor Dark", "dark", "#1c1c1c", "#d0d0d0", "#5fafd7", "https://github.com/NLKNguyen/papercolor-theme", "MIT", "PaperColor dark background, foreground, and blue"),
     scheme("papercolor-light", "PaperColor Light", "light", "#eeeeee", "#444444", "#0087af", "https://github.com/NLKNguyen/papercolor-theme", "MIT", "PaperColor light background, foreground, and blue"),
     scheme("onedark", "OneDark", "dark", "#282c34", "#abb2bf", "#61afef", "https://github.com/joshdick/onedark.vim", "MIT", "OneDark background, foreground, and blue"),
