@@ -676,12 +676,34 @@
     }
 
     function showGiphyHelp() {
-        printGiphyStatus("/gif <terms> — search and preview GIFs locally");
-        printGiphyStatus("/gif send <number> — send one result");
-        printGiphyStatus("/gif more — show the next result page");
-        printGiphyStatus("/gif random <terms> — immediately send a random result");
+        printGiphyStatus("bIRC GIPHY Search help");
+        printGiphyStatus("SETUP");
+        printGiphyStatus("1. Create an API key at https://developers.giphy.com/");
+        printGiphyStatus("2. Allow HTTPS access for this script in bIRC.");
+        printGiphyStatus("3. Save the key with /gif config key <key>");
+        printGiphyStatus("4. Verify it with /gif config test");
+        printGiphyStatus("SEARCH AND SEND");
+        printGiphyStatus("/gif <terms> — search GIPHY and preview numbered results locally");
+        printGiphyStatus("/gif send <number> — send one result to the conversation where the search began");
+        printGiphyStatus("/gif more — replace the current results with the next page");
+        printGiphyStatus("/gif random <terms> — immediately send a random matching GIF");
         printGiphyStatus("/gif cancel — discard the current results");
-        printGiphyStatus("/gif config <action> — manage persistent configuration");
+        printGiphyStatus("/gif help — print this complete guide");
+        printGiphyStatus("CONFIGURATION");
+        printGiphyStatus("/gif config key <key> — persist the GIPHY API key");
+        printGiphyStatus("/gif config rating <g|pg|pg-13|r> — set the content ceiling; default pg-13");
+        printGiphyStatus("/gif config results <1-10> — set previews per page; default 3");
+        printGiphyStatus("/gif config show — show configuration with the API key masked");
+        printGiphyStatus("/gif config test — verify the stored key and HTTPS access");
+        printGiphyStatus("/gif config clear key — delete only the stored API key");
+        printGiphyStatus("/gif config clear all — restore every setting to its default");
+        printGiphyStatus("NOTES");
+        printGiphyStatus("Search terms are limited to 50 characters and are sent to GIPHY.");
+        printGiphyStatus("Enable inline images in bIRC to see animated previews.");
+        printGiphyStatus("Configuration persists per script; bIRC does not document the store as encrypted.");
+        printGiphyStatus("The API key is sent to GIPHY in HTTPS request URLs. Never paste it into IRC.");
+        printGiphyStatus("bIRC uses the IRC profile's proxy for script requests when one is configured.");
+        printGiphyStatus("Powered by GIPHY");
     }
 
     function handleGiphyCommand(argumentsText, commandEvent) {

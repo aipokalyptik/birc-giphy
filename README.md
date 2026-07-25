@@ -53,6 +53,11 @@ Other commands:
 /gif help
 ```
 
+`/gif help` is the complete in-bIRC manual. It covers setup, every command,
+defaults, preview behavior, storage, API-key handling, and proxy behavior.
+Changes to the script's user-facing behavior must update this help output and
+its contract test in the same change.
+
 The selected GIF is sent to the conversation where the search began. This
 prevents a later window change from accidentally sending it somewhere else.
 Search terms are limited to the 50 characters accepted by GIPHY.

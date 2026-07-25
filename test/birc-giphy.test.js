@@ -276,3 +276,44 @@ test("completion returns only matching GIF command words", () => {
     assert.deepEqual(Array.from(harness.complete("ra")), ["random"]);
     assert.deepEqual(Array.from(harness.complete("z")), []);
 });
+
+test("help documents setup every command defaults and operational cautions", () => {
+    const harness = createScriptHarness();
+
+    harness.runGifCommand("help");
+
+    const completeHelp = harness.printedLines.join("\n");
+
+    assert.equal(completeHelp.includes("https://developers.giphy.com/"), true);
+    assert.equal(completeHelp.includes("/gif <terms>"), true);
+    assert.equal(completeHelp.includes("/gif send <number>"), true);
+    assert.equal(completeHelp.includes("/gif more"), true);
+    assert.equal(completeHelp.includes("/gif random <terms>"), true);
+    assert.equal(completeHelp.includes("/gif cancel"), true);
+    assert.equal(completeHelp.includes("/gif help"), true);
+    assert.equal(completeHelp.includes("/gif config key <key>"), true);
+    assert.equal(completeHelp.includes("/gif config rating <g|pg|pg-13|r>"), true);
+    assert.equal(completeHelp.includes("/gif config results <1-10>"), true);
+    assert.equal(completeHelp.includes("/gif config show"), true);
+    assert.equal(completeHelp.includes("/gif config test"), true);
+    assert.equal(completeHelp.includes("/gif config clear key"), true);
+    assert.equal(completeHelp.includes("/gif config clear all"), true);
+    assert.equal(completeHelp.includes("default pg-13"), true);
+    assert.equal(completeHelp.includes("default 3"), true);
+    assert.equal(completeHelp.includes("not document the store as encrypted"), true);
+    assert.equal(completeHelp.includes("Never paste it into IRC"), true);
+    assert.equal(completeHelp.includes("Powered by GIPHY"), true);
+});
+
+test("running gif without arguments prints the same complete help", () => {
+    const explicitHelpHarness = createScriptHarness();
+    const emptyCommandHarness = createScriptHarness();
+
+    explicitHelpHarness.runGifCommand("help");
+    emptyCommandHarness.runGifCommand("");
+
+    assert.deepEqual(
+        emptyCommandHarness.printedLines,
+        explicitHelpHarness.printedLines
+    );
+});
