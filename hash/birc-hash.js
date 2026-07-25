@@ -3681,6 +3681,99 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
         )
       );
     }
+    function hashPasswordUsingStoredFormat(argumentsText) {
+      var bcryptSetting;
+      var countLogarithm;
+      var hashAndPassword = splitAtPipe(argumentsText);
+      var prefix;
+      var suppliedFormat;
+      if (hashAndPassword === null) {
+        printHashStatus(
+          "Stored password format requires: <setting-or-hash> | <password>."
+        );
+        return;
+      }
+      suppliedFormat = hashAndPassword.left;
+      if (/^\$2[aby]\$/.test(suppliedFormat)) {
+        if (!bcryptTablesReady) {
+          printHashStatus(
+            "bcrypt data is " + bcryptTablesStatus + "; wait for initialization and try again."
+          );
+          return;
+        }
+        if (!/^\$2[aby]\$(0[4-9]|1[0-2])\$[./A-Za-z0-9]{22}(?:[./A-Za-z0-9]{31})?$/.test(
+          suppliedFormat
+        )) {
+          printHashStatus("bcrypt setting or hash is malformed.");
+          return;
+        }
+        if (bcrypt_runtime_default.truncates(hashAndPassword.right)) {
+          printHashStatus("bcrypt password exceeds its 72-byte limit.");
+          return;
+        }
+        bcryptSetting = suppliedFormat;
+        if (suppliedFormat.indexOf("$2y$") === 0) {
+          bcryptSetting = "$2b$" + suppliedFormat.slice(4);
+        }
+        try {
+          bcryptSetting = bcrypt_runtime_default.hashSync(
+            hashAndPassword.right,
+            bcryptSetting
+          );
+          if (suppliedFormat.indexOf("$2y$") === 0) {
+            bcryptSetting = "$2y$" + bcryptSetting.slice(4);
+          }
+          printHashStatus(bcryptSetting);
+        } catch (error) {
+          printHashStatus("bcrypt rejected the supplied setting.");
+        }
+        return;
+      }
+      prefix = suppliedFormat.slice(0, 3);
+      if (prefix === "$P$" || prefix === "$H$") {
+        if (suppliedFormat.length !== 12 && suppliedFormat.length !== 34) {
+          printHashStatus("phpass setting or hash has an invalid length.");
+          return;
+        }
+        if (!/^[./0-9A-Za-z]{8}$/.test(suppliedFormat.slice(4, 12))) {
+          printHashStatus("phpass setting or hash has an invalid salt.");
+          return;
+        }
+        countLogarithm = PHPASS_ALPHABET.indexOf(
+          suppliedFormat.charAt(3)
+        );
+        if (countLogarithm < 7 || countLogarithm > 18) {
+          printHashStatus("phpass setting or hash has an unsupported count.");
+          return;
+        }
+        printHashStatus(
+          phpassHash(
+            hashAndPassword.right,
+            prefix,
+            countLogarithm,
+            suppliedFormat.slice(4, 12)
+          )
+        );
+        return;
+      }
+      if (suppliedFormat.length === 2 || suppliedFormat.length === 13) {
+        if (!/^[./0-9A-Za-z]{2}$/.test(suppliedFormat.slice(0, 2))) {
+          printHashStatus("DES crypt setting or hash is malformed.");
+          return;
+        }
+        if (!/^[\x01-\x7F]{0,8}$/.test(hashAndPassword.right)) {
+          printHashStatus(
+            "DES crypt password must contain at most 8 ASCII characters."
+          );
+          return;
+        }
+        printHashStatus(
+          (0, import_unix_crypt_td_js.default)(hashAndPassword.right, suppliedFormat.slice(0, 2))
+        );
+        return;
+      }
+      printHashStatus("Unsupported password setting or hash format.");
+    }
     function verifyPassword(argumentsText) {
       var computedCryptHash;
       var computedHash;
@@ -3755,6 +3848,7 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
       printHashStatus("/hash digest <md5|sha1|sha224|sha256|sha384|sha512|ripemd160> <text>");
       printHashStatus("/hash checksum <crc32|crc32c|adler32|fnv1a32> <text>");
       printHashStatus("/hash hmac <md5|sha1|sha224|sha256|sha384|sha512|ripemd160> <key> | <message>");
+      printHashStatus("/hash password <setting-or-hash> | <password>");
       printHashStatus("/hash password bcrypt <cost 4-12> <22-char-salt> | <password>");
       printHashStatus("/hash password phpass <count-log2 7-18> <8-char-salt> | <password>");
       printHashStatus("/hash password crypt <2-char-salt> | <password>");
@@ -3866,7 +3960,7 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
             printHashStatus((0, import_unix_crypt_td_js.default)(pair.right, pair.left));
             return;
           default:
-            printHashStatus("Password algorithm must be bcrypt, phpass, or crypt.");
+            hashPasswordUsingStoredFormat(firstPart.remainder);
             return;
         }
       } else if (operation === "verify") {

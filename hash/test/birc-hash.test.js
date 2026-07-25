@@ -110,6 +110,15 @@ test("bcrypt output and verification are deterministic with an explicit salt", (
     );
     assert.equal(harness.run(`verify ${encoded} | password`), "MATCH");
     assert.equal(harness.run(`verify ${encoded} | wrong`), "NO MATCH");
+    assert.equal(
+        harness.run(`password ${encoded.slice(0, 29)} | password`),
+        encoded
+    );
+    assert.equal(harness.run(`password ${encoded} | password`), encoded);
+    assert.equal(
+        harness.run(`password $2y$${encoded.slice(4)} | password`),
+        `$2y$${encoded.slice(4)}`
+    );
 });
 
 test("phpass portable output and verification are deterministic", () => {
@@ -119,6 +128,11 @@ test("phpass portable output and verification are deterministic", () => {
     assert.equal(encoded, "$P$612345678U1QdGJQj/LH52EnuhEn170");
     assert.equal(harness.run(`verify ${encoded} | password`), "MATCH");
     assert.equal(harness.run(`verify ${encoded} | wrong`), "NO MATCH");
+    assert.equal(
+        harness.run(`password ${encoded.slice(0, 12)} | password`),
+        encoded
+    );
+    assert.equal(harness.run(`password ${encoded} | password`), encoded);
 });
 
 test("traditional DES crypt matches the system crypt vector", () => {
@@ -127,6 +141,8 @@ test("traditional DES crypt matches the system crypt vector", () => {
 
     assert.equal(encoded, "abJnggxhB/yWI");
     assert.equal(harness.run(`verify ${encoded} | password`), "MATCH");
+    assert.equal(harness.run("password ab | password"), encoded);
+    assert.equal(harness.run(`password ${encoded} | password`), encoded);
 });
 
 test("password commands reject silent truncation and missing salts", () => {
@@ -143,6 +159,14 @@ test("password commands reject silent truncation and missing salts", () => {
     assert.equal(
         harness.run("password crypt ab | ninechars"),
         "DES crypt password must contain at most 8 ASCII characters."
+    );
+    assert.equal(
+        harness.run("password $2b$03$...................... | password"),
+        "bcrypt setting or hash is malformed."
+    );
+    assert.equal(
+        harness.run("password unknown | password"),
+        "Unsupported password setting or hash format."
     );
 });
 

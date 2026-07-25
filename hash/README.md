@@ -9,12 +9,20 @@ in bIRC and run `/hash help`.
 /hash digest <md5|sha1|sha224|sha256|sha384|sha512|ripemd160> <text>
 /hash checksum <crc32|crc32c|adler32|fnv1a32> <text>
 /hash hmac <md5|sha1|sha224|sha256|sha384|sha512|ripemd160> <key> | <message>
+/hash password <setting-or-hash> | <password>
 /hash password bcrypt <cost 4-12> <22-character-salt> | <password>
 /hash password phpass <count-log2 7-18> <8-character-salt> | <password>
 /hash password crypt <2-character-salt> | <password>
 /hash verify <encoded-password-hash> | <password>
 /hash data <status|refresh>
 ```
+
+The generic password form accepts the common stored representation directly:
+bcrypt `$2a$`, `$2b$`, and `$2y$` settings or complete hashes; portable phpass
+`$P$` and `$H$` settings or complete hashes; and traditional DES `crypt`
+two-character settings or complete 13-character hashes. When given a complete
+hash, the script reuses its embedded algorithm parameters and salt and emits a
+new hash for the supplied password. The explicit forms remain available.
 
 The first `|` separates fields for HMAC and password commands. Values containing
 a literal pipe cannot be represented by those commands.
