@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="830" viewBox="0 0 1440 830" role="img" aria-label="Visible ANSI escape notation examples on light and dark transcript backgrounds">
+<style>
+.title{font:700 20px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.column{font:700 12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.label{font:600 14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.command{font:12px ui-monospace,SFMono-Regular,Consolas,monospace}
+.output{font:16px ui-monospace,SFMono-Regular,Consolas,"DejaVu Sans Mono",monospace}
+</style>
+<rect width="1440" height="830" fill="#ffffff"/>
+<text x="24" y="44" class="title" fill="#1f2328">Visible ANSI escape notation</text>
+<text x="398" y="44" class="column" fill="#59636e">LIGHT TRANSCRIPT</text>
+<text x="919" y="44" class="column" fill="#8c959f">DARK TRANSCRIPT</text>
+<rect x="24" y="62" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="89" class="label" fill="#1f2328">ANSI · black</text>
+<text x="38" y="113" class="command" fill="#59636e">/text ansi black Terminal text</text>
+<rect x="386" y="62" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="62" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-0"><rect x="394" y="70" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-0)">
+<text x="404" y="91" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">\x1b[30mTerminal text\x1b[0m</tspan></text>
+</g>
+<clipPath id="dark-output-0"><rect x="915" y="70" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-0)">
+<text x="925" y="91" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">\x1b[30mTerminal text\x1b[0m</tspan></text>
+</g>
+<rect x="24" y="156" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="183" class="label" fill="#1f2328">ANSI · red</text>
+<text x="38" y="207" class="command" fill="#59636e">/text ansi red Terminal text</text>
+<rect x="386" y="156" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="156" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-1"><rect x="394" y="164" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-1)">
+<text x="404" y="185" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">\x1b[31mTerminal text\x1b[0m</tspan></text>
+</g>
+<clipPath id="dark-output-1"><rect x="915" y="164" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-1)">
+<text x="925" y="185" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">\x1b[31mTerminal text\x1b[0m</tspan></text>
+</g>
+<rect x="24" y="250" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="277" class="label" fill="#1f2328">ANSI · green</text>
+<text x="38" y="301" class="command" fill="#59636e">/text ansi green Terminal text</text>
+<rect x="386" y="250" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="250" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-2"><rect x="394" y="258" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-2)">
+<text x="404" y="279" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">\x1b[32mTerminal text\x1b[0m</tspan></text>
+</g>
+<clipPath id="dark-output-2"><rect x="915" y="258" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-2)">
+<text x="925" y="279" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">\x1b[32mTerminal text\x1b[0m</tspan></text>
+</g>
+<rect x="24" y="344" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="371" class="label" fill="#1f2328">ANSI · yellow</text>
+<text x="38" y="395" class="command" fill="#59636e">/text ansi yellow Terminal text</text>
+<rect x="386" y="344" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="344" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-3"><rect x="394" y="352" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-3)">
+<text x="404" y="373" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">\x1b[33mTerminal text\x1b[0m</tspan></text>
+</g>
+<clipPath id="dark-output-3"><rect x="915" y="352" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-3)">
+<text x="925" y="373" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">\x1b[33mTerminal text\x1b[0m</tspan></text>
+</g>
+<rect x="24" y="438" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="465" class="label" fill="#1f2328">ANSI · blue</text>
+<text x="38" y="489" class="command" fill="#59636e">/text ansi blue Terminal text</text>
+<rect x="386" y="438" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="438" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-4"><rect x="394" y="446" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-4)">
+<text x="404" y="467" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">\x1b[34mTerminal text\x1b[0m</tspan></text>
+</g>
+<clipPath id="dark-output-4"><rect x="915" y="446" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-4)">
+<text x="925" y="467" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">\x1b[34mTerminal text\x1b[0m</tspan></text>
+</g>
+<rect x="24" y="532" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="559" class="label" fill="#1f2328">ANSI · magenta</text>
+<text x="38" y="583" class="command" fill="#59636e">/text ansi magenta Terminal text</text>
+<rect x="386" y="532" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="532" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-5"><rect x="394" y="540" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-5)">
+<text x="404" y="561" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">\x1b[35mTerminal text\x1b[0m</tspan></text>
+</g>
+<clipPath id="dark-output-5"><rect x="915" y="540" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-5)">
+<text x="925" y="561" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">\x1b[35mTerminal text\x1b[0m</tspan></text>
+</g>
+<rect x="24" y="626" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="653" class="label" fill="#1f2328">ANSI · cyan</text>
+<text x="38" y="677" class="command" fill="#59636e">/text ansi cyan Terminal text</text>
+<rect x="386" y="626" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="626" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-6"><rect x="394" y="634" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-6)">
+<text x="404" y="655" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">\x1b[36mTerminal text\x1b[0m</tspan></text>
+</g>
+<clipPath id="dark-output-6"><rect x="915" y="634" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-6)">
+<text x="925" y="655" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">\x1b[36mTerminal text\x1b[0m</tspan></text>
+</g>
+<rect x="24" y="720" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="747" class="label" fill="#1f2328">ANSI · white</text>
+<text x="38" y="771" class="command" fill="#59636e">/text ansi white Terminal text</text>
+<rect x="386" y="720" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="720" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-7"><rect x="394" y="728" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-7)">
+<text x="404" y="749" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">\x1b[37mTerminal text\x1b[0m</tspan></text>
+</g>
+<clipPath id="dark-output-7"><rect x="915" y="728" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-7)">
+<text x="925" y="749" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">\x1b[37mTerminal text\x1b[0m</tspan></text>
+</g>
+</svg>

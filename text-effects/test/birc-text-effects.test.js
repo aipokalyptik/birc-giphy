@@ -332,6 +332,16 @@ test("load event announces the help command", () => {
 });
 
 test("README previews cover every effect option on light and dark backgrounds", () => {
+    const previewFileNames = [
+        "word-transformations.svg",
+        "unicode-novelty-forms.svg",
+        "named-irc-color-schemes.svg",
+        "irc-foreground-colors-indexes-00-15.svg",
+        "irc-background-colors-indexes-00-15.svg",
+        "irc-character-formatting.svg",
+        "visible-ansi-escape-notation.svg",
+        "boxes-and-block-lettering.svg"
+    ];
     const requiredPreviewTerms = [
         "Leet · light",
         "Leet · classic",
@@ -377,37 +387,43 @@ test("README previews cover every effect option on light and dark backgrounds", 
         "Solid blocks · mini",
         "Solid blocks · small"
     ];
-
-    for (const themeName of ["light", "dark"]) {
-        const previewSource = fs.readFileSync(
+    const previewSource = previewFileNames.map((fileName) => {
+        return fs.readFileSync(
             path.join(
                 __dirname,
                 "..",
                 "previews",
-                "text-effects-" + themeName + ".svg"
+                fileName
             ),
             "utf8"
         );
+    }).join("\n");
 
-        for (const requiredTerm of requiredPreviewTerms) {
-            assert.equal(
-                previewSource.includes(requiredTerm),
-                true,
-                themeName + " preview is missing " + requiredTerm
-            );
-        }
-
+    for (const requiredTerm of requiredPreviewTerms) {
         assert.equal(
-            (previewSource.match(/<clipPath /g) || []).length,
-            78,
-            themeName + " preview must clip every individual example"
-        );
-        assert.match(
-            previewSource,
-            new RegExp(
-                "Zalgo · high[\\s\\S]+?<clipPath[\\s\\S]+?" +
-                'clip-path="url\\(#output-clip-'
-            )
+            previewSource.includes(requiredTerm),
+            true,
+            "README previews are missing " + requiredTerm
         );
     }
+
+    assert.equal(
+        (previewSource.match(/<clipPath /g) || []).length,
+        156,
+        "every example needs separate light and dark clipping boundaries"
+    );
+    assert.match(
+        previewSource,
+        new RegExp(
+            "Zalgo · high[\\s\\S]+?<clipPath[\\s\\S]+?" +
+            'clip-path="url\\(#light-output-'
+        )
+    );
+    assert.match(
+        previewSource,
+        new RegExp(
+            "Zalgo · high[\\s\\S]+?<clipPath[\\s\\S]+?" +
+            'clip-path="url\\(#dark-output-'
+        )
+    );
 });

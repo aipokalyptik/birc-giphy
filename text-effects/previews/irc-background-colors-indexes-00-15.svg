@@ -1,0 +1,221 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1582" viewBox="0 0 1440 1582" role="img" aria-label="IRC background colors · indexes 00–15 examples on light and dark transcript backgrounds">
+<style>
+.title{font:700 20px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.column{font:700 12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.label{font:600 14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.command{font:12px ui-monospace,SFMono-Regular,Consolas,monospace}
+.output{font:16px ui-monospace,SFMono-Regular,Consolas,"DejaVu Sans Mono",monospace}
+</style>
+<rect width="1440" height="1582" fill="#ffffff"/>
+<text x="24" y="44" class="title" fill="#1f2328">IRC background colors · indexes 00–15</text>
+<text x="398" y="44" class="column" fill="#59636e">LIGHT TRANSCRIPT</text>
+<text x="919" y="44" class="column" fill="#8c959f">DARK TRANSCRIPT</text>
+<rect x="24" y="62" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="89" class="label" fill="#1f2328">Background 00</text>
+<text x="38" y="113" class="command" fill="#59636e">/text color 1 0 IRC background 00</text>
+<rect x="386" y="62" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="62" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-0"><rect x="394" y="70" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-0)">
+<rect x="396" y="70" width="481" height="30" rx="5" fill="#ffffff"/><text x="404" y="91" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#000000">IRC background 00</tspan></text>
+</g>
+<clipPath id="dark-output-0"><rect x="915" y="70" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-0)">
+<rect x="917" y="70" width="481" height="30" rx="5" fill="#ffffff"/><text x="925" y="91" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#000000">IRC background 00</tspan></text>
+</g>
+<rect x="24" y="156" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="183" class="label" fill="#1f2328">Background 01</text>
+<text x="38" y="207" class="command" fill="#59636e">/text color 0 1 IRC background 01</text>
+<rect x="386" y="156" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="156" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-1"><rect x="394" y="164" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-1)">
+<rect x="396" y="164" width="481" height="30" rx="5" fill="#000000"/><text x="404" y="185" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 01</tspan></text>
+</g>
+<clipPath id="dark-output-1"><rect x="915" y="164" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-1)">
+<rect x="917" y="164" width="481" height="30" rx="5" fill="#000000"/><text x="925" y="185" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 01</tspan></text>
+</g>
+<rect x="24" y="250" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="277" class="label" fill="#1f2328">Background 02</text>
+<text x="38" y="301" class="command" fill="#59636e">/text color 0 2 IRC background 02</text>
+<rect x="386" y="250" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="250" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-2"><rect x="394" y="258" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-2)">
+<rect x="396" y="258" width="481" height="30" rx="5" fill="#00007f"/><text x="404" y="279" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 02</tspan></text>
+</g>
+<clipPath id="dark-output-2"><rect x="915" y="258" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-2)">
+<rect x="917" y="258" width="481" height="30" rx="5" fill="#00007f"/><text x="925" y="279" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 02</tspan></text>
+</g>
+<rect x="24" y="344" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="371" class="label" fill="#1f2328">Background 03</text>
+<text x="38" y="395" class="command" fill="#59636e">/text color 1 3 IRC background 03</text>
+<rect x="386" y="344" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="344" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-3"><rect x="394" y="352" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-3)">
+<rect x="396" y="352" width="481" height="30" rx="5" fill="#009300"/><text x="404" y="373" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#000000">IRC background 03</tspan></text>
+</g>
+<clipPath id="dark-output-3"><rect x="915" y="352" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-3)">
+<rect x="917" y="352" width="481" height="30" rx="5" fill="#009300"/><text x="925" y="373" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#000000">IRC background 03</tspan></text>
+</g>
+<rect x="24" y="438" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="465" class="label" fill="#1f2328">Background 04</text>
+<text x="38" y="489" class="command" fill="#59636e">/text color 0 4 IRC background 04</text>
+<rect x="386" y="438" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="438" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-4"><rect x="394" y="446" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-4)">
+<rect x="396" y="446" width="481" height="30" rx="5" fill="#ff0000"/><text x="404" y="467" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 04</tspan></text>
+</g>
+<clipPath id="dark-output-4"><rect x="915" y="446" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-4)">
+<rect x="917" y="446" width="481" height="30" rx="5" fill="#ff0000"/><text x="925" y="467" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 04</tspan></text>
+</g>
+<rect x="24" y="532" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="559" class="label" fill="#1f2328">Background 05</text>
+<text x="38" y="583" class="command" fill="#59636e">/text color 0 5 IRC background 05</text>
+<rect x="386" y="532" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="532" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-5"><rect x="394" y="540" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-5)">
+<rect x="396" y="540" width="481" height="30" rx="5" fill="#7f0000"/><text x="404" y="561" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 05</tspan></text>
+</g>
+<clipPath id="dark-output-5"><rect x="915" y="540" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-5)">
+<rect x="917" y="540" width="481" height="30" rx="5" fill="#7f0000"/><text x="925" y="561" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 05</tspan></text>
+</g>
+<rect x="24" y="626" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="653" class="label" fill="#1f2328">Background 06</text>
+<text x="38" y="677" class="command" fill="#59636e">/text color 0 6 IRC background 06</text>
+<rect x="386" y="626" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="626" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-6"><rect x="394" y="634" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-6)">
+<rect x="396" y="634" width="481" height="30" rx="5" fill="#9c009c"/><text x="404" y="655" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 06</tspan></text>
+</g>
+<clipPath id="dark-output-6"><rect x="915" y="634" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-6)">
+<rect x="917" y="634" width="481" height="30" rx="5" fill="#9c009c"/><text x="925" y="655" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 06</tspan></text>
+</g>
+<rect x="24" y="720" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="747" class="label" fill="#1f2328">Background 07</text>
+<text x="38" y="771" class="command" fill="#59636e">/text color 1 7 IRC background 07</text>
+<rect x="386" y="720" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="720" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-7"><rect x="394" y="728" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-7)">
+<rect x="396" y="728" width="481" height="30" rx="5" fill="#fc7f00"/><text x="404" y="749" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#000000">IRC background 07</tspan></text>
+</g>
+<clipPath id="dark-output-7"><rect x="915" y="728" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-7)">
+<rect x="917" y="728" width="481" height="30" rx="5" fill="#fc7f00"/><text x="925" y="749" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#000000">IRC background 07</tspan></text>
+</g>
+<rect x="24" y="814" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="841" class="label" fill="#1f2328">Background 08</text>
+<text x="38" y="865" class="command" fill="#59636e">/text color 1 8 IRC background 08</text>
+<rect x="386" y="814" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="814" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-8"><rect x="394" y="822" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-8)">
+<rect x="396" y="822" width="481" height="30" rx="5" fill="#ffff00"/><text x="404" y="843" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#000000">IRC background 08</tspan></text>
+</g>
+<clipPath id="dark-output-8"><rect x="915" y="822" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-8)">
+<rect x="917" y="822" width="481" height="30" rx="5" fill="#ffff00"/><text x="925" y="843" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#000000">IRC background 08</tspan></text>
+</g>
+<rect x="24" y="908" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="935" class="label" fill="#1f2328">Background 09</text>
+<text x="38" y="959" class="command" fill="#59636e">/text color 1 9 IRC background 09</text>
+<rect x="386" y="908" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="908" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-9"><rect x="394" y="916" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-9)">
+<rect x="396" y="916" width="481" height="30" rx="5" fill="#00fc00"/><text x="404" y="937" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#000000">IRC background 09</tspan></text>
+</g>
+<clipPath id="dark-output-9"><rect x="915" y="916" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-9)">
+<rect x="917" y="916" width="481" height="30" rx="5" fill="#00fc00"/><text x="925" y="937" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#000000">IRC background 09</tspan></text>
+</g>
+<rect x="24" y="1002" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="1029" class="label" fill="#1f2328">Background 10</text>
+<text x="38" y="1053" class="command" fill="#59636e">/text color 1 10 IRC background 10</text>
+<rect x="386" y="1002" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="1002" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-10"><rect x="394" y="1010" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-10)">
+<rect x="396" y="1010" width="481" height="30" rx="5" fill="#009393"/><text x="404" y="1031" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#000000">IRC background 10</tspan></text>
+</g>
+<clipPath id="dark-output-10"><rect x="915" y="1010" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-10)">
+<rect x="917" y="1010" width="481" height="30" rx="5" fill="#009393"/><text x="925" y="1031" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#000000">IRC background 10</tspan></text>
+</g>
+<rect x="24" y="1096" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="1123" class="label" fill="#1f2328">Background 11</text>
+<text x="38" y="1147" class="command" fill="#59636e">/text color 1 11 IRC background 11</text>
+<rect x="386" y="1096" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="1096" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-11"><rect x="394" y="1104" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-11)">
+<rect x="396" y="1104" width="481" height="30" rx="5" fill="#00ffff"/><text x="404" y="1125" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#000000">IRC background 11</tspan></text>
+</g>
+<clipPath id="dark-output-11"><rect x="915" y="1104" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-11)">
+<rect x="917" y="1104" width="481" height="30" rx="5" fill="#00ffff"/><text x="925" y="1125" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#000000">IRC background 11</tspan></text>
+</g>
+<rect x="24" y="1190" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="1217" class="label" fill="#1f2328">Background 12</text>
+<text x="38" y="1241" class="command" fill="#59636e">/text color 0 12 IRC background 12</text>
+<rect x="386" y="1190" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="1190" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-12"><rect x="394" y="1198" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-12)">
+<rect x="396" y="1198" width="481" height="30" rx="5" fill="#0000fc"/><text x="404" y="1219" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 12</tspan></text>
+</g>
+<clipPath id="dark-output-12"><rect x="915" y="1198" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-12)">
+<rect x="917" y="1198" width="481" height="30" rx="5" fill="#0000fc"/><text x="925" y="1219" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 12</tspan></text>
+</g>
+<rect x="24" y="1284" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="1311" class="label" fill="#1f2328">Background 13</text>
+<text x="38" y="1335" class="command" fill="#59636e">/text color 0 13 IRC background 13</text>
+<rect x="386" y="1284" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="1284" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-13"><rect x="394" y="1292" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-13)">
+<rect x="396" y="1292" width="481" height="30" rx="5" fill="#ff00ff"/><text x="404" y="1313" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 13</tspan></text>
+</g>
+<clipPath id="dark-output-13"><rect x="915" y="1292" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-13)">
+<rect x="917" y="1292" width="481" height="30" rx="5" fill="#ff00ff"/><text x="925" y="1313" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 13</tspan></text>
+</g>
+<rect x="24" y="1378" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="1405" class="label" fill="#1f2328">Background 14</text>
+<text x="38" y="1429" class="command" fill="#59636e">/text color 0 14 IRC background 14</text>
+<rect x="386" y="1378" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="1378" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-14"><rect x="394" y="1386" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-14)">
+<rect x="396" y="1386" width="481" height="30" rx="5" fill="#7f7f7f"/><text x="404" y="1407" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 14</tspan></text>
+</g>
+<clipPath id="dark-output-14"><rect x="915" y="1386" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-14)">
+<rect x="917" y="1386" width="481" height="30" rx="5" fill="#7f7f7f"/><text x="925" y="1407" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#ffffff">IRC background 14</tspan></text>
+</g>
+<rect x="24" y="1472" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="1499" class="label" fill="#1f2328">Background 15</text>
+<text x="38" y="1523" class="command" fill="#59636e">/text color 1 15 IRC background 15</text>
+<rect x="386" y="1472" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="1472" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-15"><rect x="394" y="1480" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-15)">
+<rect x="396" y="1480" width="481" height="30" rx="5" fill="#d2d2d2"/><text x="404" y="1501" class="output" fill="#1f2328" xml:space="preserve"><tspan style="fill:#000000">IRC background 15</tspan></text>
+</g>
+<clipPath id="dark-output-15"><rect x="915" y="1480" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-15)">
+<rect x="917" y="1480" width="481" height="30" rx="5" fill="#d2d2d2"/><text x="925" y="1501" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="fill:#000000">IRC background 15</tspan></text>
+</g>
+</svg>

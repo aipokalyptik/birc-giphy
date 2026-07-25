@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="454" viewBox="0 0 1440 454" role="img" aria-label="IRC character formatting examples on light and dark transcript backgrounds">
+<style>
+.title{font:700 20px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.column{font:700 12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.label{font:600 14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.command{font:12px ui-monospace,SFMono-Regular,Consolas,monospace}
+.output{font:16px ui-monospace,SFMono-Regular,Consolas,"DejaVu Sans Mono",monospace}
+</style>
+<rect width="1440" height="454" fill="#ffffff"/>
+<text x="24" y="44" class="title" fill="#1f2328">IRC character formatting</text>
+<text x="398" y="44" class="column" fill="#59636e">LIGHT TRANSCRIPT</text>
+<text x="919" y="44" class="column" fill="#8c959f">DARK TRANSCRIPT</text>
+<rect x="24" y="62" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="89" class="label" fill="#1f2328">Bold</text>
+<text x="38" y="113" class="command" fill="#59636e">/text ircbold Important</text>
+<rect x="386" y="62" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="62" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-0"><rect x="394" y="70" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-0)">
+<text x="404" y="91" class="output" fill="#1f2328" xml:space="preserve"><tspan style="font-weight:700">Important</tspan></text>
+</g>
+<clipPath id="dark-output-0"><rect x="915" y="70" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-0)">
+<text x="925" y="91" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="font-weight:700">Important</tspan></text>
+</g>
+<rect x="24" y="156" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="183" class="label" fill="#1f2328">Italic</text>
+<text x="38" y="207" class="command" fill="#59636e">/text ircitalic Emphasis</text>
+<rect x="386" y="156" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="156" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-1"><rect x="394" y="164" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-1)">
+<text x="404" y="185" class="output" fill="#1f2328" xml:space="preserve"><tspan style="font-style:italic">Emphasis</tspan></text>
+</g>
+<clipPath id="dark-output-1"><rect x="915" y="164" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-1)">
+<text x="925" y="185" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="font-style:italic">Emphasis</tspan></text>
+</g>
+<rect x="24" y="250" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="277" class="label" fill="#1f2328">Underline</text>
+<text x="38" y="301" class="command" fill="#59636e">/text ircunderline Underlined</text>
+<rect x="386" y="250" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="250" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-2"><rect x="394" y="258" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-2)">
+<text x="404" y="279" class="output" fill="#1f2328" xml:space="preserve"><tspan style="text-decoration:underline">Underlined</tspan></text>
+</g>
+<clipPath id="dark-output-2"><rect x="915" y="258" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-2)">
+<text x="925" y="279" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="text-decoration:underline">Underlined</tspan></text>
+</g>
+<rect x="24" y="344" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="371" class="label" fill="#1f2328">Strikethrough</text>
+<text x="38" y="395" class="command" fill="#59636e">/text ircstrike Corrected</text>
+<rect x="386" y="344" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="344" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-3"><rect x="394" y="352" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-3)">
+<text x="404" y="373" class="output" fill="#1f2328" xml:space="preserve"><tspan style="text-decoration:line-through">Corrected</tspan></text>
+</g>
+<clipPath id="dark-output-3"><rect x="915" y="352" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-3)">
+<text x="925" y="373" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="text-decoration:line-through">Corrected</tspan></text>
+</g>
+</svg>

@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1202" viewBox="0 0 1440 1202" role="img" aria-label="Unicode novelty forms examples on light and dark transcript backgrounds">
+<style>
+.title{font:700 20px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.column{font:700 12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.label{font:600 14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.command{font:12px ui-monospace,SFMono-Regular,Consolas,monospace}
+.output{font:16px ui-monospace,SFMono-Regular,Consolas,"DejaVu Sans Mono",monospace}
+</style>
+<rect width="1440" height="1202" fill="#ffffff"/>
+<text x="24" y="44" class="title" fill="#1f2328">Unicode novelty forms</text>
+<text x="398" y="44" class="column" fill="#59636e">LIGHT TRANSCRIPT</text>
+<text x="919" y="44" class="column" fill="#8c959f">DARK TRANSCRIPT</text>
+<rect x="24" y="62" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="89" class="label" fill="#1f2328">Fullwidth</text>
+<text x="38" y="113" class="command" fill="#59636e">/text fullwidth Hello 123</text>
+<rect x="386" y="62" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="62" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-0"><rect x="394" y="70" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-0)">
+<text x="404" y="91" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">Ｈｅｌｌｏ　１２３</tspan></text>
+</g>
+<clipPath id="dark-output-0"><rect x="915" y="70" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-0)">
+<text x="925" y="91" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">Ｈｅｌｌｏ　１２３</tspan></text>
+</g>
+<rect x="24" y="156" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="183" class="label" fill="#1f2328">Vaporwave</text>
+<text x="38" y="207" class="command" fill="#59636e">/text vaporwave Hello 123</text>
+<rect x="386" y="156" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="156" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-1"><rect x="394" y="164" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-1)">
+<text x="404" y="185" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">Ｈ　ｅ　ｌ　ｌ　ｏ　　　１　２　３</tspan></text>
+</g>
+<clipPath id="dark-output-1"><rect x="915" y="164" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-1)">
+<text x="925" y="185" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">Ｈ　ｅ　ｌ　ｌ　ｏ　　　１　２　３</tspan></text>
+</g>
+<rect x="24" y="250" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="277" class="label" fill="#1f2328">Circled</text>
+<text x="38" y="301" class="command" fill="#59636e">/text circled Hello 123</text>
+<rect x="386" y="250" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="250" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-2"><rect x="394" y="258" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-2)">
+<text x="404" y="279" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">Ⓗⓔⓛⓛⓞ ①②③</tspan></text>
+</g>
+<clipPath id="dark-output-2"><rect x="915" y="258" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-2)">
+<text x="925" y="279" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">Ⓗⓔⓛⓛⓞ ①②③</tspan></text>
+</g>
+<rect x="24" y="344" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="371" class="label" fill="#1f2328">Small capitals</text>
+<text x="38" y="395" class="command" fill="#59636e">/text smallcaps Hello IRC</text>
+<rect x="386" y="344" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="344" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-3"><rect x="394" y="352" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-3)">
+<text x="404" y="373" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">ʜᴇʟʟᴏ ɪʀᴄ</tspan></text>
+</g>
+<clipPath id="dark-output-3"><rect x="915" y="352" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-3)">
+<text x="925" y="373" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">ʜᴇʟʟᴏ ɪʀᴄ</tspan></text>
+</g>
+<rect x="24" y="438" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="465" class="label" fill="#1f2328">Regional indicators</text>
+<text x="38" y="489" class="command" fill="#59636e">/text regional IRC</text>
+<rect x="386" y="438" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="438" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-4"><rect x="394" y="446" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-4)">
+<text x="404" y="467" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">🇮 🇷 🇨</tspan></text>
+</g>
+<clipPath id="dark-output-4"><rect x="915" y="446" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-4)">
+<text x="925" y="467" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">🇮 🇷 🇨</tspan></text>
+</g>
+<rect x="24" y="532" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="559" class="label" fill="#1f2328">Mathematical bold</text>
+<text x="38" y="583" class="command" fill="#59636e">/text bold Hello 123</text>
+<rect x="386" y="532" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="532" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-5"><rect x="394" y="540" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-5)">
+<text x="404" y="561" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">𝐇𝐞𝐥𝐥𝐨 𝟏𝟐𝟑</tspan></text>
+</g>
+<clipPath id="dark-output-5"><rect x="915" y="540" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-5)">
+<text x="925" y="561" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">𝐇𝐞𝐥𝐥𝐨 𝟏𝟐𝟑</tspan></text>
+</g>
+<rect x="24" y="626" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="653" class="label" fill="#1f2328">Mathematical italic</text>
+<text x="38" y="677" class="command" fill="#59636e">/text italic Hello 123</text>
+<rect x="386" y="626" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="626" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-6"><rect x="394" y="634" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-6)">
+<text x="404" y="655" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">𝐻𝑒𝑙𝑙𝑜 123</tspan></text>
+</g>
+<clipPath id="dark-output-6"><rect x="915" y="634" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-6)">
+<text x="925" y="655" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">𝐻𝑒𝑙𝑙𝑜 123</tspan></text>
+</g>
+<rect x="24" y="720" width="350" height="86" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="747" class="label" fill="#1f2328">Mathematical monospace</text>
+<text x="38" y="771" class="command" fill="#59636e">/text monospace Hello 123</text>
+<rect x="386" y="720" width="509" height="86" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="720" width="509" height="86" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-7"><rect x="394" y="728" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#light-output-7)">
+<text x="404" y="749" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">𝙷𝚎𝚕𝚕𝚘 𝟷𝟸𝟹</tspan></text>
+</g>
+<clipPath id="dark-output-7"><rect x="915" y="728" width="493" height="70" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-7)">
+<text x="925" y="749" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">𝙷𝚎𝚕𝚕𝚘 𝟷𝟸𝟹</tspan></text>
+</g>
+<rect x="24" y="814" width="350" height="116" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="841" class="label" fill="#1f2328">Zalgo · low</text>
+<text x="38" y="865" class="command" fill="#59636e">/text zalgo low Contained</text>
+<rect x="386" y="814" width="509" height="116" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="814" width="509" height="116" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-8"><rect x="394" y="822" width="493" height="100" rx="5"/></clipPath>
+<g clip-path="url(#light-output-8)">
+<text x="404" y="856" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">Ċ̬̦̓̕ơ̠̰̿̀ṋ̸̙̽̋ţ̵̤̇̓a̱̞̓̆́ï̱̭̽́n̶̜̭̉̾e̙̗̎̀́d̷̘̞̈̽</tspan></text>
+</g>
+<clipPath id="dark-output-8"><rect x="915" y="822" width="493" height="100" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-8)">
+<text x="925" y="856" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">Ċ̬̦̓̕ơ̠̰̿̀ṋ̸̙̽̋ţ̵̤̇̓a̱̞̓̆́ï̱̭̽́n̶̜̭̉̾e̙̗̎̀́d̷̘̞̈̽</tspan></text>
+</g>
+<rect x="24" y="938" width="350" height="116" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="965" class="label" fill="#1f2328">Zalgo · medium</text>
+<text x="38" y="989" class="command" fill="#59636e">/text zalgo medium Contained</text>
+<rect x="386" y="938" width="509" height="116" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="938" width="509" height="116" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-9"><rect x="394" y="946" width="493" height="100" rx="5"/></clipPath>
+<g clip-path="url(#light-output-9)">
+<text x="404" y="980" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">Ç̸̟̞̯̽̎̀̑̀ọ̴̤̟̠̅̔̎̋́ņ̶̧̨̝̄̍̿́͂t̬̗̰̣̾́̂́͂̀ȧ̡̩̙̭̪̊̍̽̀ȋ̴̞̣̤̘̈̽̌͂n̢̡̝̰̞̙̎̏̔̍ȩ̸̛̣̜̰̃̿̐̄ḑ̸̶̧̣̞̀̑̊̅</tspan></text>
+</g>
+<clipPath id="dark-output-9"><rect x="915" y="946" width="493" height="100" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-9)">
+<text x="925" y="980" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">Ç̸̟̞̯̽̎̀̑̀ọ̴̤̟̠̅̔̎̋́ņ̶̧̨̝̄̍̿́͂t̬̗̰̣̾́̂́͂̀ȧ̡̩̙̭̪̊̍̽̀ȋ̴̞̣̤̘̈̽̌͂n̢̡̝̰̞̙̎̏̔̍ȩ̸̛̣̜̰̃̿̐̄ḑ̸̶̧̣̞̀̑̊̅</tspan></text>
+</g>
+<rect x="24" y="1062" width="350" height="116" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="1089" class="label" fill="#1f2328">Zalgo · high</text>
+<text x="38" y="1113" class="command" fill="#59636e">/text zalgo high Contained</text>
+<rect x="386" y="1062" width="509" height="116" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="1062" width="509" height="116" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-10"><rect x="394" y="1070" width="493" height="100" rx="5"/></clipPath>
+<g clip-path="url(#light-output-10)">
+<text x="404" y="1104" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">Ĉ̨̛̤̘̱̝̙̪̑̿̾̋́̃̀͂́ơ̶̶̛̞̣̞̣̩̬̠̽̏̇̃́̐̓n̸̢̘̭̠̜̙̙̤̅̎̉̊̾̑̈́̕t̢̧̥̜̥̖̪̮̓̾̆̀̓̈̒̀͂̕ȃ̵̢̢̜̩̞̙̠̠̟̆̽̍̍̒̂̕i̸̵̢̨̭̩̭̤̭̥̽̀̾̇̄̃̒̕ǹ̷̨̨̛̜̪̘̣̙̿̓̌̑̇̒̀͂ę̴̜̩̜̠̠̪̉̓̍̽̒̉̏̀́́d̸̗̬̩̮̤̩̠̔̐̎̉̏̂̽͂́̕</tspan></text>
+</g>
+<clipPath id="dark-output-10"><rect x="915" y="1070" width="493" height="100" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-10)">
+<text x="925" y="1104" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">Ĉ̨̛̤̘̱̝̙̪̑̿̾̋́̃̀͂́ơ̶̶̛̞̣̞̣̩̬̠̽̏̇̃́̐̓n̸̢̘̭̠̜̙̙̤̅̎̉̊̾̑̈́̕t̢̧̥̜̥̖̪̮̓̾̆̀̓̈̒̀͂̕ȃ̵̢̢̜̩̞̙̠̠̟̆̽̍̍̒̂̕i̸̵̢̨̭̩̭̤̭̥̽̀̾̇̄̃̒̕ǹ̷̨̨̛̜̪̘̣̙̿̓̌̑̇̒̀͂ę̴̜̩̜̠̠̪̉̓̍̽̒̉̏̀́́d̸̗̬̩̮̤̩̠̔̐̎̉̏̂̽͂́̕</tspan></text>
+</g>
+</svg>

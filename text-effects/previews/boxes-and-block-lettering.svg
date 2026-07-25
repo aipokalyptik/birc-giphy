@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1293" viewBox="0 0 1440 1293" role="img" aria-label="Boxes and block lettering examples on light and dark transcript backgrounds">
+<style>
+.title{font:700 20px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.column{font:700 12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.label{font:600 14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.command{font:12px ui-monospace,SFMono-Regular,Consolas,monospace}
+.output{font:16px ui-monospace,SFMono-Regular,Consolas,"DejaVu Sans Mono",monospace}
+</style>
+<rect width="1440" height="1293" fill="#ffffff"/>
+<text x="24" y="44" class="title" fill="#1f2328">Boxes and block lettering</text>
+<text x="398" y="44" class="column" fill="#59636e">LIGHT TRANSCRIPT</text>
+<text x="919" y="44" class="column" fill="#8c959f">DARK TRANSCRIPT</text>
+<rect x="24" y="62" width="350" height="112" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="89" class="label" fill="#1f2328">Unicode box</text>
+<text x="38" y="113" class="command" fill="#59636e">/text box Boxed text</text>
+<rect x="386" y="62" width="509" height="112" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="62" width="509" height="112" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-0"><rect x="394" y="70" width="493" height="96" rx="5"/></clipPath>
+<g clip-path="url(#light-output-0)">
+<text x="404" y="91" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">┌────────────┐</tspan></text>
+<text x="404" y="114" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">│ Boxed text │</tspan></text>
+<text x="404" y="137" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">└────────────┘</tspan></text>
+</g>
+<clipPath id="dark-output-0"><rect x="915" y="70" width="493" height="96" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-0)">
+<text x="925" y="91" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">┌────────────┐</tspan></text>
+<text x="925" y="114" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">│ Boxed text │</tspan></text>
+<text x="925" y="137" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">└────────────┘</tspan></text>
+</g>
+<rect x="24" y="182" width="350" height="155" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="209" class="label" fill="#1f2328">Block · simple (default)</text>
+<text x="38" y="233" class="command" fill="#59636e">/text block simple IRC</text>
+<rect x="386" y="182" width="509" height="155" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="182" width="509" height="155" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-1"><rect x="394" y="190" width="493" height="139" rx="5"/></clipPath>
+<g clip-path="url(#light-output-1)">
+<text x="404" y="211" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">##### ####   ####</tspan></text>
+<text x="404" y="234" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  #   #   # #    </tspan></text>
+<text x="404" y="257" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  #   ####  #    </tspan></text>
+<text x="404" y="280" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  #   #  #  #    </tspan></text>
+<text x="404" y="303" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">##### #   #  ####</tspan></text>
+</g>
+<clipPath id="dark-output-1"><rect x="915" y="190" width="493" height="139" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-1)">
+<text x="925" y="211" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">##### ####   ####</tspan></text>
+<text x="925" y="234" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  #   #   # #    </tspan></text>
+<text x="925" y="257" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  #   ####  #    </tspan></text>
+<text x="925" y="280" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  #   #  #  #    </tspan></text>
+<text x="925" y="303" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">##### #   #  ####</tspan></text>
+</g>
+<rect x="24" y="345" width="350" height="155" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="372" class="label" fill="#1f2328">ASCII · alias of block</text>
+<text x="38" y="396" class="command" fill="#59636e">/text ascii simple IRC</text>
+<rect x="386" y="345" width="509" height="155" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="345" width="509" height="155" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-2"><rect x="394" y="353" width="493" height="139" rx="5"/></clipPath>
+<g clip-path="url(#light-output-2)">
+<text x="404" y="374" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">##### ####   ####</tspan></text>
+<text x="404" y="397" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  #   #   # #    </tspan></text>
+<text x="404" y="420" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  #   ####  #    </tspan></text>
+<text x="404" y="443" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  #   #  #  #    </tspan></text>
+<text x="404" y="466" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">##### #   #  ####</tspan></text>
+</g>
+<clipPath id="dark-output-2"><rect x="915" y="353" width="493" height="139" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-2)">
+<text x="925" y="374" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">##### ####   ####</tspan></text>
+<text x="925" y="397" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  #   #   # #    </tspan></text>
+<text x="925" y="420" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  #   ####  #    </tspan></text>
+<text x="925" y="443" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  #   #  #  #    </tspan></text>
+<text x="925" y="466" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">##### #   #  ####</tspan></text>
+</g>
+<rect x="24" y="508" width="350" height="132" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="535" class="label" fill="#1f2328">Block · mini</text>
+<text x="38" y="559" class="command" fill="#59636e">/text block mini IRC</text>
+<rect x="386" y="508" width="509" height="132" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="508" width="509" height="132" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-3"><rect x="394" y="516" width="493" height="116" rx="5"/></clipPath>
+<g clip-path="url(#light-output-3)">
+<text x="404" y="537" class="output" fill="#1f2328" xml:space="preserve"><tspan style=""> ___   _    _ </tspan></text>
+<text x="404" y="560" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  |   |_)  /  </tspan></text>
+<text x="404" y="583" class="output" fill="#1f2328" xml:space="preserve"><tspan style=""> _|_  | \  \_ </tspan></text>
+<text x="404" y="606" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">              </tspan></text>
+</g>
+<clipPath id="dark-output-3"><rect x="915" y="516" width="493" height="116" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-3)">
+<text x="925" y="537" class="output" fill="#e6edf3" xml:space="preserve"><tspan style=""> ___   _    _ </tspan></text>
+<text x="925" y="560" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  |   |_)  /  </tspan></text>
+<text x="925" y="583" class="output" fill="#e6edf3" xml:space="preserve"><tspan style=""> _|_  | \  \_ </tspan></text>
+<text x="925" y="606" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">              </tspan></text>
+</g>
+<rect x="24" y="648" width="350" height="155" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="675" class="label" fill="#1f2328">Block · small</text>
+<text x="38" y="699" class="command" fill="#59636e">/text block small IRC</text>
+<rect x="386" y="648" width="509" height="155" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="648" width="509" height="155" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-4"><rect x="394" y="656" width="493" height="139" rx="5"/></clipPath>
+<g clip-path="url(#light-output-4)">
+<text x="404" y="677" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  ___   ___    ___ </tspan></text>
+<text x="404" y="700" class="output" fill="#1f2328" xml:space="preserve"><tspan style=""> |_ _| | _ \  / __|</tspan></text>
+<text x="404" y="723" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  | |  |   / | (__ </tspan></text>
+<text x="404" y="746" class="output" fill="#1f2328" xml:space="preserve"><tspan style=""> |___| |_|_\  \___|</tspan></text>
+<text x="404" y="769" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">                   </tspan></text>
+</g>
+<clipPath id="dark-output-4"><rect x="915" y="656" width="493" height="139" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-4)">
+<text x="925" y="677" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  ___   ___    ___ </tspan></text>
+<text x="925" y="700" class="output" fill="#e6edf3" xml:space="preserve"><tspan style=""> |_ _| | _ \  / __|</tspan></text>
+<text x="925" y="723" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  | |  |   / | (__ </tspan></text>
+<text x="925" y="746" class="output" fill="#e6edf3" xml:space="preserve"><tspan style=""> |___| |_|_\  \___|</tspan></text>
+<text x="925" y="769" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">                   </tspan></text>
+</g>
+<rect x="24" y="811" width="350" height="155" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="838" class="label" fill="#1f2328">Solid blocks · simple</text>
+<text x="38" y="862" class="command" fill="#59636e">/text blocks simple IRC</text>
+<rect x="386" y="811" width="509" height="155" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="811" width="509" height="155" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-5"><rect x="394" y="819" width="493" height="139" rx="5"/></clipPath>
+<g clip-path="url(#light-output-5)">
+<text x="404" y="840" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">█████ ████   ████</tspan></text>
+<text x="404" y="863" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  █   █   █ █    </tspan></text>
+<text x="404" y="886" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  █   ████  █    </tspan></text>
+<text x="404" y="909" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  █   █  █  █    </tspan></text>
+<text x="404" y="932" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">█████ █   █  ████</tspan></text>
+</g>
+<clipPath id="dark-output-5"><rect x="915" y="819" width="493" height="139" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-5)">
+<text x="925" y="840" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">█████ ████   ████</tspan></text>
+<text x="925" y="863" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  █   █   █ █    </tspan></text>
+<text x="925" y="886" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  █   ████  █    </tspan></text>
+<text x="925" y="909" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  █   █  █  █    </tspan></text>
+<text x="925" y="932" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">█████ █   █  ████</tspan></text>
+</g>
+<rect x="24" y="974" width="350" height="132" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="1001" class="label" fill="#1f2328">Solid blocks · mini</text>
+<text x="38" y="1025" class="command" fill="#59636e">/text blocks mini IRC</text>
+<rect x="386" y="974" width="509" height="132" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="974" width="509" height="132" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-6"><rect x="394" y="982" width="493" height="116" rx="5"/></clipPath>
+<g clip-path="url(#light-output-6)">
+<text x="404" y="1003" class="output" fill="#1f2328" xml:space="preserve"><tspan style=""> ███   █    █ </tspan></text>
+<text x="404" y="1026" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  █   ███  █  </tspan></text>
+<text x="404" y="1049" class="output" fill="#1f2328" xml:space="preserve"><tspan style=""> ███  █ █  ██ </tspan></text>
+<text x="404" y="1072" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">              </tspan></text>
+</g>
+<clipPath id="dark-output-6"><rect x="915" y="982" width="493" height="116" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-6)">
+<text x="925" y="1003" class="output" fill="#e6edf3" xml:space="preserve"><tspan style=""> ███   █    █ </tspan></text>
+<text x="925" y="1026" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  █   ███  █  </tspan></text>
+<text x="925" y="1049" class="output" fill="#e6edf3" xml:space="preserve"><tspan style=""> ███  █ █  ██ </tspan></text>
+<text x="925" y="1072" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">              </tspan></text>
+</g>
+<rect x="24" y="1114" width="350" height="155" rx="8" fill="#ffffff" stroke="#d0d7de"/>
+<text x="38" y="1141" class="label" fill="#1f2328">Solid blocks · small</text>
+<text x="38" y="1165" class="command" fill="#59636e">/text blocks small IRC</text>
+<rect x="386" y="1114" width="509" height="155" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="907" y="1114" width="509" height="155" rx="8" fill="#161b22" stroke="#30363d"/>
+<clipPath id="light-output-7"><rect x="394" y="1122" width="493" height="139" rx="5"/></clipPath>
+<g clip-path="url(#light-output-7)">
+<text x="404" y="1143" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  ███   ███    ███ </tspan></text>
+<text x="404" y="1166" class="output" fill="#1f2328" xml:space="preserve"><tspan style=""> ██ ██ █ █ █  █ ███</tspan></text>
+<text x="404" y="1189" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">  █ █  █   █ █ ███ </tspan></text>
+<text x="404" y="1212" class="output" fill="#1f2328" xml:space="preserve"><tspan style=""> █████ █████  █████</tspan></text>
+<text x="404" y="1235" class="output" fill="#1f2328" xml:space="preserve"><tspan style="">                   </tspan></text>
+</g>
+<clipPath id="dark-output-7"><rect x="915" y="1122" width="493" height="139" rx="5"/></clipPath>
+<g clip-path="url(#dark-output-7)">
+<text x="925" y="1143" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  ███   ███    ███ </tspan></text>
+<text x="925" y="1166" class="output" fill="#e6edf3" xml:space="preserve"><tspan style=""> ██ ██ █ █ █  █ ███</tspan></text>
+<text x="925" y="1189" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">  █ █  █   █ █ ███ </tspan></text>
+<text x="925" y="1212" class="output" fill="#e6edf3" xml:space="preserve"><tspan style=""> █████ █████  █████</tspan></text>
+<text x="925" y="1235" class="output" fill="#e6edf3" xml:space="preserve"><tspan style="">                   </tspan></text>
+</g>
+</svg>

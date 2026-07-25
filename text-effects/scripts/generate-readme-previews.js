@@ -293,14 +293,14 @@ function parseIrcLine(line) {
     return runs;
 }
 
-function renderLine(line, x, y, defaultColor) {
+function renderLine(line, x, y, defaultColor, maximumWidth) {
     const runs = parseIrcLine(line);
     const backgroundRun = runs.find((run) => run.background !== null);
     let rendered = "";
 
     if (backgroundRun !== undefined) {
         rendered +=
-            `<rect x="${x - 8}" y="${y - 21}" width="1090" height="30" ` +
+            `<rect x="${x - 8}" y="${y - 21}" width="${maximumWidth}" height="30" ` +
             `rx="5" fill="${ircColors[backgroundRun.background]}"/>`;
     }
 
@@ -336,104 +336,124 @@ function renderLine(line, x, y, defaultColor) {
     return rendered + "</text>";
 }
 
-function renderPreview(themeName) {
+function sectionFileName(sectionTitle) {
+    return sectionTitle
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "") + ".svg";
+}
+
+function renderSectionPreview(previewSection) {
     const harness = createHarness();
-    const darkTheme = themeName === "dark";
-    const pageBackground = darkTheme ? "#0d1117" : "#ffffff";
-    const cardBackground = darkTheme ? "#161b22" : "#f6f8fa";
-    const cardBorder = darkTheme ? "#30363d" : "#d0d7de";
-    const headingColor = darkTheme ? "#f0f6fc" : "#1f2328";
-    const labelColor = darkTheme ? "#8c959f" : "#59636e";
-    const outputColor = darkTheme ? "#e6edf3" : "#1f2328";
-    const accentColor = darkTheme ? "#a371f7" : "#8250df";
-    const width = 1280;
-    const margin = 48;
-    const cardWidth = width - margin * 2;
+    const width = 1440;
+    const margin = 24;
+    const labelWidth = 350;
+    const gap = 12;
+    const paneWidth = (width - margin * 2 - labelWidth - gap * 2) / 2;
+    const lightPaneX = margin + labelWidth + gap;
+    const darkPaneX = lightPaneX + paneWidth + gap;
     const fragments = [];
-    let y = 52;
+    let y = 44;
     let clipIndex = 0;
 
     fragments.push(
-        `<text x="${margin}" y="${y}" class="title" fill="${headingColor}">` +
-        `bIRC Text Effects · ${themeName} background</text>`
+        `<text x="${margin}" y="${y}" class="title" fill="#1f2328">` +
+        escapeXml(previewSection.title) + "</text>"
     );
-    y += 30;
     fragments.push(
-        `<text x="${margin}" y="${y}" class="subtitle" fill="${labelColor}">` +
-        "Generated from birc-text-effects.js · IRC controls are rendered visually" +
-        "</text>"
+        `<text x="${lightPaneX + 12}" y="${y}" class="column" fill="#59636e">` +
+        "LIGHT TRANSCRIPT</text>"
     );
-    y += 42;
+    fragments.push(
+        `<text x="${darkPaneX + 12}" y="${y}" class="column" fill="#8c959f">` +
+        "DARK TRANSCRIPT</text>"
+    );
+    y += 18;
 
-    for (const previewSection of previewSections) {
-        fragments.push(
-            `<text x="${margin}" y="${y}" class="section" fill="${accentColor}">` +
-            escapeXml(previewSection.title) +
-            "</text>"
+    for (const previewExample of previewSection.examples) {
+        const outputLines = harness.run(previewExample.command);
+        const outputLineHeight = previewExample.zalgo ? 40 : 23;
+        const outputTopPadding = previewExample.zalgo ? 42 : 29;
+        const rowHeight = Math.max(
+            previewExample.tall ? 112 : 78,
+            34 + outputTopPadding +
+                Math.max(1, outputLines.length - 1) * outputLineHeight
         );
-        y += 20;
+        const lightClipId = "light-output-" + clipIndex;
+        const darkClipId = "dark-output-" + clipIndex;
+        clipIndex += 1;
 
-        for (const previewExample of previewSection.examples) {
-            const outputLines = harness.run(previewExample.command);
-            const outputLineHeight = previewExample.zalgo ? 40 : 24;
-            const outputTopPadding = previewExample.zalgo ? 43 : 30;
-            const cardHeight = Math.max(
-                previewExample.tall ? 98 : 72,
-                48 + outputTopPadding +
-                    Math.max(1, outputLines.length - 1) * outputLineHeight
-            );
-            const clipId = "output-clip-" + clipIndex;
-            clipIndex += 1;
+        fragments.push(
+            `<rect x="${margin}" y="${y}" width="${labelWidth}" ` +
+            `height="${rowHeight}" rx="8" fill="#ffffff" stroke="#d0d7de"/>`
+        );
+        fragments.push(
+            `<text x="${margin + 14}" y="${y + 27}" class="label" ` +
+            `fill="#1f2328">${escapeXml(previewExample.label)}</text>`
+        );
+        fragments.push(
+            `<text x="${margin + 14}" y="${y + 51}" class="command" ` +
+            `fill="#59636e">/text ${escapeXml(previewExample.command)}</text>`
+        );
+        fragments.push(
+            `<rect x="${lightPaneX}" y="${y}" width="${paneWidth}" ` +
+            `height="${rowHeight}" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>`
+        );
+        fragments.push(
+            `<rect x="${darkPaneX}" y="${y}" width="${paneWidth}" ` +
+            `height="${rowHeight}" rx="8" fill="#161b22" stroke="#30363d"/>`
+        );
 
+        for (const pane of [
+            {
+                clipId: lightClipId,
+                color: "#1f2328",
+                x: lightPaneX
+            },
+            {
+                clipId: darkClipId,
+                color: "#e6edf3",
+                x: darkPaneX
+            }
+        ]) {
             fragments.push(
-                `<rect x="${margin}" y="${y}" width="${cardWidth}" ` +
-                `height="${cardHeight}" rx="9" fill="${cardBackground}" ` +
-                `stroke="${cardBorder}"/>`
+                `<clipPath id="${pane.clipId}"><rect x="${pane.x + 8}" ` +
+                `y="${y + 8}" width="${paneWidth - 16}" ` +
+                `height="${rowHeight - 16}" rx="5"/></clipPath>`
             );
-            fragments.push(
-                `<text x="${margin + 18}" y="${y + 23}" class="label" ` +
-                `fill="${labelColor}">${escapeXml(previewExample.label)} · ` +
-                `<tspan class="command">/text ${escapeXml(previewExample.command)}` +
-                "</tspan></text>"
-            );
-            fragments.push(
-                `<clipPath id="${clipId}"><rect x="${margin + 12}" ` +
-                `y="${y + 31}" width="${cardWidth - 24}" ` +
-                `height="${cardHeight - 38}" rx="5"/></clipPath>`
-            );
-            fragments.push(`<g clip-path="url(#${clipId})">`);
+            fragments.push(`<g clip-path="url(#${pane.clipId})">`);
 
             outputLines.forEach((line, lineIndex) => {
                 fragments.push(renderLine(
                     line,
-                    margin + 22,
-                    y + 31 + outputTopPadding + lineIndex * outputLineHeight,
-                    outputColor
+                    pane.x + 18,
+                    y + outputTopPadding + lineIndex * outputLineHeight,
+                    pane.color,
+                    paneWidth - 28
                 ));
             });
 
             fragments.push("</g>");
-            y += cardHeight + 10;
         }
 
-        y += 25;
+        y += rowHeight + 8;
     }
 
-    y += 24;
+    y += 16;
 
     return [
         `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${y}" ` +
-            `viewBox="0 0 ${width} ${y}" role="img" ` +
-            `aria-label="All bIRC text effects on a ${themeName} background">`,
+            `viewBox="0 0 ${width} ${y}" role="img" aria-label="` +
+            escapeXml(previewSection.title) +
+            ' examples on light and dark transcript backgrounds">',
         "<style>",
-        ".title{font:700 25px -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}",
-        ".subtitle{font:14px -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}",
-        ".section{font:700 17px -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}",
-        ".label{font:600 13px -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}",
-        ".command{font:400 12px ui-monospace,SFMono-Regular,Consolas,monospace}",
-        ".output{font:18px ui-monospace,SFMono-Regular,Consolas,\"DejaVu Sans Mono\",monospace}",
+        ".title{font:700 20px -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}",
+        ".column{font:700 12px -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}",
+        ".label{font:600 14px -apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif}",
+        ".command{font:12px ui-monospace,SFMono-Regular,Consolas,monospace}",
+        ".output{font:16px ui-monospace,SFMono-Regular,Consolas,\"DejaVu Sans Mono\",monospace}",
         "</style>",
-        `<rect width="${width}" height="${y}" fill="${pageBackground}"/>`,
+        `<rect width="${width}" height="${y}" fill="#ffffff"/>`,
         ...fragments,
         "</svg>",
         ""
@@ -444,12 +464,12 @@ fs.mkdirSync(outputDirectory, {
     recursive: true
 });
 
-for (const themeName of ["light", "dark"]) {
+for (const previewSection of previewSections) {
     fs.writeFileSync(
         path.join(
             outputDirectory,
-            "text-effects-" + themeName + ".svg"
+            sectionFileName(previewSection.title)
         ),
-        renderPreview(themeName)
+        renderSectionPreview(previewSection)
     );
 }
