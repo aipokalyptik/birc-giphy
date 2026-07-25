@@ -186,6 +186,18 @@ HTML decoding intentionally recognizes only named entities emitted by this
 script (`amp`, `lt`, `gt`, `quot`, and `apos`) plus numeric entities. It is not
 an HTML parser or a complete copy of the HTML named-character-reference table.
 
+## Script identity and updates
+
+- ID: `com.github.aipokalyptik.birc-utils.codec`
+- Version: `1.0.0`
+
+Transformations remain entirely local. If optional HTTPS permission is
+enabled, a load-time check consults the public bIRC Utils version manifest at
+most once per 24 hours. A newer version notice includes exact source, anchored
+diff, documentation, and review-and-replacement URLs and instructions. No
+update is downloaded or executed. See [the enforced update
+contract](../UPDATES.md).
+
 ## Development
 
 Run the complete repository contract suite with:

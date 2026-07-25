@@ -4,10 +4,29 @@
  * Import this single file in bIRC's Scripts window. Run `/text help` for the
  * complete command reference. Effects are previewed locally unless `say` is
  * placed before the effect name.
+ *
+ * Script ID: com.github.aipokalyptik.birc-utils.text-effects
+ * Script version: 1.0.0
  */
 
 (function registerBircTextEffectsScript() {
     "use strict";
+
+    var SCRIPT_ID = "com.github.aipokalyptik.birc-utils.text-effects";
+    var SCRIPT_VERSION = "1.0.0";
+    var SCRIPT_UPDATE_PAGE_URL =
+        "https://github.com/aipokalyptik/birc-utils/tree/main/text-effects";
+    var SCRIPT_UPDATE_FILE_URL =
+        "https://github.com/aipokalyptik/birc-utils/blob/main/text-effects/birc-text-effects.js";
+    var SCRIPT_RELEASE_TAG_PREFIX = "birc-utils-text-effects-v";
+    var SCRIPT_COMPARE_URL_PREFIX =
+        "https://github.com/aipokalyptik/birc-utils/compare/";
+    var SCRIPT_FILE_DIFF_ANCHOR =
+        "#diff-0a8c5d6780709ce19a4716fd98a6e419d14b1bcaf7f2dc8931c5d7319eb8ce8d";
+    var UPDATE_MANIFEST_URL =
+        "https://raw.githubusercontent.com/aipokalyptik/birc-utils/main/updates.json";
+    var UPDATE_CACHE_KEY = "bircUtils.updateCheck.v1";
+    var UPDATE_CHECK_INTERVAL_MILLISECONDS = 24 * 60 * 60 * 1000;
 
     var MAXIMUM_INPUT_LENGTH = 160;
     var MAXIMUM_OUTPUT_LENGTH = 420;
@@ -20,6 +39,151 @@
     var IRC_UNDERLINE = "\u001f";
     var IRC_STRIKETHROUGH = "\u001e";
     var IRC_RESET = "\u000f";
+
+    function parseSemanticVersion(version) {
+        var match;
+
+        if (typeof version !== "string") {
+            return null;
+        }
+
+        match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
+        if (match === null) {
+            return null;
+        }
+
+        return [Number(match[1]), Number(match[2]), Number(match[3])];
+    }
+
+    function isNewerScriptVersion(candidateVersion) {
+        var candidate = parseSemanticVersion(candidateVersion);
+        var installed = parseSemanticVersion(SCRIPT_VERSION);
+        var partIndex;
+
+        if (candidate === null || installed === null) {
+            return false;
+        }
+
+        for (partIndex = 0; partIndex < installed.length; partIndex += 1) {
+            if (candidate[partIndex] > installed[partIndex]) {
+                return true;
+            }
+
+            if (candidate[partIndex] < installed[partIndex]) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    function readUpdateCache() {
+        var storedCache = birc.store.get(UPDATE_CACHE_KEY);
+
+        if (!storedCache || typeof storedCache !== "object") {
+            return {
+                lastAttemptAt: 0,
+                latestVersion: ""
+            };
+        }
+
+        if (typeof storedCache.latestVersion !== "string") {
+            storedCache.latestVersion = "";
+        }
+
+        return {
+            lastAttemptAt: Number(storedCache.lastAttemptAt) || 0,
+            latestVersion: storedCache.latestVersion
+        };
+    }
+
+    function reportAvailableScriptUpdate(latestVersion) {
+        var comparisonUrl = SCRIPT_COMPARE_URL_PREFIX +
+            SCRIPT_RELEASE_TAG_PREFIX + SCRIPT_VERSION + "..." +
+            SCRIPT_RELEASE_TAG_PREFIX + latestVersion + SCRIPT_FILE_DIFF_ANCHOR;
+
+        birc.print(
+            "[Text effects] Update available for " + SCRIPT_ID + ": installed " +
+            SCRIPT_VERSION + ", current " + latestVersion + "."
+        );
+        birc.print(
+            "[Text effects] Canonical update file: " + SCRIPT_UPDATE_FILE_URL
+        );
+        birc.print(
+            "[Text effects] Changes since the installed version: " +
+            comparisonUrl + " (opens at text-effects/birc-text-effects.js)."
+        );
+        birc.print(
+            "[Text effects] Update instructions: open the canonical file URL, " +
+            "review the file, click Raw, and copy the entire file. In bIRC open " +
+            "Scripts with ⌘⌥S, replace this script's contents, and save. " +
+            "Documentation: " + SCRIPT_UPDATE_PAGE_URL
+        );
+    }
+
+    function checkForScriptUpdate() {
+        var cache;
+        var now;
+        var reportedVersion = "";
+
+        if (
+            typeof birc.fetch !== "function" ||
+            !birc.store ||
+            typeof birc.store.get !== "function"
+        ) {
+            return;
+        }
+
+        cache = readUpdateCache();
+
+        if (isNewerScriptVersion(cache.latestVersion)) {
+            reportedVersion = cache.latestVersion;
+            reportAvailableScriptUpdate(cache.latestVersion);
+        }
+
+        now = Date.now();
+        if (now - cache.lastAttemptAt < UPDATE_CHECK_INTERVAL_MILLISECONDS) {
+            return;
+        }
+
+        cache.lastAttemptAt = now;
+        birc.store.set(UPDATE_CACHE_KEY, cache);
+
+        birc.fetch(UPDATE_MANIFEST_URL).then(function handleUpdateResponse(response) {
+            var manifest;
+            var latestVersion;
+
+            if (!response || response.status < 200 || response.status > 299) {
+                throw new Error("update manifest returned a non-success status");
+            }
+
+            if (typeof response.text !== "string" || response.text.length > 65536) {
+                throw new Error("update manifest has an invalid size");
+            }
+
+            manifest = JSON.parse(response.text);
+            if (!manifest || manifest.schemaVersion !== 1 || !manifest.scripts) {
+                throw new Error("update manifest has an unsupported format");
+            }
+
+            latestVersion = manifest.scripts[SCRIPT_ID];
+            if (parseSemanticVersion(latestVersion) === null) {
+                throw new Error("update manifest has no valid entry for this script");
+            }
+
+            cache.latestVersion = latestVersion;
+            birc.store.set(UPDATE_CACHE_KEY, cache);
+
+            if (
+                isNewerScriptVersion(latestVersion) &&
+                latestVersion !== reportedVersion
+            ) {
+                reportAvailableScriptUpdate(latestVersion);
+            }
+        }).catch(function handleUpdateFailure(error) {
+            console.info("Text effects update check was not completed", error);
+        });
+    }
 
     var ZALGO_ABOVE = [
         "\u0300", "\u0301", "\u0302", "\u0303", "\u0304", "\u0305",
@@ -1230,6 +1394,10 @@
         printTextStatus("Zalgo may impair readability, search, copy/paste, and accessibility.");
         printTextStatus("Unicode novelty alphabets may render as missing glyphs and are not semantic styling.");
         printTextStatus("IRC colors and formatting depend on the receiving client.");
+        printTextStatus(
+            "Script " + SCRIPT_ID + " version " + SCRIPT_VERSION +
+            " checks the public bIRC Utils version manifest at most once per day."
+        );
         printTextStatus("Run /text help at any time to print this guide.");
     }
 
@@ -1292,6 +1460,7 @@
     });
 
     birc.on("load", function announceTextEffectsLoaded() {
+        checkForScriptUpdate();
         printTextStatus("Loaded. Run /text help for effects and examples.");
     });
 }());

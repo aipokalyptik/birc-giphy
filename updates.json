@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "scripts": {
+    "com.github.aipokalyptik.birc-utils.codec": "1.0.0",
+    "com.github.aipokalyptik.birc-utils.giphy": "1.0.0",
+    "com.github.aipokalyptik.birc-utils.hash": "1.0.0",
+    "com.github.aipokalyptik.birc-utils.random": "1.0.0",
+    "com.github.aipokalyptik.birc-utils.text-art": "1.0.0",
+    "com.github.aipokalyptik.birc-utils.text-effects": "1.0.0"
+  }
+}

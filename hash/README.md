@@ -137,6 +137,18 @@ HMAC keys are secrets. Although computation is local, typing a key into a chat
 composer may leave it in input history. Use this convenience only when that
 local exposure is acceptable.
 
+## Script identity and updates
+
+- ID: `com.github.aipokalyptik.birc-utils.hash`
+- Version: `1.0.0`
+
+At load time the script checks the public bIRC Utils version manifest at most
+once per 24 hours. A newer version notice includes the installed and available
+versions, exact standalone script URL, a comparison link anchored to that
+file, complete review-and-replacement instructions, and documentation. It
+never downloads or executes an update. See [the enforced update
+contract](../UPDATES.md).
+
 ## Vendored implementations
 
 The standalone build contains:

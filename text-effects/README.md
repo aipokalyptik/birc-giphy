@@ -199,6 +199,18 @@ Before incorporating a third-party font:
 The script uses `Math.random()` only to select Zalgo combining marks. It is a
 visual effect and makes no security or unpredictability claim.
 
+## Script identity and updates
+
+- ID: `com.github.aipokalyptik.birc-utils.text-effects`
+- Version: `1.0.0`
+
+Effects remain local unless `say` is explicit. If optional HTTPS permission is
+enabled, a load-time check consults the public bIRC Utils version manifest at
+most once per 24 hours. A newer version notice includes exact source, anchored
+diff, documentation, and review-and-replacement URLs and instructions. No
+update is downloaded or executed. See [the enforced update
+contract](../UPDATES.md).
+
 ## Sources and design notes
 
 - [mIRC color documentation](https://www.mirc.com/colors.html) documents the

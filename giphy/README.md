@@ -151,6 +151,18 @@ rather than sending incomplete output.
 GIF search results display the attribution required by GIPHY:
 **Powered by GIPHY**.
 
+## Script identity and updates
+
+- ID: `com.github.aipokalyptik.birc-utils.giphy`
+- Version: `1.0.0`
+
+At load time the script checks the public bIRC Utils version manifest at most
+once per 24 hours. A newer version notice includes the installed and available
+versions, the exact canonical script URL, a comparison link anchored to this
+file, complete review-and-replacement instructions, and the documentation URL.
+It never downloads or executes an update. See [the enforced update
+contract](../UPDATES.md).
+
 ## Development
 
 The tests run the importable script inside a JavaScript sandbox with a mocked

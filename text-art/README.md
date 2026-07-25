@@ -161,6 +161,18 @@ to a new key without misreading old data. bIRC currently exposes no way for a
 script to enumerate all store keys, so the script provides targeted refreshes
 rather than a misleading “clear everything” command.
 
+## Script identity and updates
+
+- ID: `com.github.aipokalyptik.birc-utils.text-art`
+- Version: `1.0.0`
+
+At load time the script checks the public bIRC Utils version manifest at most
+once per 24 hours. A newer version notice includes the installed and available
+versions, exact canonical script URL, a comparison link anchored to this file,
+complete review-and-replacement instructions, and documentation. It never
+downloads or executes an update. See [the enforced update
+contract](../UPDATES.md).
+
 ## Adding another archive
 
 A source should not become sendable merely because it has an API. Before

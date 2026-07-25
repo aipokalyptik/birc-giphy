@@ -9,10 +9,29 @@
  * uses Math.random(). The output is useful for samples, tests, placeholders,
  * games, and creative work. It must not be used for passwords, access tokens,
  * encryption keys, session identifiers, or any other security boundary.
+ *
+ * Script ID: com.github.aipokalyptik.birc-utils.random
+ * Script version: 1.0.0
  */
 
 (function registerBircRandomDeveloperDataScript() {
     "use strict";
+
+    var SCRIPT_ID = "com.github.aipokalyptik.birc-utils.random";
+    var SCRIPT_VERSION = "1.0.0";
+    var SCRIPT_UPDATE_PAGE_URL =
+        "https://github.com/aipokalyptik/birc-utils/tree/main/random";
+    var SCRIPT_UPDATE_FILE_URL =
+        "https://github.com/aipokalyptik/birc-utils/blob/main/random/birc-random.js";
+    var SCRIPT_RELEASE_TAG_PREFIX = "birc-utils-random-v";
+    var SCRIPT_COMPARE_URL_PREFIX =
+        "https://github.com/aipokalyptik/birc-utils/compare/";
+    var SCRIPT_FILE_DIFF_ANCHOR =
+        "#diff-f205444f9b704bbc3dea7bacb25bbd56ee87aabc887eb3e6a46ec34b46455a4c";
+    var UPDATE_MANIFEST_URL =
+        "https://raw.githubusercontent.com/aipokalyptik/birc-utils/main/updates.json";
+    var UPDATE_CACHE_KEY = "bircUtils.updateCheck.v1";
+    var UPDATE_CHECK_INTERVAL_MILLISECONDS = 24 * 60 * 60 * 1000;
 
     var MAXIMUM_ITEM_COUNT = 20;
     var MAXIMUM_STRING_LENGTH = 512;
@@ -22,6 +41,145 @@
     var MAXIMUM_REMOTE_LINE_LENGTH = 400;
     var REMOTE_STORE_KEY = "random.remote.enabled";
     var remoteReplyContext = null;
+
+    function parseSemanticVersion(version) {
+        var match;
+
+        if (typeof version !== "string") {
+            return null;
+        }
+
+        match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
+        if (match === null) {
+            return null;
+        }
+
+        return [Number(match[1]), Number(match[2]), Number(match[3])];
+    }
+
+    function isNewerScriptVersion(candidateVersion) {
+        var candidate = parseSemanticVersion(candidateVersion);
+        var installed = parseSemanticVersion(SCRIPT_VERSION);
+        var partIndex;
+
+        if (candidate === null || installed === null) {
+            return false;
+        }
+
+        for (partIndex = 0; partIndex < installed.length; partIndex += 1) {
+            if (candidate[partIndex] > installed[partIndex]) {
+                return true;
+            }
+
+            if (candidate[partIndex] < installed[partIndex]) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    function readUpdateCache() {
+        var storedCache = birc.store.get(UPDATE_CACHE_KEY);
+
+        if (!storedCache || typeof storedCache !== "object") {
+            return {
+                lastAttemptAt: 0,
+                latestVersion: ""
+            };
+        }
+
+        if (typeof storedCache.latestVersion !== "string") {
+            storedCache.latestVersion = "";
+        }
+
+        return {
+            lastAttemptAt: Number(storedCache.lastAttemptAt) || 0,
+            latestVersion: storedCache.latestVersion
+        };
+    }
+
+    function checkForScriptUpdate() {
+        var cache;
+        var now;
+        var reportedVersion = "";
+
+        if (typeof birc.fetch !== "function" || !birc.store) {
+            return;
+        }
+
+        cache = readUpdateCache();
+
+        if (isNewerScriptVersion(cache.latestVersion)) {
+            reportedVersion = cache.latestVersion;
+            reportAvailableScriptUpdate(cache.latestVersion);
+        }
+
+        now = Date.now();
+        if (now - cache.lastAttemptAt < UPDATE_CHECK_INTERVAL_MILLISECONDS) {
+            return;
+        }
+
+        cache.lastAttemptAt = now;
+        birc.store.set(UPDATE_CACHE_KEY, cache);
+
+        birc.fetch(UPDATE_MANIFEST_URL).then(function handleUpdateResponse(response) {
+            var manifest;
+            var latestVersion;
+
+            if (!response || response.status < 200 || response.status > 299) {
+                throw new Error("update manifest returned a non-success status");
+            }
+
+            if (typeof response.text !== "string" || response.text.length > 65536) {
+                throw new Error("update manifest has an invalid size");
+            }
+
+            manifest = JSON.parse(response.text);
+            if (!manifest || manifest.schemaVersion !== 1 || !manifest.scripts) {
+                throw new Error("update manifest has an unsupported format");
+            }
+
+            latestVersion = manifest.scripts[SCRIPT_ID];
+            if (parseSemanticVersion(latestVersion) === null) {
+                throw new Error("update manifest has no valid entry for this script");
+            }
+
+            cache.latestVersion = latestVersion;
+            birc.store.set(UPDATE_CACHE_KEY, cache);
+
+            if (
+                isNewerScriptVersion(latestVersion) &&
+                latestVersion !== reportedVersion
+            ) {
+                reportAvailableScriptUpdate(latestVersion);
+            }
+        }).catch(function handleUpdateFailure(error) {
+            console.info("Random update check was not completed", error);
+        });
+    }
+
+    function reportAvailableScriptUpdate(latestVersion) {
+        var comparisonUrl = SCRIPT_COMPARE_URL_PREFIX +
+            SCRIPT_RELEASE_TAG_PREFIX + SCRIPT_VERSION + "..." +
+            SCRIPT_RELEASE_TAG_PREFIX + latestVersion + SCRIPT_FILE_DIFF_ANCHOR;
+
+        birc.print(
+            "[Random] Update available for " + SCRIPT_ID + ": installed " +
+            SCRIPT_VERSION + ", current " + latestVersion + "."
+        );
+        birc.print("[Random] Canonical update file: " + SCRIPT_UPDATE_FILE_URL);
+        birc.print(
+            "[Random] Changes since the installed version: " + comparisonUrl +
+            " (opens at random/birc-random.js)."
+        );
+        birc.print(
+            "[Random] Update instructions: open that URL, review the file, " +
+            "click Raw, and copy the entire file. In bIRC open Scripts with " +
+            "⌘⌥S, replace this script's contents, and save. Documentation: " +
+            SCRIPT_UPDATE_PAGE_URL
+        );
+    }
 
     var LOWERCASE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
     var UPPERCASE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -1064,6 +1222,10 @@
         printRandomStatus(
             "All output uses Math.random() and is non-cryptographic; never use it for secrets, passwords, tokens, keys, or authentication."
         );
+        printRandomStatus(
+            "Script " + SCRIPT_ID + " version " + SCRIPT_VERSION +
+            " checks the public bIRC Utils version manifest at most once per day."
+        );
     }
 
     function generateRandomData(generatorName, argumentsText) {
@@ -1316,6 +1478,7 @@
     birc.on("message", handleRemoteRandomRequest);
 
     birc.on("load", function printRandomScriptLoadMessage() {
+        checkForScriptUpdate();
         printRandomStatus("Loaded. Run /random help.");
     });
 }());

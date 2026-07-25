@@ -26,6 +26,14 @@ independently through bIRC's Scripts window (`⌘⌥S`).
 Each subdirectory contains the importable `.js` file and its complete usage,
 configuration, and security notes.
 
+## Updates
+
+Every pasteable script has a stable reverse-domain identifier and an independent
+semantic version. At load time it can check this repository's small
+[`updates.json`](updates.json) manifest and report a newer version without
+downloading or executing code. Checks, privacy behavior, caching, and the
+release procedure are documented in [UPDATES.md](UPDATES.md).
+
 ## Development
 
 The contract tests execute the scripts in isolated JavaScript contexts with a

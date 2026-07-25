@@ -29,6 +29,17 @@ const runtimeData = JSON.stringify({
     bcryptP,
     bcryptS
 }) + "\n";
+const updateManifestUrl =
+    "https://raw.githubusercontent.com/aipokalyptik/birc-utils/main/updates.json";
+const currentUpdateManifest = {
+    status: 200,
+    text: JSON.stringify({
+        schemaVersion: 1,
+        scripts: {
+            "com.github.aipokalyptik.birc-utils.hash": "1.0.0"
+        }
+    })
+};
 
 function renderAuthorityArray(name, words) {
     return "unsigned long " + name + "[] = {\n" +
@@ -78,6 +89,10 @@ function createHashHarness(options = {}) {
             return first.toLowerCase() === second.toLowerCase();
         },
         fetch(url) {
+            if (url === updateManifestUrl) {
+                return Promise.resolve(currentUpdateManifest);
+            }
+
             fetchUrls.push(url);
 
             if (options.fetchResponse !== undefined) {

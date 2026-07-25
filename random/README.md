@@ -129,6 +129,17 @@ Use the output for fixtures, samples, placeholders, games, layout testing, and
 creative work. Do not use it for passwords, access tokens, encryption keys,
 session identifiers, password-reset links, or anything protecting access.
 
+## Script identity and updates
+
+- ID: `com.github.aipokalyptik.birc-utils.random`
+- Version: `1.0.0`
+
+Generation remains entirely local. If optional HTTPS permission is enabled, a
+load-time check consults the public bIRC Utils version manifest at most once
+per 24 hours. A newer version notice includes exact source, anchored diff,
+documentation, and review-and-replacement URLs and instructions. No update is
+downloaded or executed. See [the enforced update contract](../UPDATES.md).
+
 ## Development
 
 Run all sandbox contract tests with:

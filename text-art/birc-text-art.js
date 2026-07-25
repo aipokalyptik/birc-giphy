@@ -5,10 +5,29 @@
  * /ansi searches ANSI-scene pack metadata and returns gallery links only.
  *
  * Import this one file in bIRC's Scripts window and enable HTTPS access.
+ *
+ * Script ID: com.github.aipokalyptik.birc-utils.text-art
+ * Script version: 1.0.0
  */
 
 (function registerBircTextArtScript() {
     "use strict";
+
+    var SCRIPT_ID = "com.github.aipokalyptik.birc-utils.text-art";
+    var SCRIPT_VERSION = "1.0.0";
+    var SCRIPT_UPDATE_PAGE_URL =
+        "https://github.com/aipokalyptik/birc-utils/tree/main/text-art";
+    var SCRIPT_UPDATE_FILE_URL =
+        "https://github.com/aipokalyptik/birc-utils/blob/main/text-art/birc-text-art.js";
+    var SCRIPT_RELEASE_TAG_PREFIX = "birc-utils-text-art-v";
+    var SCRIPT_COMPARE_URL_PREFIX =
+        "https://github.com/aipokalyptik/birc-utils/compare/";
+    var SCRIPT_FILE_DIFF_ANCHOR =
+        "#diff-8465d84d4f6d24e901c2be6be07b7434538eab8f60d9b29edfa69c2d5b6ca195";
+    var UPDATE_MANIFEST_URL =
+        "https://raw.githubusercontent.com/aipokalyptik/birc-utils/main/updates.json";
+    var UPDATE_CACHE_KEY = "bircUtils.updateCheck.v1";
+    var UPDATE_CHECK_INTERVAL_MILLISECONDS = 24 * 60 * 60 * 1000;
 
     var ASCII_INDEX_URL =
         "https://raw.githubusercontent.com/rxolve/artscii/main/arts/index.json";
@@ -36,6 +55,139 @@
     var currentAnsiSearch = emptySearch();
     var asciiIndexRequestInProgress = false;
     var ansiRequestsInProgress = {};
+
+    function parseSemanticVersion(version) {
+        var match;
+
+        if (typeof version !== "string") {
+            return null;
+        }
+
+        match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
+        if (match === null) {
+            return null;
+        }
+
+        return [Number(match[1]), Number(match[2]), Number(match[3])];
+    }
+
+    function isNewerScriptVersion(candidateVersion) {
+        var candidate = parseSemanticVersion(candidateVersion);
+        var installed = parseSemanticVersion(SCRIPT_VERSION);
+        var partIndex;
+
+        if (candidate === null || installed === null) {
+            return false;
+        }
+
+        for (partIndex = 0; partIndex < installed.length; partIndex += 1) {
+            if (candidate[partIndex] > installed[partIndex]) {
+                return true;
+            }
+
+            if (candidate[partIndex] < installed[partIndex]) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    function readUpdateCache() {
+        var storedCache = birc.store.get(UPDATE_CACHE_KEY);
+
+        if (!storedCache || typeof storedCache !== "object") {
+            return {
+                lastAttemptAt: 0,
+                latestVersion: ""
+            };
+        }
+
+        if (typeof storedCache.latestVersion !== "string") {
+            storedCache.latestVersion = "";
+        }
+
+        return {
+            lastAttemptAt: Number(storedCache.lastAttemptAt) || 0,
+            latestVersion: storedCache.latestVersion
+        };
+    }
+
+    function reportAvailableScriptUpdate(latestVersion) {
+        var comparisonUrl = SCRIPT_COMPARE_URL_PREFIX +
+            SCRIPT_RELEASE_TAG_PREFIX + SCRIPT_VERSION + "..." +
+            SCRIPT_RELEASE_TAG_PREFIX + latestVersion + SCRIPT_FILE_DIFF_ANCHOR;
+
+        birc.print(
+            "[Text art] Update available for " + SCRIPT_ID + ": installed " +
+            SCRIPT_VERSION + ", current " + latestVersion + "."
+        );
+        birc.print("[Text art] Canonical update file: " + SCRIPT_UPDATE_FILE_URL);
+        birc.print(
+            "[Text art] Changes since the installed version: " + comparisonUrl +
+            " (opens at text-art/birc-text-art.js)."
+        );
+        birc.print(
+            "[Text art] Update instructions: open the canonical file URL, " +
+            "review the file, click Raw, and copy the entire file. In bIRC open " +
+            "Scripts with ⌘⌥S, replace this script's contents, and save. " +
+            "Documentation: " + SCRIPT_UPDATE_PAGE_URL
+        );
+    }
+
+    function checkForScriptUpdate() {
+        var cache = readUpdateCache();
+        var now;
+        var reportedVersion = "";
+
+        if (isNewerScriptVersion(cache.latestVersion)) {
+            reportedVersion = cache.latestVersion;
+            reportAvailableScriptUpdate(cache.latestVersion);
+        }
+
+        now = Date.now();
+        if (now - cache.lastAttemptAt < UPDATE_CHECK_INTERVAL_MILLISECONDS) {
+            return;
+        }
+
+        cache.lastAttemptAt = now;
+        birc.store.set(UPDATE_CACHE_KEY, cache);
+
+        birc.fetch(UPDATE_MANIFEST_URL).then(function handleUpdateResponse(response) {
+            var manifest;
+            var latestVersion;
+
+            if (!response || response.status < 200 || response.status > 299) {
+                throw new Error("update manifest returned a non-success status");
+            }
+
+            if (typeof response.text !== "string" || response.text.length > 65536) {
+                throw new Error("update manifest has an invalid size");
+            }
+
+            manifest = JSON.parse(response.text);
+            if (!manifest || manifest.schemaVersion !== 1 || !manifest.scripts) {
+                throw new Error("update manifest has an unsupported format");
+            }
+
+            latestVersion = manifest.scripts[SCRIPT_ID];
+            if (parseSemanticVersion(latestVersion) === null) {
+                throw new Error("update manifest has no valid entry for this script");
+            }
+
+            cache.latestVersion = latestVersion;
+            birc.store.set(UPDATE_CACHE_KEY, cache);
+
+            if (
+                isNewerScriptVersion(latestVersion) &&
+                latestVersion !== reportedVersion
+            ) {
+                reportAvailableScriptUpdate(latestVersion);
+            }
+        }).catch(function handleUpdateFailure(error) {
+            console.info("Text art update check was not completed", error);
+        });
+    }
 
     function emptySearch() {
         return {
@@ -1024,6 +1176,10 @@
             "Strict context means a result can be used only on the same network " +
             "and in the same channel/query where its search began."
         );
+        printAscii(
+            "Script " + SCRIPT_ID + " version " + SCRIPT_VERSION +
+            " checks the public bIRC Utils version manifest at most once per day."
+        );
         printAscii("Source and license: " + ASCII_SOURCE_URL);
     }
 
@@ -1052,6 +1208,10 @@
         printAnsi(
             "Every distinct query is requested at most once unless you explicitly " +
             "refresh it; cached searches continue to work while the service is unavailable."
+        );
+        printAnsi(
+            "Script " + SCRIPT_ID + " version " + SCRIPT_VERSION +
+            " checks the public bIRC Utils version manifest at most once per day."
         );
         printAnsi("Archive: " + ANSI_SITE_URL);
     }
@@ -1161,6 +1321,14 @@
         return matches;
     });
 
-    printAscii("Loaded. Run /ascii help for searchable text art.");
-    printAnsi("Loaded. Run /ansi help for ANSI-scene pack discovery.");
+    if (typeof birc.on === "function") {
+        birc.on("load", function announceTextArtLoad() {
+            checkForScriptUpdate();
+            printAscii("Loaded. Run /ascii help for searchable text art.");
+            printAnsi("Loaded. Run /ansi help for ANSI-scene pack discovery.");
+        });
+    } else {
+        printAscii("Loaded. Run /ascii help for searchable text art.");
+        printAnsi("Loaded. Run /ansi help for ANSI-scene pack discovery.");
+    }
 }());

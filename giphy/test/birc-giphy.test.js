@@ -161,6 +161,54 @@ test("search requires configuration and explains how to configure it", () => {
     );
 });
 
+test("update notice links directly to the changed script and explains replacement", async () => {
+    const harness = createScriptHarness();
+    let fetchCount = 0;
+
+    harness.setFetchImplementation((url) => {
+        fetchCount += 1;
+        assert.equal(
+            url,
+            "https://raw.githubusercontent.com/aipokalyptik/birc-utils/main/updates.json"
+        );
+
+        return Promise.resolve({
+            status: 200,
+            text: JSON.stringify({
+                schemaVersion: 1,
+                scripts: {
+                    "com.github.aipokalyptik.birc-utils.giphy": "1.1.0"
+                }
+            })
+        });
+    });
+
+    harness.runLoadEvent();
+    await flushPromiseCallbacks();
+
+    const notice = harness.printedLines.join("\n");
+    assert.match(
+        notice,
+        /com\.github\.aipokalyptik\.birc-utils\.giphy: installed 1\.0\.0, current 1\.1\.0/
+    );
+    assert.match(
+        notice,
+        /github\.com\/aipokalyptik\/birc-utils\/blob\/main\/giphy\/birc-giphy\.js/
+    );
+    assert.match(
+        notice,
+        /compare\/birc-utils-giphy-v1\.0\.0\.\.\.birc-utils-giphy-v1\.1\.0#diff-34d80f207cd572985e9cee56ad90303ba6e78a994c3ee914178b2e6cbd917ca9/
+    );
+    assert.match(notice, /click Raw/);
+    assert.match(notice, /copy the entire file/);
+    assert.match(notice, /⌘⌥S/);
+    assert.match(notice, /replace this script's contents/);
+
+    harness.runLoadEvent();
+    await flushPromiseCallbacks();
+    assert.equal(fetchCount, 1);
+});
+
 test("search prints an HTTPS media preview and send posts the selected GIF", async () => {
     const harness = createScriptHarness();
 
