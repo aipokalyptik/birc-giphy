@@ -12,15 +12,13 @@ const bcryptSourcePath = path.join(
     "index.js"
 );
 const generatedDirectory = path.join(projectRoot, "hash", "generated");
-const dataDirectory = path.join(projectRoot, "hash", "data");
-const dataPath = path.join(dataDirectory, "v1.json");
 const runtimePath = path.join(generatedDirectory, "bcrypt-runtime.js");
 const contractPath = path.join(
     generatedDirectory,
     "hash-data-contract.js"
 );
 const dataUrl =
-    "https://raw.githubusercontent.com/aipokalyptik/birc-utils/main/hash/data/v1.json";
+    "https://www.ietf.org/archive/id/draft-schneier-blowfish-00.txt";
 
 const bcryptSource = fs.readFileSync(bcryptSourcePath, "utf8");
 const pTablePattern = /var P_ORIG = \[([\s\S]*?)\];/;
@@ -74,7 +72,5 @@ const contractSource = [
 ].join("\n");
 
 fs.mkdirSync(generatedDirectory, { recursive: true });
-fs.mkdirSync(dataDirectory, { recursive: true });
-fs.writeFileSync(dataPath, dataPayload);
 fs.writeFileSync(runtimePath, runtimeSource);
 fs.writeFileSync(contractPath, contractSource);

@@ -10,10 +10,42 @@ const scriptSource = fs.readFileSync(
     path.join(__dirname, "..", "birc-hash.js"),
     "utf8"
 );
-const runtimeData = fs.readFileSync(
-    path.join(__dirname, "..", "data", "v1.json"),
+const bcryptSource = fs.readFileSync(
+    path.join(__dirname, "..", "..", "node_modules", "bcryptjs", "index.js"),
     "utf8"
 );
+const bcryptP = Function(
+    `"use strict"; return [${
+        /var P_ORIG = \[([\s\S]*?)\];/.exec(bcryptSource)[1]
+    }];`
+)();
+const bcryptS = Function(
+    `"use strict"; return [${
+        /var S_ORIG = \[([\s\S]*?)\];/.exec(bcryptSource)[1]
+    }];`
+)();
+const runtimeData = JSON.stringify({
+    version: 1,
+    bcryptP,
+    bcryptS
+}) + "\n";
+
+function renderAuthorityArray(name, words) {
+    return "unsigned long " + name + "[] = {\n" +
+        words.map((word) => {
+            return "0x" + word.toString(16).padStart(8, "0") + "L";
+        }).join(", ") +
+        "\n};\n";
+}
+
+const authorityDocument = [
+    "Appendix A: Blowfish P-array and S-box constants\n",
+    renderAuthorityArray("sBox0", bcryptS.slice(0, 256)),
+    renderAuthorityArray("sBox1", bcryptS.slice(256, 512)),
+    renderAuthorityArray("sBox2", bcryptS.slice(512, 768)),
+    renderAuthorityArray("sBox3", bcryptS.slice(768, 1024)),
+    renderAuthorityArray("pArray", bcryptP)
+].join("\n");
 
 function createHashHarness(options = {}) {
     const commands = {};
@@ -175,7 +207,7 @@ test("cold cache downloads validates and persists bcrypt data", async () => {
         cachedData: false,
         fetchResponse: {
             status: 200,
-            text: runtimeData
+            text: authorityDocument
         }
     });
 
@@ -195,12 +227,12 @@ test("cold cache downloads validates and persists bcrypt data", async () => {
     );
 });
 
-test("downloaded bcrypt data must match the pinned SHA-256 digest", async () => {
+test("downloaded bcrypt data must match the pinned table digest", async () => {
     const harness = createHashHarness({
         cachedData: false,
         fetchResponse: {
             status: 200,
-            text: runtimeData.replace("\"version\":1", "\"version\":2")
+            text: authorityDocument.replace("0xd1310ba6L", "0xd1310ba7L")
         }
     });
 

@@ -33,12 +33,13 @@ bIRC API version 1 does not expose Web Crypto. This script therefore requires
 the caller to supply password salts and never substitutes `Math.random()`.
 Generate salts with a cryptographically secure tool outside bIRC.
 
-The standalone script downloads bcrypt's immutable Blowfish initialization
-table from this repository. It pins the table's SHA-256 digest, validates its
-shape, and stores the validated JSON through `birc.store`. Later loads use the
-cached copy. bcrypt commands remain unavailable until initialization succeeds;
-all other commands remain usable. Use `/hash data status` to inspect state or
-`/hash data refresh` to retry.
+The standalone script downloads the immutable Blowfish initialization tables
+from the IETF's permanent archive of `draft-schneier-blowfish-00`. It extracts
+only Appendix A's P-array and S-boxes, pins the normalized table's SHA-256
+digest, validates its shape, and stores validated compact JSON through
+`birc.store`. Later loads use the cached copy. bcrypt commands remain
+unavailable until initialization succeeds; all other commands remain usable.
+Use `/hash data status` to inspect state or `/hash data refresh` to retry.
 
 The script requires HTTPS permission for this data request. No password, HMAC
 key, message, digest, or salt is included in the request.
@@ -74,7 +75,8 @@ npm install
 npm run build:hash
 ```
 
-The build also extracts bcrypt's fixed P/S tables from the pinned bcrypt.js
-dependency into `data/v1.json`, calculates the pinned SHA-256 digest, and
-generates the small runtime contract used by the standalone script. Generated
-build-input modules under `generated/` are intentionally not committed.
+The build extracts bcrypt's fixed P/S tables from the pinned bcrypt.js
+dependency to calculate the normalized SHA-256 digest and generates the small
+runtime contract used by the standalone script. The table itself is not hosted
+by this repository. Generated build-input modules under `generated/` are
+intentionally not committed.

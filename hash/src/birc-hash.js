@@ -41,6 +41,70 @@ import unixCrypt from "unix-crypt-td-js";
     var bcryptTablesReady = false;
     var bcryptTablesStatus = "not loaded";
 
+    function extractWordsFromBlowfishArray(sourceText, arrayName) {
+        var arrayMatch;
+        var hexadecimalWords;
+        var wordIndex;
+        var words = [];
+        var declarationPattern = new RegExp(
+            "unsigned\\s+long\\s+" +
+                arrayName +
+                "\\[\\]\\s*=\\s*\\{([\\s\\S]*?)\\};"
+        );
+
+        arrayMatch = declarationPattern.exec(sourceText);
+        if (arrayMatch === null) {
+            return null;
+        }
+
+        hexadecimalWords = arrayMatch[1].match(/0x[0-9A-Fa-f]{8}L/g);
+        if (hexadecimalWords === null) {
+            return null;
+        }
+
+        for (wordIndex = 0; wordIndex < hexadecimalWords.length; wordIndex += 1) {
+            words.push(Number(hexadecimalWords[wordIndex].slice(0, -1)));
+        }
+
+        return words;
+    }
+
+    function extractHashDataFromIetfDraft(sourceText) {
+        var bcryptP;
+        var bcryptS = [];
+        var boxIndex;
+        var boxWords;
+
+        if (typeof sourceText !== "string") {
+            bcryptTablesStatus = "source has an invalid format";
+            return null;
+        }
+
+        bcryptP = extractWordsFromBlowfishArray(sourceText, "pArray");
+        if (bcryptP === null || bcryptP.length !== 18) {
+            bcryptTablesStatus = "source has an invalid P table";
+            return null;
+        }
+
+        for (boxIndex = 0; boxIndex < 4; boxIndex += 1) {
+            boxWords = extractWordsFromBlowfishArray(
+                sourceText,
+                "sBox" + boxIndex
+            );
+            if (boxWords === null || boxWords.length !== 256) {
+                bcryptTablesStatus = "source has an invalid S table";
+                return null;
+            }
+            bcryptS = bcryptS.concat(boxWords);
+        }
+
+        return JSON.stringify({
+            version: 1,
+            bcryptP: bcryptP,
+            bcryptS: bcryptS
+        }) + "\n";
+    }
+
     function validateAndActivateHashData(serializedData) {
         var parsedData;
 
@@ -101,6 +165,8 @@ import unixCrypt from "unix-crypt-td-js";
         bcryptDataDownloadInProgress = true;
         bcryptTablesStatus = "downloading";
         birc.fetch(HASH_DATA_URL).then(function handleHashDataResponse(response) {
+            var normalizedData;
+
             bcryptDataDownloadInProgress = false;
 
             if (response.status !== 200) {
@@ -110,12 +176,18 @@ import unixCrypt from "unix-crypt-td-js";
                 return;
             }
 
-            if (!validateAndActivateHashData(response.text)) {
+            normalizedData = extractHashDataFromIetfDraft(response.text);
+            if (normalizedData === null) {
                 printHashStatus("bcrypt data " + bcryptTablesStatus + ".");
                 return;
             }
 
-            birc.store.set(HASH_DATA_STORE_KEY, response.text);
+            if (!validateAndActivateHashData(normalizedData)) {
+                printHashStatus("bcrypt data " + bcryptTablesStatus + ".");
+                return;
+            }
+
+            birc.store.set(HASH_DATA_STORE_KEY, normalizedData);
             printHashStatus("bcrypt data downloaded, validated, and cached.");
         }).catch(function handleHashDataFailure() {
             bcryptDataDownloadInProgress = false;
