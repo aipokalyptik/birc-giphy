@@ -24,6 +24,67 @@ The script makes no network requests and needs no HTTPS permission.
 /codec remote <on|off|status>
 ```
 
+### Command, option, and output examples
+
+All byte rows encode the same UTF-8 input, `Hi`. The output is also the exact
+fixture accepted by `decode` and `convert`.
+
+| Format and aliases | Encode input | Output / decode input |
+|---|---|---|
+| `text`, `utf8`, `utf-8` | `/codec encode text Hi` | `Hi` |
+| `hex`, `base16` | `/codec encode hex Hi` | `4869` |
+| `base32` | `/codec encode base32 Hi` | `JBUQ====` |
+| `base64` | `/codec encode base64 Hi` | `SGk=` |
+| `base64url` | `/codec encode base64url Hi` | `SGk` |
+| `base58` | `/codec encode base58 Hi` | `6Wc` |
+| `binary`, `bits` | `/codec encode binary Hi` | `01001000 01101001` |
+| `bytes`, `decimal`, `numbers` | `/codec encode bytes Hi` | `72 105` |
+| `integer` | `/codec encode integer Hi` | `18537` |
+
+Every canonical `convert` input/output combination is represented by selecting
+one input row above and one output row below:
+
+| Output format | Result from any valid input-format row |
+|---|---|
+| `text` | `Hi` |
+| `hex` | `4869` |
+| `base32` | `JBUQ====` |
+| `base64` | `SGk=` |
+| `base64url` | `SGk` |
+| `base58` | `6Wc` |
+| `binary` | `01001000 01101001` |
+| `bytes` | `72 105` |
+| `integer` | `18537` |
+
+Thus `/codec convert base58 binary 6Wc` produces
+`01001000 01101001`, while `/codec convert integer base32 18537` produces
+`JBUQ====`. This covers all 81 canonical byte-format pairs; aliases produce the
+same output as their canonical names.
+
+| Text format and aliases | Example encode input | Encoded output | Matching decode output |
+|---|---|---|---|
+| `url`, `percent` | `/codec encode url query string & value` | `query%20string%20%26%20value` | `query string & value` |
+| `html` | `/codec encode html <button title="Save">` | `&lt;button title=&quot;Save&quot;&gt;` | `<button title="Save">` |
+| `json` | `/codec encode json Hello IRC` | `"Hello IRC"` | `Hello IRC` |
+| `unicode`, `codepoints` | `/codec encode unicode A🚀` | `U+0041 U+1F680` | `A🚀` |
+| `rot13` | `/codec encode rot13 Hello IRC` | `Uryyb VEP` | `Hello IRC` |
+| `quoted-printable`, `qp` | `/codec encode quoted-printable café` | `caf=C3=A9` | `café` |
+| `mime-b` | `/codec encode mime-b Résumé` | `=?UTF-8?B?UsOpc3Vtw6k=?=` | `/codec decode mime …` → `Résumé` |
+| `mime-q` | `/codec encode mime-q Résumé` | `=?UTF-8?Q?R=C3=A9sum=C3=A9?=` | `/codec decode mime …` → `Résumé` |
+| `punycode` | `/codec encode punycode münich.example` | `xn--mnich-kva.example` | `münich.example` |
+| `php-serialize`, `php` | `/codec encode php {"name":"Ada","active":true}` | `O:8:"stdClass":2:{s:4:"name";s:3:"Ada";s:6:"active";b:1;}` | `{"name":"Ada","active":true}` |
+
+| Control option | Example input | Output |
+|---|---|---|
+| `formats` | `/codec formats` | Prints all formats, aliases, and the Base128 compatibility note. |
+| `remote status` | `/codec remote status` | `Remote @mention use is disabled.` |
+| `remote on` | `/codec remote on` | `Remote @mention use is enabled.` |
+| `remote off` | `/codec remote off` | `Remote @mention use is disabled.` |
+| `say encode` | `/codec say encode base64 hello` | Sends `aGVsbG8=` to the active conversation. |
+| `say decode` | `/codec say decode base64 aGVsbG8=` | Sends `hello` to the active conversation. |
+| `say convert` | `/codec say convert hex base64 4869` | Sends `SGk=` to the active conversation. |
+| `help` | `/codec help` or `/codec` | Prints the complete local codec manual. |
+
 Encoding and decoding operate between UTF-8 text and the selected format.
 `convert` decodes bytes from the input format and re-encodes those same bytes
 in the output format.

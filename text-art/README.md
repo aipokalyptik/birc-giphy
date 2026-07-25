@@ -68,6 +68,24 @@ An ANSI search prints links rather than injecting escape sequences or artwork:
 /ascii help
 ```
 
+Every ASCII option, beside an illustrative Artscii fixture:
+
+| Option | Example input | Example output or action |
+|---|---|---|
+| Search shorthand | `/ascii cat` | `[ASCII] Results for "cat":`<br>`1. Cat [animals; 5×2] — A friendly cat` |
+| Explicit search | `/ascii search cat` | The same numbered local result list as the shorthand. |
+| Preview | `/ascii preview 1` | Prints `Local preview of Cat (2 lines; nothing will be sent):`, then ` /\_/\\` and `( o.o )`. |
+| Information | `/ascii info 1` | Prints name, description, category, tags, declared size, canonical source, and MIT license. |
+| Send | `/ascii send 1` | Sends the two validated art lines, then prints `Sent Cat (2 lines) to #art. Source: Artscii, MIT License.` |
+| Cancel | `/ascii cancel` | `The current ASCII results were discarded.` |
+| Cache status, empty | `/ascii cache status` | `The catalog is not cached. Art files are cached individually.` |
+| Cache status, populated | `/ascii cache status` | `The local catalog contains 2 entries. Art files are cached individually after first use.` |
+| Cache refresh | `/ascii cache refresh` | Fetches, validates, and replaces the local catalog; prints its entry count. |
+| Configuration show | `/ascii config show` | `Search context policy: strict.` |
+| Strict context | `/ascii config context strict` | `Search context policy set to strict.` |
+| Anywhere context | `/ascii config context anywhere` | Confirms `anywhere`, then warns that selections may be used outside their search conversation. |
+| Help | `/ascii help` or `/ascii` | Prints the complete local ASCII manual. |
+
 The initial search downloads the
 [Artscii](https://github.com/rxolve/artscii) JSON catalog. Later searches use
 the stored catalog and make no network request. A selected art file is fetched
@@ -107,6 +125,22 @@ available in the [canonical repository](https://github.com/rxolve/artscii).
 /ansi config context <strict|anywhere>
 /ansi help
 ```
+
+Every ANSI option, beside an illustrative Sixteen Colors fixture:
+
+| Option | Example input | Example output or action |
+|---|---|---|
+| Search shorthand | `/ansi acid` | `[ANSI] Pack results for "acid":`<br>`1. acid-100 [2004] — acid — https://16colo.rs/pack/acid-100` |
+| Explicit search | `/ansi search acid` | The same discovery-only result list as the shorthand. |
+| Cached search | `/ansi acid` again | Adds `(local cache)` to the result heading and makes no request. |
+| Information | `/ansi info 1` | Prints pack name, year, groups, gallery URL, and the creator-rights warning. |
+| Cancel | `/ansi cancel` | `The current ANSI results were discarded.` |
+| Cache refresh | `/ansi cache refresh acid` | Deletes only the cached `acid` query and fetches it again. |
+| Configuration show | `/ansi config show` | `Search context policy: strict.` |
+| Strict context | `/ansi config context strict` | `Search context policy set to strict.` |
+| Anywhere context | `/ansi config context anywhere` | Confirms `anywhere`, then prints the cross-conversation warning. |
+| Send refusal | `/ansi send 1` | Explains that archive discovery does not grant permission to rebroadcast the work; sends nothing. |
+| Help | `/ansi help` or `/ansi` | Prints the complete local ANSI manual. |
 
 `/ansi` searches pack names through the
 [Sixteen Colors](https://16colo.rs/) metadata API. It stores each distinct

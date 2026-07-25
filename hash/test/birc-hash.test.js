@@ -173,8 +173,21 @@ test("standard digest vectors match their published values", () => {
 
     assert.equal(harness.run("digest md5 abc"), "900150983cd24fb0d6963f7d28e17f72");
     assert.equal(harness.run("digest sha1 abc"), "a9993e364706816aba3e25717850c26c9cd0d89d");
+    assert.equal(
+        harness.run("digest sha224 abc"),
+        "23097d223405d8228642a477bda255b32aadbce4bda0b3f7e36c9da7"
+    );
     assert.equal(harness.run("digest sha256 abc"), "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
+    assert.equal(
+        harness.run("digest sha384 abc"),
+        "cb00753f45a35e8bb5a03d699ac65007272c32ab0eded1631a8b605a43ff5bed" +
+            "8086072ba1e7cc2358baeca134c825a7"
+    );
     assert.equal(harness.run("digest sha512 abc"), "ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f");
+    assert.equal(
+        harness.run("digest ripemd160 abc"),
+        "8eb208f7e05d987a9b044a8e98c6b087f15a0bfc"
+    );
 });
 
 test("common checksum vectors match reference implementations", () => {
@@ -193,6 +206,30 @@ test("RFC HMAC-SHA256 vector matches", () => {
         harness.run("hmac sha256 key | The quick brown fox jumps over the lazy dog"),
         "f7bc83f430538424b13298e6aa6fb143ef4d59a14946175997479dbc2d1a3cd8"
     );
+});
+
+test("every documented HMAC algorithm matches its example vector", () => {
+    const harness = createHashHarness();
+    const expectedByAlgorithm = {
+        md5: "7e0d0767775312154ba16fd3af9771a2",
+        sha1: "0caf649feee4953d87bf903ac1176c45e028df16",
+        sha224: "99476f8dd28f3065c1787c8351a6d8f157541d9bcc0b7d1ee649850a",
+        sha256: "8b5f48702995c1598c573db1e21866a9b825d4a794d169d7060a03605796360b",
+        sha384:
+            "ad0ef4e80da427b2a33d4457c972bf759f50766fbb665690d50b7cb38dd5217d" +
+            "b559c93ea7cbee48e2ae1a5b4aafd34b",
+        sha512:
+            "1bba587c730eedba31f53abb0b6ca589e09de4e894ee455e6140807399759adaa" +
+            "fa069eec7c01647bb173dcb17f55d22af49a18071b748c5c2edd7f7a829c632",
+        ripemd160: "c66cf705f6c9dd35a0dfe512c7a9bd0bbcf533a2"
+    };
+
+    for (const [algorithm, expected] of Object.entries(expectedByAlgorithm)) {
+        assert.equal(
+            harness.run("hmac " + algorithm + " secret | message"),
+            expected
+        );
+    }
 });
 
 test("bcrypt output and verification are deterministic with an explicit salt", () => {
@@ -228,6 +265,10 @@ test("phpass portable output and verification are deterministic", () => {
     assert.equal(
         harness.run(`password ${encoded.slice(0, 12)} | password`),
         encoded
+    );
+    assert.equal(
+        harness.run("password $H$612345678 | password"),
+        "$H$612345678U1QdGJQj/LH52EnuhEn170"
     );
     assert.equal(harness.run(`password ${encoded} | password`), encoded);
 });

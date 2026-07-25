@@ -20,6 +20,58 @@ in bIRC and run `/hash help`.
 /hash remote <on|off|status>
 ```
 
+### Command, option, and output examples
+
+| Digest option | Example input | Exact output |
+|---|---|---|
+| `md5` | `/hash digest md5 abc` | `900150983cd24fb0d6963f7d28e17f72` |
+| `sha1` | `/hash digest sha1 abc` | `a9993e364706816aba3e25717850c26c9cd0d89d` |
+| `sha224` | `/hash digest sha224 abc` | `23097d223405d8228642a477bda255b32aadbce4bda0b3f7e36c9da7` |
+| `sha256` | `/hash digest sha256 abc` | `ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad` |
+| `sha384` | `/hash digest sha384 abc` | `cb00753f45a35e8bb5a03d699ac65007272c32ab0eded1631a8b605a43ff5bed8086072ba1e7cc2358baeca134c825a7` |
+| `sha512` | `/hash digest sha512 abc` | `ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f` |
+| `ripemd160` | `/hash digest ripemd160 abc` | `8eb208f7e05d987a9b044a8e98c6b087f15a0bfc` |
+
+| Checksum option | Example input | Exact output |
+|---|---|---|
+| `crc32` | `/hash checksum crc32 123456789` | `cbf43926` |
+| `crc32c` | `/hash checksum crc32c 123456789` | `e3069283` |
+| `adler32` | `/hash checksum adler32 Wikipedia` | `11e60398` |
+| `fnv1a32` | `/hash checksum fnv1a32 hello` | `4f9f2cab` |
+
+All HMAC rows use key `secret` and message `message`:
+
+| HMAC option | Example input | Exact output |
+|---|---|---|
+| `md5` | `/hash hmac md5 secret \| message` | `7e0d0767775312154ba16fd3af9771a2` |
+| `sha1` | `/hash hmac sha1 secret \| message` | `0caf649feee4953d87bf903ac1176c45e028df16` |
+| `sha224` | `/hash hmac sha224 secret \| message` | `99476f8dd28f3065c1787c8351a6d8f157541d9bcc0b7d1ee649850a` |
+| `sha256` | `/hash hmac sha256 secret \| message` | `8b5f48702995c1598c573db1e21866a9b825d4a794d169d7060a03605796360b` |
+| `sha384` | `/hash hmac sha384 secret \| message` | `ad0ef4e80da427b2a33d4457c972bf759f50766fbb665690d50b7cb38dd5217db559c93ea7cbee48e2ae1a5b4aafd34b` |
+| `sha512` | `/hash hmac sha512 secret \| message` | `1bba587c730eedba31f53abb0b6ca589e09de4e894ee455e6140807399759adaafa069eec7c01647bb173dcb17f55d22af49a18071b748c5c2edd7f7a829c632` |
+| `ripemd160` | `/hash hmac ripemd160 secret \| message` | `c66cf705f6c9dd35a0dfe512c7a9bd0bbcf533a2` |
+
+| Password or control option | Example input | Exact output |
+|---|---|---|
+| Explicit bcrypt | `/hash password bcrypt 4 ...................... \| password` | `$2b$04$......................LAtw7/ohmmBAhnXqmkuIz83Rl5Qdjhm` |
+| bcrypt stored setting | `/hash password $2b$04$...................... \| password` | `$2b$04$......................LAtw7/ohmmBAhnXqmkuIz83Rl5Qdjhm` |
+| bcrypt stored hash | `/hash password $2b$04$......................LAtw7/ohmmBAhnXqmkuIz83Rl5Qdjhm \| password` | The same complete hash |
+| bcrypt `$2a$` / `$2y$` | `/hash password $2y$04$...................... \| password` | A `$2y$04$…` hash with the supplied setting |
+| Explicit phpass | `/hash password phpass 8 12345678 \| password` | `$P$612345678U1QdGJQj/LH52EnuhEn170` |
+| phpass `$P$` setting | `/hash password $P$612345678 \| password` | `$P$612345678U1QdGJQj/LH52EnuhEn170` |
+| phpass `$H$` setting | `/hash password $H$612345678 \| password` | `$H$612345678U1QdGJQj/LH52EnuhEn170` |
+| DES crypt explicit salt | `/hash password crypt ab \| password` | `abJnggxhB/yWI` |
+| DES crypt stored setting | `/hash password ab \| password` | `abJnggxhB/yWI` |
+| DES crypt stored hash | `/hash password abJnggxhB/yWI \| password` | `abJnggxhB/yWI` |
+| Verify matching | `/hash verify $P$612345678U1QdGJQj/LH52EnuhEn170 \| password` | `MATCH` |
+| Verify nonmatching | `/hash verify $P$612345678U1QdGJQj/LH52EnuhEn170 \| wrong` | `NO MATCH` |
+| `data status` | `/hash data status` | `bcrypt data is ready.` after validated data has loaded |
+| `data refresh` | `/hash data refresh` | On success: `bcrypt data downloaded, validated, and cached.` |
+| `remote status` | `/hash remote status` | `Remote @mention use is disabled.` |
+| `remote on` | `/hash remote on` | `Remote @mention use is enabled.` |
+| `remote off` | `/hash remote off` | `Remote @mention use is disabled.` |
+| `help` | `/hash help` or `/hash` | Prints the complete local hashing manual. |
+
 The generic password form accepts the common stored representation directly:
 bcrypt `$2a$`, `$2b$`, and `$2y$` settings or complete hashes; portable phpass
 `$P$` and `$H$` settings or complete hashes; and traditional DES `crypt`

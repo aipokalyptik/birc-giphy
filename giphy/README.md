@@ -55,6 +55,37 @@ Other commands:
 /gif help
 ```
 
+### Command, option, and output examples
+
+Provider results are illustrative fixtures: titles and URLs vary with GIPHY’s
+current catalog. The command behavior and output shape are exact.
+
+| Search command | Example input | Example output or action |
+|---|---|---|
+| Search shorthand | `/gif excited penguin` | `1. Excited penguin — https://media.giphy.com/media/example/200.gif` |
+| Selected result | `/gif send 1` | Sends `https://media.giphy.com/media/example/giphy.gif` to the conversation that launched the search. |
+| Next page | `/gif more` | Replaces the list with the next configured page, numbered again from `1`. |
+| Random result | `/gif random celebration` | Immediately sends one random matching GIF URL to the active conversation. |
+| Cancel | `/gif cancel` | `The current GIF results were discarded.` |
+| Help | `/gif help` or `/gif` | Prints the complete local command manual and sends nothing. |
+
+| Configuration option | Example input | Example output |
+|---|---|---|
+| API key | `/gif config key abcdefghijklmnop` | Confirms masked key `abcd…mnop`; never prints the complete secret. |
+| Rating `g` | `/gif config rating g` | `Content rating saved as g.` |
+| Rating `pg` | `/gif config rating pg` | `Content rating saved as pg.` |
+| Rating `pg-13` | `/gif config rating pg-13` | `Content rating saved as pg-13.` |
+| Rating `r` | `/gif config rating r` | `Content rating saved as r.` |
+| Results, minimum | `/gif config results 1` | `Results per search saved as 1.` |
+| Results, typical | `/gif config results 5` | `Results per search saved as 5.` |
+| Results, maximum | `/gif config results 10` | `Results per search saved as 10.` |
+| Strict context | `/gif config context strict` | `Search context policy saved as strict.` |
+| Anywhere context | `/gif config context anywhere` | `Search context policy saved as anywhere.` |
+| Show | `/gif config show` | Prints masked key state, rating, result count, and context policy. |
+| Test | `/gif config test` | Prints a successful API test or the provider/network error; sends nothing. |
+| Clear key | `/gif config clear key` | Removes only the stored API key. |
+| Clear all | `/gif config clear all` | `All GIPHY configuration was deleted.` Active in-memory results are not changed. |
+
 `/gif help` is the complete in-bIRC manual. It covers setup, every command,
 defaults, preview behavior, storage, API-key handling, and proxy behavior.
 Changes to the script's user-facing behavior must update this help output and
