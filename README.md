@@ -10,6 +10,8 @@ independently through bIRC's Scripts window (`⌘⌥S`).
   send only the selected GIF.
 - [Random Developer Data](random/README.md) — generate random sample values,
   text, colors, identifiers, encodings, and network-shaped data locally.
+- [Codec Utilities](codec/README.md) — encode, decode, and convert common
+  binary, text, web, email, and international-domain formats.
 
 Each subdirectory contains the importable `.js` file and its complete usage,
 configuration, and security notes.
