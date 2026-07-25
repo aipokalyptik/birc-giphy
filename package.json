@@ -4,7 +4,7 @@
   "private": true,
   "description": "A collection of utility scripts for bIRC.",
   "scripts": {
-    "build:hash": "esbuild hash/src/birc-hash.js --bundle --platform=browser --format=iife --target=es2020 --banner:js='var setTimeout = function (callback, milliseconds) { return birc.setTimeout(callback, milliseconds); };' --outfile=hash/birc-hash.js",
+    "build:hash": "esbuild hash/src/birc-hash.js --bundle --platform=browser --format=iife --target=es2020 --legal-comments=linked --banner:js='var setTimeout = function (callback, milliseconds) { return birc.setTimeout(callback, milliseconds); };' --outfile=hash/birc-hash.js && node hash/scripts/normalize-legal-comments.js",
     "test": "npm run build:hash && node --test"
   },
   "dependencies": {
