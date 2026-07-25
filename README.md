@@ -37,7 +37,8 @@ Search without sending:
 /gif excited penguin
 ```
 
-The script prints numbered results locally. Send one result:
+The script prints each numbered result and its preview link together on one
+local transcript line. Send one result:
 
 ```text
 /gif send 2

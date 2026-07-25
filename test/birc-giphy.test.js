@@ -176,9 +176,15 @@ test("search prints an HTTPS media preview and send posts the selected GIF", asy
 
     assert.equal(
         harness.printedLines.includes(
-            "https://media.giphy.com/media/example/200.gif"
+            "1. Excited penguin — https://media.giphy.com/media/example/200.gif"
         ),
         true
+    );
+    assert.equal(
+        harness.printedLines.includes(
+            "https://media.giphy.com/media/example/200.gif"
+        ),
+        false
     );
 
     harness.runGifCommand("send 1", {

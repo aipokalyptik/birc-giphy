@@ -395,8 +395,11 @@
 
         for (resultIndex = 0; resultIndex < results.length; resultIndex += 1) {
             displayNumber = resultIndex + 1;
-            birc.print(displayNumber + ". " + results[resultIndex].title);
-            birc.print(results[resultIndex].previewUrl);
+            birc.print(
+                displayNumber + ". " +
+                results[resultIndex].title + " — " +
+                results[resultIndex].previewUrl
+            );
         }
 
         printGiphyStatus("Powered by GIPHY");
