@@ -5,7 +5,8 @@
   "description": "A collection of utility scripts for bIRC.",
   "scripts": {
     "build:hash": "node hash/scripts/prepare-runtime-data.js && esbuild hash/src/birc-hash.js --bundle --platform=browser --format=iife --target=es2020 --legal-comments=linked --banner:js='var setTimeout = function (callback, milliseconds) { return birc.setTimeout(callback, milliseconds); };' --outfile=hash/birc-hash.js && node hash/scripts/normalize-legal-comments.js",
-    "test": "npm run build:hash && node --test"
+    "build:text-effects-previews": "node text-effects/scripts/generate-readme-previews.js",
+    "test": "npm run build:hash && npm run build:text-effects-previews && node --test"
   },
   "dependencies": {
     "bcryptjs": "3.0.3",

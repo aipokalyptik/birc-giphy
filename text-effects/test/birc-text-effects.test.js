@@ -330,3 +330,84 @@ test("load event announces the help command", () => {
         "[Text effects] Loaded. Run /text help for effects and examples."
     ]);
 });
+
+test("README previews cover every effect option on light and dark backgrounds", () => {
+    const requiredPreviewTerms = [
+        "Leet · light",
+        "Leet · classic",
+        "Leet · extreme",
+        "Alternating",
+        "Mock · alias of alternating",
+        "Reverse",
+        "Upside down",
+        "Clap",
+        "Fullwidth",
+        "Vaporwave",
+        "Circled",
+        "Small capitals",
+        "Regional indicators",
+        "Mathematical bold",
+        "Mathematical italic",
+        "Mathematical monospace",
+        "Zalgo · low",
+        "Zalgo · medium",
+        "Zalgo · high",
+        "Rainbow command alias",
+        "Fire",
+        "Ocean",
+        "Catppuccin",
+        "Dracula",
+        "Nord",
+        "Foreground 00",
+        "Foreground 15",
+        "Background 00",
+        "Background 15",
+        "Bold",
+        "Italic",
+        "Underline",
+        "Strikethrough",
+        "ANSI · black",
+        "ANSI · white",
+        "Unicode box",
+        "Block · simple (default)",
+        "ASCII · alias of block",
+        "Block · mini",
+        "Block · small",
+        "Solid blocks · simple",
+        "Solid blocks · mini",
+        "Solid blocks · small"
+    ];
+
+    for (const themeName of ["light", "dark"]) {
+        const previewSource = fs.readFileSync(
+            path.join(
+                __dirname,
+                "..",
+                "previews",
+                "text-effects-" + themeName + ".svg"
+            ),
+            "utf8"
+        );
+
+        for (const requiredTerm of requiredPreviewTerms) {
+            assert.equal(
+                previewSource.includes(requiredTerm),
+                true,
+                themeName + " preview is missing " + requiredTerm
+            );
+        }
+
+        assert.equal(
+            (previewSource.match(/<clipPath /g) || []).length,
+            78,
+            themeName + " preview must clip every individual example"
+        );
+        assert.match(
+            previewSource,
+            new RegExp(
+                "Zalgo · high[\\s\\S]+?<clipPath[\\s\\S]+?" +
+                'clip-path="url\\(#output-clip-'
+            )
+        );
+    }
+});
