@@ -60,8 +60,10 @@ defaults, preview behavior, storage, API-key handling, and proxy behavior.
 Changes to the script's user-facing behavior must update this help output and
 its contract test in the same change.
 
-The selected GIF is sent to the conversation where the search began. This
-prevents a later window change from accidentally sending it somewhere else.
+By default, `/gif send` and `/gif more` are valid only on the same network and
+in the same conversation where the search began. This prevents a result from
+one channel, query, or network from being used in another. Set the context
+policy to `anywhere` only when cross-conversation result use is intentional.
 Search terms are limited to the 50 characters accepted by GIPHY.
 
 ## Configuration
@@ -70,6 +72,7 @@ Search terms are limited to the 50 characters accepted by GIPHY.
 /gif config key <key>
 /gif config rating <g|pg|pg-13|r>
 /gif config results <1-10>
+/gif config context <strict|anywhere>
 /gif config show
 /gif config test
 /gif config clear key
@@ -80,19 +83,23 @@ Defaults:
 
 - Content rating: `pg-13`
 - Results per search: `3`
+- Search context policy: `strict`
 
 `config key` and `config test` require a non-empty key. `config rating` accepts
 only the four listed ratings, and `config results` accepts whole numbers from
 1 through 10. `config show` masks the key. `config clear key` preserves other
-preferences; `config clear all` restores every default.
+preferences; `config context` selects `strict` or `anywhere`; `config clear
+all` restores every default.
 
 ## Complete command reference
 
 - `/gif <terms>` starts a search, replaces prior results, and prints numbered
   titles plus HTTPS preview URLs locally.
 - `/gif send <number>` sends that current result to the conversation where
-  the search began.
-- `/gif more` fetches the next page and replaces the numbered result set.
+  the search began. In the default `strict` mode, run it from that same
+  network and conversation.
+- `/gif more` fetches the next page and replaces the numbered result set. It
+  has the same context requirement in `strict` mode.
 - `/gif random <terms>` immediately sends a random matching GIF to the active
   conversation.
 - `/gif cancel` discards the active query, offset, target, and results.
@@ -104,6 +111,7 @@ Complete workflow:
 /gif config key YOUR_GIPHY_API_KEY
 /gif config rating pg
 /gif config results 5
+/gif config context strict
 /gif config test
 /gif excited penguin
 /gif send 2
@@ -113,6 +121,7 @@ Inspection and reset:
 
 ```text
 /gif config show
+/gif config context anywhere
 /gif config clear key
 /gif config clear all
 ```

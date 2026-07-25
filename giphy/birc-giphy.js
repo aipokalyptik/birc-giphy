@@ -22,12 +22,15 @@
     var STORE_KEY_API_KEY = "configuration.apiKey";
     var STORE_KEY_CONTENT_RATING = "configuration.contentRating";
     var STORE_KEY_RESULT_COUNT = "configuration.resultCount";
+    var STORE_KEY_CONTEXT_POLICY = "configuration.contextPolicy";
+    var CONTEXT_POLICY_STRICT = "strict";
+    var CONTEXT_POLICY_ANYWHERE = "anywhere";
 
     var currentSearch = {
         query: "",
         nextOffset: 0,
         results: [],
-        target: null
+        context: null
     };
 
     /*
@@ -93,6 +96,16 @@
         return numericResultCount;
     }
 
+    function getConfiguredContextPolicy() {
+        var storedContextPolicy = birc.store.get(STORE_KEY_CONTEXT_POLICY);
+
+        if (storedContextPolicy === CONTEXT_POLICY_ANYWHERE) {
+            return CONTEXT_POLICY_ANYWHERE;
+        }
+
+        return CONTEXT_POLICY_STRICT;
+    }
+
     function isAllowedContentRating(contentRating) {
         switch (contentRating) {
             case "g":
@@ -124,6 +137,62 @@
         }
 
         return "";
+    }
+
+    /*
+     * A search belongs to the network and conversation where it was started.
+     * Keeping both values prevents identically named channels on two networks
+     * from sharing a result set.
+     */
+    function getCommandContext(commandEvent) {
+        var network = "";
+
+        if (commandEvent) {
+            if (typeof commandEvent.network === "string") {
+                network = commandEvent.network;
+            }
+        }
+
+        return {
+            network: network,
+            target: getCommandTarget(commandEvent)
+        };
+    }
+
+    function commandContextMatchesSearch(commandEvent) {
+        var commandContext;
+
+        if (getConfiguredContextPolicy() === CONTEXT_POLICY_ANYWHERE) {
+            return true;
+        }
+
+        if (currentSearch.context === null) {
+            return false;
+        }
+
+        commandContext = getCommandContext(commandEvent);
+
+        if (commandContext.network !== currentSearch.context.network) {
+            return false;
+        }
+
+        if (commandContext.target !== currentSearch.context.target) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function requireMatchingSearchContext(commandEvent) {
+        if (commandContextMatchesSearch(commandEvent)) {
+            return true;
+        }
+
+        printGiphyStatus(
+            "The current results belong to another conversation. " +
+            "Run a search here, or use /gif config context anywhere to allow cross-conversation use."
+        );
+        return false;
     }
 
     function splitFirstWord(input) {
@@ -406,7 +475,7 @@
         printGiphyStatus("Use /gif send <number>, /gif more, or /gif cancel.");
     }
 
-    function searchGiphy(query, target, offset) {
+    function searchGiphy(query, context, offset) {
         var apiKey = getConfiguredApiKey();
         var contentRating = getConfiguredContentRating();
         var resultCount = getConfiguredResultCount();
@@ -446,7 +515,7 @@
             currentSearch.query = query;
             currentSearch.nextOffset = interpretedResponse.value.nextOffset;
             currentSearch.results = interpretedResponse.value.items;
-            currentSearch.target = target;
+            currentSearch.context = context;
 
             printSearchResults(query, currentSearch.results);
         }).catch(function handleGiphySearchFetchFailure(error) {
@@ -459,10 +528,14 @@
         var selectionNumber = Number(selectionText);
         var resultIndex;
         var selectedResult;
-        var target = currentSearch.target;
+        var target;
 
         if (currentSearch.results.length === 0) {
             printGiphyStatus("There are no current results. Run /gif <search terms> first.");
+            return;
+        }
+
+        if (!requireMatchingSearchContext(commandEvent)) {
             return;
         }
 
@@ -478,13 +551,7 @@
             return;
         }
 
-        if (typeof target !== "string") {
-            target = "";
-        }
-
-        if (target.length === 0) {
-            target = getCommandTarget(commandEvent);
-        }
+        target = currentSearch.context.target;
 
         if (target.length === 0) {
             printGiphyStatus("Open a channel or query before sending a GIF.");
@@ -553,6 +620,7 @@
         printGiphyStatus("API key: " + displayedApiKey);
         printGiphyStatus("Content rating: " + getConfiguredContentRating());
         printGiphyStatus("Results per search: " + getConfiguredResultCount());
+        printGiphyStatus("Search context policy: " + getConfiguredContextPolicy());
     }
 
     function configureApiKey(apiKey) {
@@ -600,6 +668,21 @@
         printGiphyStatus("Results per search saved as " + resultCount + ".");
     }
 
+    function configureContextPolicy(contextPolicy) {
+        var normalizedContextPolicy = contextPolicy.toLowerCase();
+
+        if (
+            normalizedContextPolicy !== CONTEXT_POLICY_STRICT &&
+            normalizedContextPolicy !== CONTEXT_POLICY_ANYWHERE
+        ) {
+            printGiphyStatus("Context policy must be strict or anywhere.");
+            return;
+        }
+
+        birc.store.set(STORE_KEY_CONTEXT_POLICY, normalizedContextPolicy);
+        printGiphyStatus("Search context policy saved as " + normalizedContextPolicy + ".");
+    }
+
     function testConfiguredApiKey() {
         var apiKey = getConfiguredApiKey();
         var testUrl;
@@ -637,6 +720,7 @@
                 birc.store.delete(STORE_KEY_API_KEY);
                 birc.store.delete(STORE_KEY_CONTENT_RATING);
                 birc.store.delete(STORE_KEY_RESULT_COUNT);
+                birc.store.delete(STORE_KEY_CONTEXT_POLICY);
                 printGiphyStatus("All GIPHY configuration was deleted.");
                 return;
             default:
@@ -660,6 +744,9 @@
             case "results":
                 configureResultCount(configurationValue);
                 return;
+            case "context":
+                configureContextPolicy(configurationValue);
+                return;
             case "show":
                 showConfiguration();
                 return;
@@ -670,7 +757,7 @@
                 clearConfiguration(configurationValue.toLowerCase());
                 return;
             default:
-                printGiphyStatus("Configuration commands: key, rating, results, show, test, clear.");
+                printGiphyStatus("Configuration commands: key, rating, results, context, show, test, clear.");
                 return;
         }
     }
@@ -684,8 +771,8 @@
         printGiphyStatus("4. Verify it with /gif config test");
         printGiphyStatus("SEARCH AND SEND");
         printGiphyStatus("/gif <terms> — search GIPHY and preview numbered results locally");
-        printGiphyStatus("/gif send <number> — send one result to the conversation where the search began");
-        printGiphyStatus("/gif more — replace the current results with the next page");
+        printGiphyStatus("/gif send <number> — send one result; strict mode requires the search conversation");
+        printGiphyStatus("/gif more — fetch the next page; strict mode requires the search conversation");
         printGiphyStatus("/gif random <terms> — immediately send a random matching GIF");
         printGiphyStatus("/gif cancel — discard the current results");
         printGiphyStatus("/gif help — print this complete guide");
@@ -699,11 +786,12 @@
         printGiphyStatus("/gif config key <key> — persist the GIPHY API key");
         printGiphyStatus("/gif config rating <g|pg|pg-13|r> — set the content ceiling; default pg-13");
         printGiphyStatus("/gif config results <1-10> — set previews per page; default 3");
+        printGiphyStatus("/gif config context <strict|anywhere> — restrict result use to its search context; default strict");
         printGiphyStatus("/gif config show — show configuration with the API key masked");
         printGiphyStatus("/gif config test — verify the stored key and HTTPS access");
         printGiphyStatus("/gif config clear key — delete only the stored API key");
         printGiphyStatus("/gif config clear all — restore every setting to its default");
-        printGiphyStatus("Configuration examples: /gif config rating pg; /gif config results 5; /gif config show");
+        printGiphyStatus("Configuration examples: /gif config rating pg; /gif config results 5; /gif config context strict");
         printGiphyStatus("NOTES");
         printGiphyStatus("Search terms are limited to 50 characters and are sent to GIPHY.");
         printGiphyStatus("Enable inline images in bIRC to see animated previews.");
@@ -717,7 +805,7 @@
         var commandArguments = splitFirstWord(argumentsText);
         var action = commandArguments.word.toLowerCase();
         var actionArguments = commandArguments.remainder;
-        var target = getCommandTarget(commandEvent);
+        var commandContext = getCommandContext(commandEvent);
 
         if (argumentsText.trim().length === 0) {
             showGiphyHelp();
@@ -737,7 +825,11 @@
                     return;
                 }
 
-                searchGiphy(currentSearch.query, currentSearch.target, currentSearch.nextOffset);
+                if (!requireMatchingSearchContext(commandEvent)) {
+                    return;
+                }
+
+                searchGiphy(currentSearch.query, currentSearch.context, currentSearch.nextOffset);
                 return;
             case "random":
                 sendRandomGif(actionArguments, commandEvent);
@@ -746,14 +838,14 @@
                 currentSearch.query = "";
                 currentSearch.nextOffset = 0;
                 currentSearch.results = [];
-                currentSearch.target = null;
+                currentSearch.context = null;
                 printGiphyStatus("The current GIF results were discarded.");
                 return;
             case "help":
                 showGiphyHelp();
                 return;
             default:
-                searchGiphy(argumentsText.trim(), target, 0);
+                searchGiphy(argumentsText.trim(), commandContext, 0);
                 return;
         }
     }

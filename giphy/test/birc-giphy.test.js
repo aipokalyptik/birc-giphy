@@ -170,6 +170,7 @@ test("search prints an HTTPS media preview and send posts the selected GIF", asy
     });
 
     harness.runGifCommand("excited penguin", {
+        network: "libera",
         target: "#penguins"
     });
     await flushPromiseCallbacks();
@@ -188,7 +189,71 @@ test("search prints an HTTPS media preview and send posts the selected GIF", asy
     );
 
     harness.runGifCommand("send 1", {
-        target: "#different-channel"
+        network: "libera",
+        target: "#penguins"
+    });
+
+    assert.deepEqual(harness.sentMessages, [
+        {
+            target: "#penguins",
+            text: "https://media.giphy.com/media/example/giphy.gif"
+        }
+    ]);
+});
+
+test("send and more reject results from another network or conversation", async () => {
+    const harness = createScriptHarness();
+    let fetchCount = 0;
+
+    harness.runGifCommand("config key abcdefghijklmnop");
+    harness.setFetchImplementation(() => {
+        fetchCount += 1;
+        return Promise.resolve(successfulSearchResponse());
+    });
+
+    harness.runGifCommand("excited penguin", {
+        network: "libera",
+        target: "#penguins"
+    });
+    await flushPromiseCallbacks();
+
+    harness.runGifCommand("send 1", {
+        network: "libera",
+        target: "#otters"
+    });
+    harness.runGifCommand("more", {
+        network: "other-network",
+        target: "#penguins"
+    });
+
+    assert.deepEqual(harness.sentMessages, []);
+    assert.equal(fetchCount, 1);
+    assert.equal(
+        harness.printedLines.filter((line) => {
+            return line.includes("current results belong to another conversation");
+        }).length,
+        2
+    );
+});
+
+test("anywhere context policy permits cross-conversation result use", async () => {
+    const harness = createScriptHarness();
+
+    harness.runGifCommand("config key abcdefghijklmnop");
+    harness.runGifCommand("config context anywhere");
+    harness.setFetchImplementation(() => {
+        return Promise.resolve(successfulSearchResponse());
+    });
+
+    harness.runGifCommand("excited penguin", {
+        network: "libera",
+        target: "#penguins"
+    });
+    await flushPromiseCallbacks();
+
+    harness.runGifCommand("send 1", {
+        network: "other-network",
+        target: "#otters"
     });
 
     assert.deepEqual(harness.sentMessages, [
@@ -265,6 +330,7 @@ test("clearing all configuration removes every persisted setting", () => {
     harness.runGifCommand("config key abcdefghijklmnop");
     harness.runGifCommand("config rating pg");
     harness.runGifCommand("config results 5");
+    harness.runGifCommand("config context anywhere");
     harness.runGifCommand("config clear all");
 
     assert.equal(harness.storedValues.size, 0);
@@ -294,6 +360,7 @@ test("help documents setup every command defaults and operational cautions", () 
     assert.equal(completeHelp.includes("/gif config key <key>"), true);
     assert.equal(completeHelp.includes("/gif config rating <g|pg|pg-13|r>"), true);
     assert.equal(completeHelp.includes("/gif config results <1-10>"), true);
+    assert.equal(completeHelp.includes("/gif config context <strict|anywhere>"), true);
     assert.equal(completeHelp.includes("/gif config show"), true);
     assert.equal(completeHelp.includes("/gif config test"), true);
     assert.equal(completeHelp.includes("/gif config clear key"), true);

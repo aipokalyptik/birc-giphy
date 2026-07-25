@@ -14,6 +14,10 @@ independently through bIRC's Scripts window (`⌘⌥S`).
   binary, text, web, email, and international-domain formats.
 - [Hash Utilities](hash/README.md) — calculate checksums, message digests,
   HMACs, and interoperable legacy password-hash formats locally.
+- [Text Effects](text-effects/README.md) — create leetspeak, Zalgo, Unicode
+  novelty text, IRC colors, ANSI notation, and compact block lettering.
+- [Vim Colorscheme Adaptations](colorschemes/README.md) — importable bIRC
+  palettes derived from classic and popular Vim and Neovim themes.
 
 Each subdirectory contains the importable `.js` file and its complete usage,
 configuration, and security notes.

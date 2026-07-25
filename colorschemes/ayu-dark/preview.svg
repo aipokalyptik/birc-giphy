@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="260" viewBox="0 0 640 260" role="img" aria-labelledby="title description">
+  <title id="title">Ayu Dark bIRC colorscheme preview</title>
+  <description id="description">Example chat window using the adapted background, text, and accent colors.</description>
+  <rect width="640" height="260" rx="12" fill="#0a0e14"/>
+  <rect width="640" height="38" rx="12" fill="#ffb454"/>
+  <rect y="26" width="640" height="12" fill="#ffb454"/>
+  <circle cx="22" cy="19" r="6" fill="#0a0e14" opacity="0.72"/>
+  <circle cx="42" cy="19" r="6" fill="#b3b1ad" opacity="0.72"/>
+  <text x="320" y="25" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="14" font-weight="700" fill="#0a0e14">Ayu Dark</text>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">
+    <text x="22" y="72" fill="#ffb454" font-weight="700">#developers</text>
+    <text x="22" y="105" fill="#ffb454">12:41  &lt;Ada&gt;</text>
+    <text x="164" y="105" fill="#b3b1ad">The new build is ready to test.</text>
+    <text x="22" y="137" fill="#ffb454">12:42  &lt;Lin&gt;</text>
+    <text x="164" y="137" fill="#b3b1ad">Looks good — shipping it now.</text>
+    <text x="22" y="169" fill="#ffb454">12:43  *</text>
+    <text x="111" y="169" fill="#b3b1ad">Ada tags @Lin in the release note.</text>
+  </g>
+  <rect x="22" y="202" width="596" height="36" rx="6" fill="#b3b1ad" opacity="0.09"/>
+  <text x="36" y="225" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#b3b1ad">Message #developers</text>
+  <rect x="496" y="202" width="122" height="36" rx="6" fill="#ffb454"/>
+  <text x="557" y="225" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700" fill="#0a0e14">Send</text>
+</svg>
