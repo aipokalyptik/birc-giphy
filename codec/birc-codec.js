@@ -19,6 +19,9 @@
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     var HEXADECIMAL_ALPHABET = "0123456789ABCDEF";
     var MAXIMUM_INPUT_LENGTH = 4096;
+    var MAXIMUM_PHP_SERIALIZATION_DEPTH = 64;
+    var MAXIMUM_PHP_SERIALIZATION_ITEMS = 1000;
+    var MAXIMUM_PHP_STRING_BYTE_LENGTH = MAXIMUM_INPUT_LENGTH * 4;
     var PUNYCODE_BASE = 36;
     var PUNYCODE_DAMP = 700;
     var PUNYCODE_DELIMITER = "-";
@@ -1612,6 +1615,726 @@
         return successfulCodecResult(outputLabels.join("."));
     }
 
+    function phpParserReadExpectedAscii(parser, expectedText) {
+        var characterIndex;
+
+        for (
+            characterIndex = 0;
+            characterIndex < expectedText.length;
+            characterIndex += 1
+        ) {
+            if (parser.index >= parser.bytes.length) {
+                return failedCodecResult(
+                    "PHP serialized data ended while reading '" +
+                        expectedText +
+                        "'."
+                );
+            }
+
+            if (
+                parser.bytes[parser.index] !==
+                expectedText.charCodeAt(characterIndex)
+            ) {
+                return failedCodecResult(
+                    "PHP serialized data expected '" +
+                        expectedText +
+                        "' at byte " +
+                        parser.index +
+                        "."
+                );
+            }
+
+            parser.index += 1;
+        }
+
+        return successfulCodecResult("");
+    }
+
+    function phpParserReadAsciiUntil(parser, delimiterCharacter) {
+        var characterCode;
+        var output = "";
+
+        while (parser.index < parser.bytes.length) {
+            characterCode = parser.bytes[parser.index];
+            parser.index += 1;
+
+            if (characterCode === delimiterCharacter.charCodeAt(0)) {
+                return successfulCodecResult(output);
+            }
+
+            if (characterCode > 0x7F) {
+                return failedCodecResult(
+                    "PHP serialized syntax contains a non-ASCII byte at byte " +
+                        (parser.index - 1) +
+                        "."
+                );
+            }
+
+            output += String.fromCharCode(characterCode);
+        }
+
+        return failedCodecResult(
+            "PHP serialized data is missing '" + delimiterCharacter + "'."
+        );
+    }
+
+    function parsePhpNonNegativeCount(parser, countName, maximumValue) {
+        var countResult = phpParserReadAsciiUntil(parser, ":");
+        var countValue;
+
+        if (!countResult.succeeded) {
+            return countResult;
+        }
+
+        if (!/^\d+$/.test(countResult.value)) {
+            return failedCodecResult(
+                "PHP serialized " + countName + " must be a non-negative integer."
+            );
+        }
+
+        countValue = Number(countResult.value);
+
+        if (!Number.isSafeInteger(countValue)) {
+            return failedCodecResult(
+                "PHP serialized " + countName + " exceeds JavaScript's safe range."
+            );
+        }
+
+        if (countValue > maximumValue) {
+            return failedCodecResult(
+                "PHP serialized " +
+                    countName +
+                    " exceeds the " +
+                    maximumValue +
+                    " limit."
+            );
+        }
+
+        return successfulCodecResult(countValue);
+    }
+
+    function parsePhpSerializedStringAfterType(parser) {
+        var byteLengthResult;
+        var closingResult;
+        var stringBytes;
+        var stringResult;
+
+        byteLengthResult = parsePhpNonNegativeCount(
+            parser,
+            "string byte length",
+            MAXIMUM_PHP_STRING_BYTE_LENGTH
+        );
+
+        if (!byteLengthResult.succeeded) {
+            return byteLengthResult;
+        }
+
+        closingResult = phpParserReadExpectedAscii(parser, "\"");
+
+        if (!closingResult.succeeded) {
+            return closingResult;
+        }
+
+        if (parser.index + byteLengthResult.value > parser.bytes.length) {
+            return failedCodecResult(
+                "PHP serialized string byte length exceeds the remaining input."
+            );
+        }
+
+        stringBytes = parser.bytes.slice(
+            parser.index,
+            parser.index + byteLengthResult.value
+        );
+        parser.index += byteLengthResult.value;
+
+        closingResult = phpParserReadExpectedAscii(parser, "\";");
+
+        if (!closingResult.succeeded) {
+            return closingResult;
+        }
+
+        stringResult = utf8BytesToText(stringBytes);
+
+        if (!stringResult.succeeded) {
+            return failedCodecResult(
+                "PHP serialized string is not valid UTF-8: " +
+                    stringResult.error
+            );
+        }
+
+        return stringResult;
+    }
+
+    function parsePhpSerializedArrayKey(parser, depth) {
+        var keyResult = parsePhpSerializedValue(parser, depth);
+
+        if (!keyResult.succeeded) {
+            return keyResult;
+        }
+
+        if (typeof keyResult.value === "string") {
+            return keyResult;
+        }
+
+        if (typeof keyResult.value === "number") {
+            if (Number.isSafeInteger(keyResult.value)) {
+                return keyResult;
+            }
+        }
+
+        return failedCodecResult(
+            "PHP serialized array keys must be integers or strings."
+        );
+    }
+
+    function phpObjectHasOwnProperty(objectValue, propertyName) {
+        return Object.prototype.hasOwnProperty.call(objectValue, propertyName);
+    }
+
+    function normalizePhpObjectPropertyName(propertyName) {
+        var finalNullIndex = propertyName.lastIndexOf("\u0000");
+
+        if (finalNullIndex === -1) {
+            return propertyName;
+        }
+
+        return propertyName.slice(finalNullIndex + 1);
+    }
+
+    function parsePhpSerializedMembers(
+        parser,
+        memberCount,
+        depth,
+        objectProperties
+    ) {
+        var arrayIsSequential = true;
+        var arrayValues = [];
+        var keyResult;
+        var memberIndex;
+        var normalizedPropertyName;
+        var objectValue = Object.create(null);
+        var valueResult;
+
+        for (memberIndex = 0; memberIndex < memberCount; memberIndex += 1) {
+            keyResult = parsePhpSerializedArrayKey(parser, depth + 1);
+
+            if (!keyResult.succeeded) {
+                return keyResult;
+            }
+
+            valueResult = parsePhpSerializedValue(parser, depth + 1);
+
+            if (!valueResult.succeeded) {
+                return valueResult;
+            }
+
+            normalizedPropertyName = String(keyResult.value);
+
+            if (objectProperties) {
+                normalizedPropertyName = normalizePhpObjectPropertyName(
+                    normalizedPropertyName
+                );
+            }
+
+            if (
+                phpObjectHasOwnProperty(
+                    objectValue,
+                    normalizedPropertyName
+                )
+            ) {
+                return failedCodecResult(
+                    "PHP serialized members collapse to the duplicate JSON key '" +
+                        normalizedPropertyName +
+                        "'."
+                );
+            }
+
+            objectValue[normalizedPropertyName] = valueResult.value;
+
+            if (keyResult.value !== memberIndex) {
+                arrayIsSequential = false;
+            }
+
+            arrayValues.push(valueResult.value);
+        }
+
+        if (objectProperties) {
+            return successfulCodecResult(objectValue);
+        }
+
+        if (arrayIsSequential) {
+            return successfulCodecResult(arrayValues);
+        }
+
+        return successfulCodecResult(objectValue);
+    }
+
+    function parsePhpSerializedArrayAfterType(parser, depth) {
+        var closingResult;
+        var memberCountResult = parsePhpNonNegativeCount(
+            parser,
+            "array member count",
+            MAXIMUM_PHP_SERIALIZATION_ITEMS
+        );
+        var memberResult;
+
+        if (!memberCountResult.succeeded) {
+            return memberCountResult;
+        }
+
+        closingResult = phpParserReadExpectedAscii(parser, "{");
+
+        if (!closingResult.succeeded) {
+            return closingResult;
+        }
+
+        memberResult = parsePhpSerializedMembers(
+            parser,
+            memberCountResult.value,
+            depth,
+            false
+        );
+
+        if (!memberResult.succeeded) {
+            return memberResult;
+        }
+
+        closingResult = phpParserReadExpectedAscii(parser, "}");
+
+        if (!closingResult.succeeded) {
+            return closingResult;
+        }
+
+        return memberResult;
+    }
+
+    function parsePhpSerializedObjectAfterType(parser, depth) {
+        var classByteLengthResult = parsePhpNonNegativeCount(
+            parser,
+            "object class-name byte length",
+            MAXIMUM_PHP_STRING_BYTE_LENGTH
+        );
+        var classNameBytes;
+        var classNameResult;
+        var closingResult;
+        var memberCountResult;
+        var memberResult;
+
+        if (!classByteLengthResult.succeeded) {
+            return classByteLengthResult;
+        }
+
+        closingResult = phpParserReadExpectedAscii(parser, "\"");
+
+        if (!closingResult.succeeded) {
+            return closingResult;
+        }
+
+        if (parser.index + classByteLengthResult.value > parser.bytes.length) {
+            return failedCodecResult(
+                "PHP object class-name byte length exceeds the remaining input."
+            );
+        }
+
+        classNameBytes = parser.bytes.slice(
+            parser.index,
+            parser.index + classByteLengthResult.value
+        );
+        parser.index += classByteLengthResult.value;
+        classNameResult = utf8BytesToText(classNameBytes);
+
+        if (!classNameResult.succeeded) {
+            return failedCodecResult(
+                "PHP object class name is not valid UTF-8."
+            );
+        }
+
+        closingResult = phpParserReadExpectedAscii(parser, "\":");
+
+        if (!closingResult.succeeded) {
+            return closingResult;
+        }
+
+        memberCountResult = parsePhpNonNegativeCount(
+            parser,
+            "object property count",
+            MAXIMUM_PHP_SERIALIZATION_ITEMS
+        );
+
+        if (!memberCountResult.succeeded) {
+            return memberCountResult;
+        }
+
+        closingResult = phpParserReadExpectedAscii(parser, "{");
+
+        if (!closingResult.succeeded) {
+            return closingResult;
+        }
+
+        memberResult = parsePhpSerializedMembers(
+            parser,
+            memberCountResult.value,
+            depth,
+            true
+        );
+
+        if (!memberResult.succeeded) {
+            return memberResult;
+        }
+
+        closingResult = phpParserReadExpectedAscii(parser, "}");
+
+        if (!closingResult.succeeded) {
+            return closingResult;
+        }
+
+        return memberResult;
+    }
+
+    function parsePhpSerializedValue(parser, depth) {
+        var numericResult;
+        var numericText;
+        var separatorResult;
+        var typeCharacter;
+
+        if (depth > MAXIMUM_PHP_SERIALIZATION_DEPTH) {
+            return failedCodecResult(
+                "PHP serialized data exceeds the " +
+                    MAXIMUM_PHP_SERIALIZATION_DEPTH +
+                    "-level nesting limit."
+            );
+        }
+
+        if (parser.index >= parser.bytes.length) {
+            return failedCodecResult(
+                "PHP serialized data ended before the next value."
+            );
+        }
+
+        typeCharacter = String.fromCharCode(parser.bytes[parser.index]);
+        parser.index += 1;
+
+        if (typeCharacter === "N") {
+            separatorResult = phpParserReadExpectedAscii(parser, ";");
+
+            if (!separatorResult.succeeded) {
+                return separatorResult;
+            }
+
+            return successfulCodecResult(null);
+        }
+
+        separatorResult = phpParserReadExpectedAscii(parser, ":");
+
+        if (!separatorResult.succeeded) {
+            return separatorResult;
+        }
+
+        switch (typeCharacter) {
+            case "b":
+                numericResult = phpParserReadAsciiUntil(parser, ";");
+
+                if (!numericResult.succeeded) {
+                    return numericResult;
+                }
+
+                if (numericResult.value === "0") {
+                    return successfulCodecResult(false);
+                }
+
+                if (numericResult.value === "1") {
+                    return successfulCodecResult(true);
+                }
+
+                return failedCodecResult(
+                    "PHP serialized boolean must be b:0; or b:1;."
+                );
+            case "i":
+                numericResult = phpParserReadAsciiUntil(parser, ";");
+
+                if (!numericResult.succeeded) {
+                    return numericResult;
+                }
+
+                if (!/^-?\d+$/.test(numericResult.value)) {
+                    return failedCodecResult(
+                        "PHP serialized integer syntax is malformed."
+                    );
+                }
+
+                numericText = Number(numericResult.value);
+
+                if (!Number.isSafeInteger(numericText)) {
+                    return failedCodecResult(
+                        "PHP serialized integer exceeds JavaScript's safe integer range."
+                    );
+                }
+
+                return successfulCodecResult(numericText);
+            case "d":
+                numericResult = phpParserReadAsciiUntil(parser, ";");
+
+                if (!numericResult.succeeded) {
+                    return numericResult;
+                }
+
+                if (numericResult.value.trim().length === 0) {
+                    return failedCodecResult(
+                        "PHP serialized float syntax is malformed."
+                    );
+                }
+
+                if (
+                    !/^-?(?:\d+(?:\.\d*)?|\.\d+)(?:[Ee][+-]?\d+)?$/.test(
+                        numericResult.value
+                    )
+                ) {
+                    if (numericResult.value === "NAN") {
+                        return failedCodecResult(
+                            "PHP NAN and infinity cannot be represented in JSON."
+                        );
+                    }
+
+                    if (numericResult.value === "INF") {
+                        return failedCodecResult(
+                            "PHP NAN and infinity cannot be represented in JSON."
+                        );
+                    }
+
+                    if (numericResult.value === "-INF") {
+                        return failedCodecResult(
+                            "PHP NAN and infinity cannot be represented in JSON."
+                        );
+                    }
+
+                    return failedCodecResult(
+                        "PHP serialized float syntax is malformed."
+                    );
+                }
+
+                numericText = Number(numericResult.value);
+
+                if (!Number.isFinite(numericText)) {
+                    return failedCodecResult(
+                        "PHP NAN and infinity cannot be represented in JSON."
+                    );
+                }
+
+                return successfulCodecResult(numericText);
+            case "s":
+                return parsePhpSerializedStringAfterType(parser);
+            case "a":
+                return parsePhpSerializedArrayAfterType(parser, depth);
+            case "O":
+                return parsePhpSerializedObjectAfterType(parser, depth);
+            case "R":
+            case "r":
+                return failedCodecResult(
+                    "PHP serialized references cannot be represented faithfully in JSON."
+                );
+            case "C":
+                return failedCodecResult(
+                    "PHP custom-serialized objects are not supported."
+                );
+            case "E":
+                return failedCodecResult(
+                    "PHP enum serialization is not supported."
+                );
+            default:
+                return failedCodecResult(
+                    "Unsupported PHP serialized type '" + typeCharacter + "'."
+                );
+        }
+    }
+
+    function decodePhpSerializationToJson(input) {
+        var byteResult = utf8TextToBytes(input);
+        var jsonText;
+        var parser;
+        var valueResult;
+
+        if (!byteResult.succeeded) {
+            return byteResult;
+        }
+
+        parser = {
+            bytes: byteResult.value,
+            index: 0
+        };
+        valueResult = parsePhpSerializedValue(parser, 0);
+
+        if (!valueResult.succeeded) {
+            return valueResult;
+        }
+
+        if (parser.index !== parser.bytes.length) {
+            return failedCodecResult(
+                "PHP serialized data has trailing bytes after the first value."
+            );
+        }
+
+        try {
+            jsonText = JSON.stringify(valueResult.value);
+        } catch (error) {
+            return failedCodecResult(
+                "Decoded PHP value could not be represented as JSON."
+            );
+        }
+
+        return successfulCodecResult(jsonText);
+    }
+
+    function serializePhpString(value) {
+        var byteResult = utf8TextToBytes(value);
+
+        if (!byteResult.succeeded) {
+            return byteResult;
+        }
+
+        return successfulCodecResult(
+            "s:" +
+                byteResult.value.length +
+                ":\"" +
+                value +
+                "\";"
+        );
+    }
+
+    function serializeJsonValueToPhp(value, depth) {
+        var elementIndex;
+        var encodedKeyResult;
+        var encodedValueResult;
+        var objectKeys;
+        var output;
+
+        if (depth > MAXIMUM_PHP_SERIALIZATION_DEPTH) {
+            return failedCodecResult(
+                "JSON exceeds the " +
+                    MAXIMUM_PHP_SERIALIZATION_DEPTH +
+                    "-level nesting limit."
+            );
+        }
+
+        if (value === null) {
+            return successfulCodecResult("N;");
+        }
+
+        switch (typeof value) {
+            case "boolean":
+                if (value) {
+                    return successfulCodecResult("b:1;");
+                }
+
+                return successfulCodecResult("b:0;");
+            case "number":
+                if (!Number.isFinite(value)) {
+                    return failedCodecResult(
+                        "JSON number cannot be serialized as a finite PHP number."
+                    );
+                }
+
+                if (Number.isInteger(value)) {
+                    if (!Number.isSafeInteger(value)) {
+                        return failedCodecResult(
+                            "JSON integer exceeds JavaScript's safe integer range."
+                        );
+                    }
+
+                    return successfulCodecResult("i:" + value + ";");
+                }
+
+                return successfulCodecResult("d:" + String(value) + ";");
+            case "string":
+                return serializePhpString(value);
+            case "object":
+                break;
+            default:
+                return failedCodecResult(
+                    "JSON value has an unsupported JavaScript type."
+                );
+        }
+
+        if (Array.isArray(value)) {
+            if (value.length > MAXIMUM_PHP_SERIALIZATION_ITEMS) {
+                return failedCodecResult(
+                    "JSON array exceeds the " +
+                        MAXIMUM_PHP_SERIALIZATION_ITEMS +
+                        "-item limit."
+                );
+            }
+
+            output = "a:" + value.length + ":{";
+
+            for (elementIndex = 0; elementIndex < value.length; elementIndex += 1) {
+                encodedValueResult = serializeJsonValueToPhp(
+                    value[elementIndex],
+                    depth + 1
+                );
+
+                if (!encodedValueResult.succeeded) {
+                    return encodedValueResult;
+                }
+
+                output += "i:" + elementIndex + ";";
+                output += encodedValueResult.value;
+            }
+
+            output += "}";
+
+            return successfulCodecResult(output);
+        }
+
+        objectKeys = Object.keys(value);
+
+        if (objectKeys.length > MAXIMUM_PHP_SERIALIZATION_ITEMS) {
+            return failedCodecResult(
+                "JSON object exceeds the " +
+                    MAXIMUM_PHP_SERIALIZATION_ITEMS +
+                    "-property limit."
+            );
+        }
+
+        output = "O:8:\"stdClass\":" + objectKeys.length + ":{";
+
+        for (elementIndex = 0; elementIndex < objectKeys.length; elementIndex += 1) {
+            encodedKeyResult = serializePhpString(objectKeys[elementIndex]);
+
+            if (!encodedKeyResult.succeeded) {
+                return encodedKeyResult;
+            }
+
+            encodedValueResult = serializeJsonValueToPhp(
+                value[objectKeys[elementIndex]],
+                depth + 1
+            );
+
+            if (!encodedValueResult.succeeded) {
+                return encodedValueResult;
+            }
+
+            output += encodedKeyResult.value;
+            output += encodedValueResult.value;
+        }
+
+        output += "}";
+
+        return successfulCodecResult(output);
+    }
+
+    function encodeJsonAsPhpSerialization(input) {
+        var parsedValue;
+
+        try {
+            parsedValue = JSON.parse(input);
+        } catch (error) {
+            return failedCodecResult(
+                "PHP serialization encode expects valid JSON."
+            );
+        }
+
+        return serializeJsonValueToPhp(parsedValue, 0);
+    }
+
     function encodeTextTransform(formatName, input) {
         switch (formatName) {
             case "url":
@@ -1635,6 +2358,9 @@
                 return encodeMimeWord(input, "Q");
             case "punycode":
                 return transformPunycodeDomain(input, true);
+            case "php-serialize":
+            case "php":
+                return encodeJsonAsPhpSerialization(input);
             default:
                 return convertByteFormats("text", formatName, input);
         }
@@ -1663,6 +2389,9 @@
                 return decodeMimeWord(input);
             case "punycode":
                 return transformPunycodeDomain(input, false);
+            case "php-serialize":
+            case "php":
+                return decodePhpSerializationToJson(input);
             default:
                 return convertByteFormats(formatName, "text", input);
         }
@@ -1732,7 +2461,7 @@
             "Byte formats: text, hex/base16, base32, base64, base64url, base58, binary/bits, bytes/decimal/numbers, integer."
         );
         printCodecStatus(
-            "Text transforms: url/percent, html, json, unicode/codepoints, rot13, quoted-printable/qp, mime-b, mime-q, punycode."
+            "Text transforms: url/percent, html, json, unicode/codepoints, rot13, quoted-printable/qp, mime-b, mime-q, punycode, php-serialize/php."
         );
         printCodecStatus(
             "Base128 is not included because there is no single interoperable Base128 text standard."
@@ -1757,6 +2486,9 @@
         printCodecStatus("/codec convert hex integer FF");
         printCodecStatus("/codec encode punycode münich.example");
         printCodecStatus("/codec encode mime-b Résumé");
+        printCodecStatus(
+            "/codec decode php-serialize a:1:{s:4:\"name\";s:3:\"Ada\";}"
+        );
         printCodecStatus(
             "All operations are local. Malformed encodings fail instead of decoding partially."
         );
@@ -1859,7 +2591,7 @@
             "base58", "binary", "bits", "bytes", "decimal", "integer",
             "url", "percent", "html", "json", "unicode", "codepoints",
             "rot13", "quoted-printable", "qp", "mime-b", "mime-q",
-            "punycode"
+            "punycode", "php-serialize", "php"
         ];
         var completions = [];
         var lowerWord = word.toLowerCase();

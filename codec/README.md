@@ -84,6 +84,7 @@ different contracts and are not silently conflated here.
 - `mime-q` — UTF-8 RFC 2047 Q encoded-word
 - `mime` — decode either supported MIME encoded-word
 - `punycode` — encode or decode each label in a domain name
+- `php-serialize`, `php` — convert between PHP serialized data and JSON
 
 Examples:
 
@@ -95,6 +96,8 @@ Examples:
 /codec encode quoted-printable café
 /codec encode mime-b Résumé
 /codec encode punycode münich.example
+/codec decode php-serialize a:1:{s:4:"name";s:3:"Ada";}
+/codec encode php-serialize {"name":"Ada","active":true}
 ```
 
 Punycode implements the RFC 3492 transformation itself. It does not perform
@@ -105,6 +108,28 @@ MIME encoded-word creation accepts one value whose complete encoded form fits
 the RFC 2047 limit of 75 characters. It reports an error rather than emitting
 an invalid oversized word. Decoding supports one UTF-8 or US-ASCII encoded-word
 at a time.
+
+### PHP serialization and JSON
+
+Decoding `php-serialize` produces compact JSON. It supports PHP nulls,
+booleans, safe integers, finite floats, UTF-8 strings, arrays, and ordinary
+objects. Sequential integer-keyed PHP arrays become JSON arrays; other PHP
+arrays become JSON objects. PHP object class names are discarded. Visibility
+prefixes on private and protected property names are removed, leaving the
+declared property name.
+
+Encoding `php-serialize` expects JSON rather than arbitrary text. JSON arrays
+become PHP arrays and JSON objects become bare `stdClass` objects:
+
+```text
+/codec encode php {"user":"Ada","roles":["admin","editor"]}
+```
+
+PHP references (`R` and `r`), custom-serialized objects (`C`), enums (`E`),
+`NAN`, infinities, invalid UTF-8 strings, and integers outside JavaScript's
+safe integer range are rejected. JSON cannot represent those values faithfully.
+Object types are intentionally not reconstructed, and the decoder never
+instantiates PHP classes or executes PHP hooks.
 
 ## Failure behavior
 

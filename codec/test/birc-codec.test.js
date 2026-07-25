@@ -239,6 +239,80 @@ test("RFC 3492 Punycode examples encode and decode complete domains", () => {
     }
 });
 
+test("PHP serialized scalars and sequential arrays decode to JSON", () => {
+    assert.equal(runOneCodecCommand("decode php N;"), "null");
+    assert.equal(runOneCodecCommand("decode php b:1;"), "true");
+    assert.equal(runOneCodecCommand("decode php i:-42;"), "-42");
+    assert.equal(runOneCodecCommand("decode php d:2.5;"), "2.5");
+    assert.equal(
+        runOneCodecCommand(
+            "decode php a:4:{i:0;s:3:\"Ada\";i:1;i:42;i:2;b:0;i:3;N;}"
+        ),
+        "[\"Ada\",42,false,null]"
+    );
+});
+
+test("PHP associative arrays decode to JSON objects", () => {
+    assert.equal(
+        runOneCodecCommand(
+            "decode php a:2:{s:4:\"name\";s:3:\"Ada\";s:6:\"active\";b:1;}"
+        ),
+        "{\"name\":\"Ada\",\"active\":true}"
+    );
+});
+
+test("PHP object types are discarded and visibility prefixes are removed", () => {
+    const privatePropertyName = "\u0000Example\u0000secret";
+    const protectedPropertyName = "\u0000*\u0000status";
+    const serializedValue =
+        "O:7:\"Example\":3:{" +
+        `s:${privatePropertyName.length}:\"${privatePropertyName}\";s:5:\"quiet\";` +
+        `s:${protectedPropertyName.length}:\"${protectedPropertyName}\";s:6:\"active\";` +
+        "s:4:\"name\";s:5:\"José\";" +
+        "}";
+
+    assert.equal(
+        runOneCodecCommand("decode php " + serializedValue),
+        "{\"secret\":\"quiet\",\"status\":\"active\",\"name\":\"José\"}"
+    );
+});
+
+test("JSON serializes to PHP arrays and bare stdClass objects", () => {
+    assert.equal(
+        runOneCodecCommand(
+            "encode php {\"name\":\"José\",\"active\":true,\"scores\":[1,2.5,null]}"
+        ),
+        "O:8:\"stdClass\":3:{" +
+            "s:4:\"name\";s:5:\"José\";" +
+            "s:6:\"active\";b:1;" +
+            "s:6:\"scores\";a:3:{i:0;i:1;i:1;d:2.5;i:2;N;}" +
+            "}"
+    );
+});
+
+test("PHP serialization rejects values JSON cannot preserve faithfully", () => {
+    assert.equal(
+        runOneCodecCommand("decode php R:1;"),
+        "PHP serialized references cannot be represented faithfully in JSON."
+    );
+    assert.equal(
+        runOneCodecCommand("decode php C:4:\"Test\":0:{}"),
+        "PHP custom-serialized objects are not supported."
+    );
+    assert.equal(
+        runOneCodecCommand("decode php d:NAN;"),
+        "PHP NAN and infinity cannot be represented in JSON."
+    );
+    assert.equal(
+        runOneCodecCommand("decode php i:9007199254740993;"),
+        "PHP serialized integer exceeds JavaScript's safe integer range."
+    );
+    assert.equal(
+        runOneCodecCommand("decode php s:5:\"four\";"),
+        "PHP serialized data expected '\";' at byte 10."
+    );
+});
+
 test("malformed alphabet and syntax input fails visibly", () => {
     assert.equal(
         runOneCodecCommand("decode hex ABC"),
@@ -340,6 +414,7 @@ test("help and formats document the complete public contract", () => {
         "mime-b",
         "mime-q",
         "punycode",
+        "php-serialize",
         "Base128 is not included"
     ];
 
