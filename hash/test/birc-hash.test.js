@@ -36,7 +36,7 @@ const currentUpdateManifest = {
     text: JSON.stringify({
         schemaVersion: 1,
         scripts: {
-            "com.github.aipokalyptik.birc-utils.hash": "1.0.0"
+            "com.github.aipokalyptik.birc-utils.hash": "1.0.1"
         }
     })
 };

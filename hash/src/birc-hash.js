@@ -4,7 +4,7 @@
  * Run `npm run build:hash` to create the standalone ../birc-hash.js import.
  *
  * Script ID: com.github.aipokalyptik.birc-utils.hash
- * Script version: 1.0.0
+ * Script version: 1.0.1
  */
 
 import CryptoJS from "crypto-js/core.js";
@@ -17,15 +17,16 @@ import "crypto-js/sha512.js";
 import "crypto-js/sha384.js";
 import "crypto-js/ripemd160.js";
 import "crypto-js/hmac.js";
-import "crypto-js/hmac-md5.js";
-import "crypto-js/hmac-sha1.js";
-import "crypto-js/hmac-sha256.js";
-import "crypto-js/hmac-sha224.js";
-import "crypto-js/hmac-sha512.js";
-import "crypto-js/hmac-sha384.js";
-import "crypto-js/hmac-ripemd160.js";
-import bcrypt, {
-    setHashTables as setBcryptHashTables
+/*
+ * Import only bcrypt's synchronous operations. The default export also pulls
+ * in unused asynchronous wrappers, pushing the pasteable bundle over bIRC's
+ * 200-function limit and introducing a named-call cycle.
+ */
+import {
+    compareSync as compareBcryptSync,
+    hashSync as hashBcryptSync,
+    setHashTables as setBcryptHashTables,
+    truncates as bcryptTruncates
 } from "../generated/bcrypt-runtime.js";
 import {
     HASH_DATA_SHA256,
@@ -38,7 +39,7 @@ import unixCrypt from "unix-crypt-td-js";
     "use strict";
 
     var SCRIPT_ID = "com.github.aipokalyptik.birc-utils.hash";
-    var SCRIPT_VERSION = "1.0.0";
+    var SCRIPT_VERSION = "1.0.1";
     var SCRIPT_UPDATE_PAGE_URL =
         "https://github.com/aipokalyptik/birc-utils/tree/main/hash";
     var SCRIPT_UPDATE_FILE_URL =
@@ -712,7 +713,7 @@ import unixCrypt from "unix-crypt-td-js";
             return;
         }
 
-        if (bcrypt.truncates(saltAndPassword.right)) {
+        if (bcryptTruncates(saltAndPassword.right)) {
             printHashStatus("bcrypt password exceeds its 72-byte limit.");
             return;
         }
@@ -724,7 +725,7 @@ import unixCrypt from "unix-crypt-td-js";
             saltAndPassword.left;
 
         try {
-            printHashStatus(bcrypt.hashSync(saltAndPassword.right, setting));
+            printHashStatus(hashBcryptSync(saltAndPassword.right, setting));
         } catch (error) {
             printHashStatus("bcrypt rejected the supplied setting.");
         }
@@ -800,7 +801,7 @@ import unixCrypt from "unix-crypt-td-js";
                 return;
             }
 
-            if (bcrypt.truncates(hashAndPassword.right)) {
+            if (bcryptTruncates(hashAndPassword.right)) {
                 printHashStatus("bcrypt password exceeds its 72-byte limit.");
                 return;
             }
@@ -811,7 +812,7 @@ import unixCrypt from "unix-crypt-td-js";
             }
 
             try {
-                bcryptSetting = bcrypt.hashSync(
+                bcryptSetting = hashBcryptSync(
                     hashAndPassword.right,
                     bcryptSetting
                 );
@@ -904,7 +905,7 @@ import unixCrypt from "unix-crypt-td-js";
             }
 
             try {
-                if (bcrypt.compareSync(hashAndPassword.right, expectedHash)) {
+                if (compareBcryptSync(hashAndPassword.right, expectedHash)) {
                     printHashStatus("MATCH");
                 } else {
                     printHashStatus("NO MATCH");

@@ -9,14 +9,14 @@
  * failure visibly instead of returning partial or replacement-character data.
  *
  * Script ID: com.github.aipokalyptik.birc-utils.codec
- * Script version: 1.0.0
+ * Script version: 1.0.1
  */
 
 (function registerBircCodecUtilitiesScript() {
     "use strict";
 
     var SCRIPT_ID = "com.github.aipokalyptik.birc-utils.codec";
-    var SCRIPT_VERSION = "1.0.0";
+    var SCRIPT_VERSION = "1.0.1";
     var SCRIPT_UPDATE_PAGE_URL =
         "https://github.com/aipokalyptik/birc-utils/tree/main/codec";
     var SCRIPT_UPDATE_FILE_URL =
@@ -1947,28 +1947,6 @@
         return stringResult;
     }
 
-    function parsePhpSerializedArrayKey(parser, depth) {
-        var keyResult = parsePhpSerializedValue(parser, depth);
-
-        if (!keyResult.succeeded) {
-            return keyResult;
-        }
-
-        if (typeof keyResult.value === "string") {
-            return keyResult;
-        }
-
-        if (typeof keyResult.value === "number") {
-            if (Number.isSafeInteger(keyResult.value)) {
-                return keyResult;
-            }
-        }
-
-        return failedCodecResult(
-            "PHP serialized array keys must be integers or strings."
-        );
-    }
-
     function phpObjectHasOwnProperty(objectValue, propertyName) {
         return Object.prototype.hasOwnProperty.call(objectValue, propertyName);
     }
@@ -1983,82 +1961,13 @@
         return propertyName.slice(finalNullIndex + 1);
     }
 
-    function parsePhpSerializedMembers(
-        parser,
-        memberCount,
-        depth,
-        objectProperties
-    ) {
-        var arrayIsSequential = true;
-        var arrayValues = [];
-        var keyResult;
-        var memberIndex;
-        var normalizedPropertyName;
-        var objectValue = Object.create(null);
-        var valueResult;
-
-        for (memberIndex = 0; memberIndex < memberCount; memberIndex += 1) {
-            keyResult = parsePhpSerializedArrayKey(parser, depth + 1);
-
-            if (!keyResult.succeeded) {
-                return keyResult;
-            }
-
-            valueResult = parsePhpSerializedValue(parser, depth + 1);
-
-            if (!valueResult.succeeded) {
-                return valueResult;
-            }
-
-            normalizedPropertyName = String(keyResult.value);
-
-            if (objectProperties) {
-                normalizedPropertyName = normalizePhpObjectPropertyName(
-                    normalizedPropertyName
-                );
-            }
-
-            if (
-                phpObjectHasOwnProperty(
-                    objectValue,
-                    normalizedPropertyName
-                )
-            ) {
-                return failedCodecResult(
-                    "PHP serialized members collapse to the duplicate JSON key '" +
-                        normalizedPropertyName +
-                        "'."
-                );
-            }
-
-            objectValue[normalizedPropertyName] = valueResult.value;
-
-            if (keyResult.value !== memberIndex) {
-                arrayIsSequential = false;
-            }
-
-            arrayValues.push(valueResult.value);
-        }
-
-        if (objectProperties) {
-            return successfulCodecResult(objectValue);
-        }
-
-        if (arrayIsSequential) {
-            return successfulCodecResult(arrayValues);
-        }
-
-        return successfulCodecResult(objectValue);
-    }
-
-    function parsePhpSerializedArrayAfterType(parser, depth) {
+    function parsePhpSerializedArrayAfterType(parser) {
         var closingResult;
         var memberCountResult = parsePhpNonNegativeCount(
             parser,
             "array member count",
             MAXIMUM_PHP_SERIALIZATION_ITEMS
         );
-        var memberResult;
 
         if (!memberCountResult.succeeded) {
             return memberCountResult;
@@ -2070,27 +1979,14 @@
             return closingResult;
         }
 
-        memberResult = parsePhpSerializedMembers(
-            parser,
-            memberCountResult.value,
-            depth,
-            false
-        );
-
-        if (!memberResult.succeeded) {
-            return memberResult;
-        }
-
-        closingResult = phpParserReadExpectedAscii(parser, "}");
-
-        if (!closingResult.succeeded) {
-            return closingResult;
-        }
-
-        return memberResult;
+        return successfulCodecResult({
+            kind: "container",
+            memberCount: memberCountResult.value,
+            objectProperties: false
+        });
     }
 
-    function parsePhpSerializedObjectAfterType(parser, depth) {
+    function parsePhpSerializedObjectAfterType(parser) {
         var classByteLengthResult = parsePhpNonNegativeCount(
             parser,
             "object class-name byte length",
@@ -2100,7 +1996,6 @@
         var classNameResult;
         var closingResult;
         var memberCountResult;
-        var memberResult;
 
         if (!classByteLengthResult.succeeded) {
             return classByteLengthResult;
@@ -2153,30 +2048,23 @@
             return closingResult;
         }
 
-        memberResult = parsePhpSerializedMembers(
-            parser,
-            memberCountResult.value,
-            depth,
-            true
-        );
-
-        if (!memberResult.succeeded) {
-            return memberResult;
-        }
-
-        closingResult = phpParserReadExpectedAscii(parser, "}");
-
-        if (!closingResult.succeeded) {
-            return closingResult;
-        }
-
-        return memberResult;
+        return successfulCodecResult({
+            kind: "container",
+            memberCount: memberCountResult.value,
+            objectProperties: true
+        });
     }
 
-    function parsePhpSerializedValue(parser, depth) {
+    /*
+     * Reads one scalar or one container header. Nested members are deliberately
+     * handled by parsePhpSerializedValue's explicit frame stack below, rather
+     * than by recursive function calls.
+     */
+    function parsePhpSerializedToken(parser, depth) {
         var numericResult;
         var numericText;
         var separatorResult;
+        var stringResult;
         var typeCharacter;
 
         if (depth > MAXIMUM_PHP_SERIALIZATION_DEPTH) {
@@ -2203,7 +2091,10 @@
                 return separatorResult;
             }
 
-            return successfulCodecResult(null);
+            return successfulCodecResult({
+                kind: "value",
+                value: null
+            });
         }
 
         separatorResult = phpParserReadExpectedAscii(parser, ":");
@@ -2221,11 +2112,17 @@
                 }
 
                 if (numericResult.value === "0") {
-                    return successfulCodecResult(false);
+                    return successfulCodecResult({
+                        kind: "value",
+                        value: false
+                    });
                 }
 
                 if (numericResult.value === "1") {
-                    return successfulCodecResult(true);
+                    return successfulCodecResult({
+                        kind: "value",
+                        value: true
+                    });
                 }
 
                 return failedCodecResult(
@@ -2252,7 +2149,10 @@
                     );
                 }
 
-                return successfulCodecResult(numericText);
+                return successfulCodecResult({
+                    kind: "value",
+                    value: numericText
+                });
             case "d":
                 numericResult = phpParserReadAsciiUntil(parser, ";");
 
@@ -2302,13 +2202,25 @@
                     );
                 }
 
-                return successfulCodecResult(numericText);
+                return successfulCodecResult({
+                    kind: "value",
+                    value: numericText
+                });
             case "s":
-                return parsePhpSerializedStringAfterType(parser);
+                stringResult = parsePhpSerializedStringAfterType(parser);
+
+                if (!stringResult.succeeded) {
+                    return stringResult;
+                }
+
+                return successfulCodecResult({
+                    kind: "value",
+                    value: stringResult.value
+                });
             case "a":
-                return parsePhpSerializedArrayAfterType(parser, depth);
+                return parsePhpSerializedArrayAfterType(parser);
             case "O":
-                return parsePhpSerializedObjectAfterType(parser, depth);
+                return parsePhpSerializedObjectAfterType(parser);
             case "R":
             case "r":
                 return failedCodecResult(
@@ -2329,6 +2241,150 @@
         }
     }
 
+    function createPhpContainerFrame(containerToken) {
+        return {
+            arrayIsSequential: true,
+            arrayValues: [],
+            currentKey: null,
+            expectingKey: true,
+            memberCount: containerToken.memberCount,
+            memberIndex: 0,
+            objectProperties: containerToken.objectProperties,
+            objectValue: Object.create(null)
+        };
+    }
+
+    function completePhpContainerFrame(frame) {
+        if (frame.objectProperties) {
+            return frame.objectValue;
+        }
+
+        if (frame.arrayIsSequential) {
+            return frame.arrayValues;
+        }
+
+        return frame.objectValue;
+    }
+
+    function parsePhpSerializedValue(parser) {
+        var closingResult;
+        var containerFrame;
+        var containerFrames = [];
+        var currentValue;
+        var normalizedPropertyName;
+        var tokenResult;
+
+        while (true) {
+            tokenResult = parsePhpSerializedToken(
+                parser,
+                containerFrames.length
+            );
+
+            if (!tokenResult.succeeded) {
+                return tokenResult;
+            }
+
+            if (tokenResult.value.kind === "container") {
+                containerFrame = createPhpContainerFrame(tokenResult.value);
+
+                if (containerFrame.memberCount > 0) {
+                    containerFrames.push(containerFrame);
+                    continue;
+                }
+
+                closingResult = phpParserReadExpectedAscii(parser, "}");
+
+                if (!closingResult.succeeded) {
+                    return closingResult;
+                }
+
+                currentValue = completePhpContainerFrame(containerFrame);
+            } else {
+                currentValue = tokenResult.value.value;
+            }
+
+            while (true) {
+                if (containerFrames.length === 0) {
+                    return successfulCodecResult(currentValue);
+                }
+
+                containerFrame =
+                    containerFrames[containerFrames.length - 1];
+
+                if (containerFrame.expectingKey) {
+                    if (
+                        typeof currentValue !== "string" &&
+                        (
+                            typeof currentValue !== "number" ||
+                            !Number.isSafeInteger(currentValue)
+                        )
+                    ) {
+                        return failedCodecResult(
+                            "PHP serialized array keys must be integers or strings."
+                        );
+                    }
+
+                    containerFrame.currentKey = currentValue;
+                    containerFrame.expectingKey = false;
+                    break;
+                }
+
+                normalizedPropertyName = String(
+                    containerFrame.currentKey
+                );
+
+                if (containerFrame.objectProperties) {
+                    normalizedPropertyName = normalizePhpObjectPropertyName(
+                        normalizedPropertyName
+                    );
+                }
+
+                if (
+                    phpObjectHasOwnProperty(
+                        containerFrame.objectValue,
+                        normalizedPropertyName
+                    )
+                ) {
+                    return failedCodecResult(
+                        "PHP serialized members collapse to the duplicate JSON key '" +
+                            normalizedPropertyName +
+                            "'."
+                    );
+                }
+
+                containerFrame.objectValue[normalizedPropertyName] =
+                    currentValue;
+                containerFrame.arrayValues.push(currentValue);
+
+                if (
+                    containerFrame.currentKey !==
+                    containerFrame.memberIndex
+                ) {
+                    containerFrame.arrayIsSequential = false;
+                }
+
+                containerFrame.memberIndex += 1;
+                containerFrame.expectingKey = true;
+
+                if (
+                    containerFrame.memberIndex <
+                    containerFrame.memberCount
+                ) {
+                    break;
+                }
+
+                closingResult = phpParserReadExpectedAscii(parser, "}");
+
+                if (!closingResult.succeeded) {
+                    return closingResult;
+                }
+
+                containerFrames.pop();
+                currentValue = completePhpContainerFrame(containerFrame);
+            }
+        }
+    }
+
     function decodePhpSerializationToJson(input) {
         var byteResult = utf8TextToBytes(input);
         var jsonText;
@@ -2343,7 +2399,7 @@
             bytes: byteResult.value,
             index: 0
         };
-        valueResult = parsePhpSerializedValue(parser, 0);
+        valueResult = parsePhpSerializedValue(parser);
 
         if (!valueResult.succeeded) {
             return valueResult;
@@ -2382,21 +2438,7 @@
         );
     }
 
-    function serializeJsonValueToPhp(value, depth) {
-        var elementIndex;
-        var encodedKeyResult;
-        var encodedValueResult;
-        var objectKeys;
-        var output;
-
-        if (depth > MAXIMUM_PHP_SERIALIZATION_DEPTH) {
-            return failedCodecResult(
-                "JSON exceeds the " +
-                    MAXIMUM_PHP_SERIALIZATION_DEPTH +
-                    "-level nesting limit."
-            );
-        }
-
+    function serializeJsonScalarToPhp(value) {
         if (value === null) {
             return successfulCodecResult("N;");
         }
@@ -2428,79 +2470,136 @@
                 return successfulCodecResult("d:" + String(value) + ";");
             case "string":
                 return serializePhpString(value);
-            case "object":
-                break;
             default:
                 return failedCodecResult(
                     "JSON value has an unsupported JavaScript type."
                 );
         }
+    }
 
-        if (Array.isArray(value)) {
-            if (value.length > MAXIMUM_PHP_SERIALIZATION_ITEMS) {
+    /*
+     * Uses an explicit last-in-first-out work stack. Pushing children in
+     * reverse order produces the same depth-first output as a recursive
+     * serializer, without consuming the JavaScript call stack.
+     */
+    function serializeJsonValueToPhp(rootValue) {
+        var elementIndex;
+        var encodedKeyResult;
+        var encodedScalarResult;
+        var item;
+        var objectKeys;
+        var outputParts = [];
+        var workItems = [{
+            depth: 0,
+            kind: "value",
+            value: rootValue
+        }];
+
+        while (workItems.length > 0) {
+            item = workItems.pop();
+
+            if (item.kind === "text") {
+                outputParts.push(item.text);
+                continue;
+            }
+
+            if (item.depth > MAXIMUM_PHP_SERIALIZATION_DEPTH) {
                 return failedCodecResult(
-                    "JSON array exceeds the " +
-                        MAXIMUM_PHP_SERIALIZATION_ITEMS +
-                        "-item limit."
+                    "JSON exceeds the " +
+                        MAXIMUM_PHP_SERIALIZATION_DEPTH +
+                        "-level nesting limit."
                 );
             }
 
-            output = "a:" + value.length + ":{";
+            if (item.value === null || typeof item.value !== "object") {
+                encodedScalarResult = serializeJsonScalarToPhp(item.value);
 
-            for (elementIndex = 0; elementIndex < value.length; elementIndex += 1) {
-                encodedValueResult = serializeJsonValueToPhp(
-                    value[elementIndex],
-                    depth + 1
-                );
-
-                if (!encodedValueResult.succeeded) {
-                    return encodedValueResult;
+                if (!encodedScalarResult.succeeded) {
+                    return encodedScalarResult;
                 }
 
-                output += "i:" + elementIndex + ";";
-                output += encodedValueResult.value;
+                outputParts.push(encodedScalarResult.value);
+                continue;
             }
 
-            output += "}";
+            if (Array.isArray(item.value)) {
+                if (item.value.length > MAXIMUM_PHP_SERIALIZATION_ITEMS) {
+                    return failedCodecResult(
+                        "JSON array exceeds the " +
+                            MAXIMUM_PHP_SERIALIZATION_ITEMS +
+                            "-item limit."
+                    );
+                }
 
-            return successfulCodecResult(output);
-        }
+                outputParts.push("a:" + item.value.length + ":{");
+                workItems.push({
+                    kind: "text",
+                    text: "}"
+                });
 
-        objectKeys = Object.keys(value);
+                for (
+                    elementIndex = item.value.length - 1;
+                    elementIndex >= 0;
+                    elementIndex -= 1
+                ) {
+                    workItems.push({
+                        depth: item.depth + 1,
+                        kind: "value",
+                        value: item.value[elementIndex]
+                    });
+                    workItems.push({
+                        kind: "text",
+                        text: "i:" + elementIndex + ";"
+                    });
+                }
 
-        if (objectKeys.length > MAXIMUM_PHP_SERIALIZATION_ITEMS) {
-            return failedCodecResult(
-                "JSON object exceeds the " +
-                    MAXIMUM_PHP_SERIALIZATION_ITEMS +
-                    "-property limit."
+                continue;
+            }
+
+            objectKeys = Object.keys(item.value);
+
+            if (objectKeys.length > MAXIMUM_PHP_SERIALIZATION_ITEMS) {
+                return failedCodecResult(
+                    "JSON object exceeds the " +
+                        MAXIMUM_PHP_SERIALIZATION_ITEMS +
+                        "-property limit."
+                );
+            }
+
+            outputParts.push(
+                "O:8:\"stdClass\":" + objectKeys.length + ":{"
             );
+            workItems.push({
+                kind: "text",
+                text: "}"
+            });
+
+            for (
+                elementIndex = objectKeys.length - 1;
+                elementIndex >= 0;
+                elementIndex -= 1
+            ) {
+                encodedKeyResult = serializePhpString(
+                    objectKeys[elementIndex]
+                );
+
+                if (!encodedKeyResult.succeeded) {
+                    return encodedKeyResult;
+                }
+
+                workItems.push({
+                    depth: item.depth + 1,
+                    kind: "value",
+                    value: item.value[objectKeys[elementIndex]]
+                });
+                workItems.push({
+                    kind: "text",
+                    text: encodedKeyResult.value
+                });
+            }
         }
 
-        output = "O:8:\"stdClass\":" + objectKeys.length + ":{";
-
-        for (elementIndex = 0; elementIndex < objectKeys.length; elementIndex += 1) {
-            encodedKeyResult = serializePhpString(objectKeys[elementIndex]);
-
-            if (!encodedKeyResult.succeeded) {
-                return encodedKeyResult;
-            }
-
-            encodedValueResult = serializeJsonValueToPhp(
-                value[objectKeys[elementIndex]],
-                depth + 1
-            );
-
-            if (!encodedValueResult.succeeded) {
-                return encodedValueResult;
-            }
-
-            output += encodedKeyResult.value;
-            output += encodedValueResult.value;
-        }
-
-        output += "}";
-
-        return successfulCodecResult(output);
+        return successfulCodecResult(outputParts.join(""));
     }
 
     function encodeJsonAsPhpSerialization(input) {
@@ -2514,7 +2613,7 @@
             );
         }
 
-        return serializeJsonValueToPhp(parsedValue, 0);
+        return serializeJsonValueToPhp(parsedValue);
     }
 
     function encodeTextTransform(formatName, input) {

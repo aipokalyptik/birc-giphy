@@ -40,7 +40,10 @@ The contract tests execute the scripts in isolated JavaScript contexts with a
 mocked `birc` API:
 
 ```sh
+npm install
 npm test
 ```
 
-No package installation is required.
+The import-safety tests parse the final pasteable files and enforce bIRC's
+200-function ceiling and prohibition on direct or mutual named recursion.
+These checks apply to generated bundles as well as hand-written source.

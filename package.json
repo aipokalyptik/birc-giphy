@@ -13,6 +13,7 @@
     "unix-crypt-td-js": "1.1.4"
   },
   "devDependencies": {
+    "acorn": "^8.15.0",
     "esbuild": "0.25.8"
   },
   "engines": {

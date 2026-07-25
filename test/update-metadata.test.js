@@ -15,7 +15,7 @@ const manifest = JSON.parse(fs.readFileSync(
 const scripts = [
     {
         id: "com.github.aipokalyptik.birc-utils.codec",
-        version: "1.0.0",
+        version: "1.0.1",
         path: "codec/birc-codec.js",
         tagPrefix: "birc-utils-codec-v"
     },
@@ -27,7 +27,7 @@ const scripts = [
     },
     {
         id: "com.github.aipokalyptik.birc-utils.hash",
-        version: "1.0.0",
+        version: "1.0.1",
         path: "hash/birc-hash.js",
         sourcePath: "hash/src/birc-hash.js",
         tagPrefix: "birc-utils-hash-v"

@@ -189,7 +189,7 @@ an HTML parser or a complete copy of the HTML named-character-reference table.
 ## Script identity and updates
 
 - ID: `com.github.aipokalyptik.birc-utils.codec`
-- Version: `1.0.0`
+- Version: `1.0.1`
 
 Transformations remain entirely local. If optional HTTPS permission is
 enabled, a load-time check consults the public bIRC Utils version manifest at

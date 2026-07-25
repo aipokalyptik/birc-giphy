@@ -346,6 +346,37 @@ test("JSON serializes to PHP arrays and bare stdClass objects", () => {
     );
 });
 
+test("iterative PHP conversion preserves and enforces the nesting limit", () => {
+    let jsonValue = null;
+    let serializedValue = "N;";
+
+    for (let depth = 0; depth < 64; depth += 1) {
+        jsonValue = [jsonValue];
+        serializedValue = "a:1:{i:0;" + serializedValue + "}";
+    }
+
+    assert.equal(
+        runOneCodecCommand("decode php " + serializedValue),
+        JSON.stringify(jsonValue)
+    );
+    assert.equal(
+        runOneCodecCommand("encode php " + JSON.stringify(jsonValue)),
+        serializedValue
+    );
+
+    const tooDeepJson = JSON.stringify([jsonValue]);
+    const tooDeepPhp = "a:1:{i:0;" + serializedValue + "}";
+
+    assert.match(
+        runOneCodecCommand("decode php " + tooDeepPhp),
+        /exceeds the 64-level nesting limit/
+    );
+    assert.match(
+        runOneCodecCommand("encode php " + tooDeepJson),
+        /exceeds the 64-level nesting limit/
+    );
+});
+
 test("PHP serialization rejects values JSON cannot preserve faithfully", () => {
     assert.equal(
         runOneCodecCommand("decode php R:1;"),

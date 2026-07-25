@@ -597,8 +597,8 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
               if (messageUpdate) {
                 this._append(messageUpdate);
               }
-              var hash2 = this._doFinalize();
-              return hash2;
+              var hash = this._doFinalize();
+              return hash;
             },
             blockSize: 512 / 32,
             /**
@@ -787,13 +787,13 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
               dataWords[(nBitsLeft + 64 >>> 9 << 4) + 14] = (nBitsTotalL << 8 | nBitsTotalL >>> 24) & 16711935 | (nBitsTotalL << 24 | nBitsTotalL >>> 8) & 4278255360;
               data.sigBytes = (dataWords.length + 1) * 4;
               this._process();
-              var hash2 = this._hash;
-              var H = hash2.words;
+              var hash = this._hash;
+              var H = hash.words;
               for (var i = 0; i < 4; i++) {
                 var H_i = H[i];
                 H[i] = (H_i << 8 | H_i >>> 24) & 16711935 | (H_i << 24 | H_i >>> 8) & 4278255360;
               }
-              return hash2;
+              return hash;
             },
             clone: function() {
               var clone = Hasher.clone.call(this);
@@ -1069,9 +1069,9 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
               ]);
             },
             _doFinalize: function() {
-              var hash2 = SHA256._doFinalize.call(this);
-              hash2.sigBytes -= 4;
-              return hash2;
+              var hash = SHA256._doFinalize.call(this);
+              hash.sigBytes -= 4;
+              return hash;
             }
           });
           C.SHA224 = SHA256._createHelper(SHA224);
@@ -1603,8 +1603,8 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
               dataWords[(nBitsLeft + 128 >>> 10 << 5) + 31] = nBitsTotal;
               data.sigBytes = dataWords.length * 4;
               this._process();
-              var hash2 = this._hash.toX32();
-              return hash2;
+              var hash = this._hash.toX32();
+              return hash;
             },
             clone: function() {
               var clone = Hasher.clone.call(this);
@@ -1654,9 +1654,9 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
               ]);
             },
             _doFinalize: function() {
-              var hash2 = SHA512._doFinalize.call(this);
-              hash2.sigBytes -= 16;
-              return hash2;
+              var hash = SHA512._doFinalize.call(this);
+              hash.sigBytes -= 16;
+              return hash;
             }
           });
           C.SHA384 = SHA512._createHelper(SHA384);
@@ -2098,13 +2098,13 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
               dataWords[(nBitsLeft + 64 >>> 9 << 4) + 14] = (nBitsTotal << 8 | nBitsTotal >>> 24) & 16711935 | (nBitsTotal << 24 | nBitsTotal >>> 8) & 4278255360;
               data.sigBytes = (dataWords.length + 1) * 4;
               this._process();
-              var hash2 = this._hash;
-              var H = hash2.words;
+              var hash = this._hash;
+              var H = hash.words;
               for (var i = 0; i < 5; i++) {
                 var H_i = H[i];
                 H[i] = (H_i << 8 | H_i >>> 24) & 16711935 | (H_i << 24 | H_i >>> 8) & 4278255360;
               }
-              return hash2;
+              return hash;
             },
             clone: function() {
               var clone = Hasher.clone.call(this);
@@ -2241,125 +2241,6 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
             }
           });
         })();
-      });
-    }
-  });
-
-  // node_modules/crypto-js/hmac-md5.js
-  var require_hmac_md5 = __commonJS({
-    "node_modules/crypto-js/hmac-md5.js"(exports, module) {
-      (function(root, factory, undef) {
-        if (typeof exports === "object") {
-          module.exports = exports = factory(require_core(), require_md5(), require_hmac());
-        } else if (typeof define === "function" && define.amd) {
-          define(["./core", "./md5", "./hmac"], factory);
-        } else {
-          factory(root.CryptoJS);
-        }
-      })(exports, function(CryptoJS2) {
-        return CryptoJS2.HmacMD5;
-      });
-    }
-  });
-
-  // node_modules/crypto-js/hmac-sha1.js
-  var require_hmac_sha1 = __commonJS({
-    "node_modules/crypto-js/hmac-sha1.js"(exports, module) {
-      (function(root, factory, undef) {
-        if (typeof exports === "object") {
-          module.exports = exports = factory(require_core(), require_sha1(), require_hmac());
-        } else if (typeof define === "function" && define.amd) {
-          define(["./core", "./sha1", "./hmac"], factory);
-        } else {
-          factory(root.CryptoJS);
-        }
-      })(exports, function(CryptoJS2) {
-        return CryptoJS2.HmacSHA1;
-      });
-    }
-  });
-
-  // node_modules/crypto-js/hmac-sha256.js
-  var require_hmac_sha256 = __commonJS({
-    "node_modules/crypto-js/hmac-sha256.js"(exports, module) {
-      (function(root, factory, undef) {
-        if (typeof exports === "object") {
-          module.exports = exports = factory(require_core(), require_sha256(), require_hmac());
-        } else if (typeof define === "function" && define.amd) {
-          define(["./core", "./sha256", "./hmac"], factory);
-        } else {
-          factory(root.CryptoJS);
-        }
-      })(exports, function(CryptoJS2) {
-        return CryptoJS2.HmacSHA256;
-      });
-    }
-  });
-
-  // node_modules/crypto-js/hmac-sha224.js
-  var require_hmac_sha224 = __commonJS({
-    "node_modules/crypto-js/hmac-sha224.js"(exports, module) {
-      (function(root, factory, undef) {
-        if (typeof exports === "object") {
-          module.exports = exports = factory(require_core(), require_sha256(), require_sha224(), require_hmac());
-        } else if (typeof define === "function" && define.amd) {
-          define(["./core", "./sha256", "./sha224", "./hmac"], factory);
-        } else {
-          factory(root.CryptoJS);
-        }
-      })(exports, function(CryptoJS2) {
-        return CryptoJS2.HmacSHA224;
-      });
-    }
-  });
-
-  // node_modules/crypto-js/hmac-sha512.js
-  var require_hmac_sha512 = __commonJS({
-    "node_modules/crypto-js/hmac-sha512.js"(exports, module) {
-      (function(root, factory, undef) {
-        if (typeof exports === "object") {
-          module.exports = exports = factory(require_core(), require_x64_core(), require_sha512(), require_hmac());
-        } else if (typeof define === "function" && define.amd) {
-          define(["./core", "./x64-core", "./sha512", "./hmac"], factory);
-        } else {
-          factory(root.CryptoJS);
-        }
-      })(exports, function(CryptoJS2) {
-        return CryptoJS2.HmacSHA512;
-      });
-    }
-  });
-
-  // node_modules/crypto-js/hmac-sha384.js
-  var require_hmac_sha384 = __commonJS({
-    "node_modules/crypto-js/hmac-sha384.js"(exports, module) {
-      (function(root, factory, undef) {
-        if (typeof exports === "object") {
-          module.exports = exports = factory(require_core(), require_x64_core(), require_sha512(), require_sha384(), require_hmac());
-        } else if (typeof define === "function" && define.amd) {
-          define(["./core", "./x64-core", "./sha512", "./sha384", "./hmac"], factory);
-        } else {
-          factory(root.CryptoJS);
-        }
-      })(exports, function(CryptoJS2) {
-        return CryptoJS2.HmacSHA384;
-      });
-    }
-  });
-
-  // node_modules/crypto-js/hmac-ripemd160.js
-  var require_hmac_ripemd160 = __commonJS({
-    "node_modules/crypto-js/hmac-ripemd160.js"(exports, module) {
-      (function(root, factory, undef) {
-        if (typeof exports === "object") {
-          module.exports = exports = factory(require_core(), require_ripemd160(), require_hmac());
-        } else if (typeof define === "function" && define.amd) {
-          define(["./core", "./ripemd160", "./hmac"], factory);
-        } else {
-          factory(root.CryptoJS);
-        }
-      })(exports, function(CryptoJS2) {
-        return CryptoJS2.HmacRIPEMD160;
       });
     }
   });
@@ -2610,13 +2491,6 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
   var import_sha384 = __toESM(require_sha384());
   var import_ripemd160 = __toESM(require_ripemd160());
   var import_hmac = __toESM(require_hmac());
-  var import_hmac_md5 = __toESM(require_hmac_md5());
-  var import_hmac_sha1 = __toESM(require_hmac_sha1());
-  var import_hmac_sha256 = __toESM(require_hmac_sha256());
-  var import_hmac_sha224 = __toESM(require_hmac_sha224());
-  var import_hmac_sha512 = __toESM(require_hmac_sha512());
-  var import_hmac_sha384 = __toESM(require_hmac_sha384());
-  var import_hmac_ripemd160 = __toESM(require_hmac_ripemd160());
 
   // hash/generated/bcrypt-runtime.js
   var nodeCrypto = {};
@@ -2637,9 +2511,6 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
     }
     return randomFallback(len);
   }
-  function setRandomFallback(random) {
-    randomFallback = random;
-  }
   function genSaltSync(rounds, seed_length) {
     rounds = rounds || GENSALT_DEFAULT_LOG2_ROUNDS;
     if (typeof rounds !== "number")
@@ -2656,74 +2527,12 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
     salt.push(base64_encode(randomBytes(BCRYPT_SALT_LEN), BCRYPT_SALT_LEN));
     return salt.join("");
   }
-  function genSalt(rounds, seed_length, callback) {
-    if (typeof seed_length === "function")
-      callback = seed_length, seed_length = void 0;
-    if (typeof rounds === "function") callback = rounds, rounds = void 0;
-    if (typeof rounds === "undefined") rounds = GENSALT_DEFAULT_LOG2_ROUNDS;
-    else if (typeof rounds !== "number")
-      throw Error("illegal arguments: " + typeof rounds);
-    function _async(callback2) {
-      nextTick(function() {
-        try {
-          callback2(null, genSaltSync(rounds));
-        } catch (err) {
-          callback2(err);
-        }
-      });
-    }
-    if (callback) {
-      if (typeof callback !== "function")
-        throw Error("Illegal callback: " + typeof callback);
-      _async(callback);
-    } else
-      return new Promise(function(resolve, reject) {
-        _async(function(err, res) {
-          if (err) {
-            reject(err);
-            return;
-          }
-          resolve(res);
-        });
-      });
-  }
   function hashSync(password, salt) {
     if (typeof salt === "undefined") salt = GENSALT_DEFAULT_LOG2_ROUNDS;
     if (typeof salt === "number") salt = genSaltSync(salt);
     if (typeof password !== "string" || typeof salt !== "string")
       throw Error("Illegal arguments: " + typeof password + ", " + typeof salt);
     return _hash(password, salt);
-  }
-  function hash(password, salt, callback, progressCallback) {
-    function _async(callback2) {
-      if (typeof password === "string" && typeof salt === "number")
-        genSalt(salt, function(err, salt2) {
-          _hash(password, salt2, callback2, progressCallback);
-        });
-      else if (typeof password === "string" && typeof salt === "string")
-        _hash(password, salt, callback2, progressCallback);
-      else
-        nextTick(
-          callback2.bind(
-            this,
-            Error("Illegal arguments: " + typeof password + ", " + typeof salt)
-          )
-        );
-    }
-    if (callback) {
-      if (typeof callback !== "function")
-        throw Error("Illegal callback: " + typeof callback);
-      _async(callback);
-    } else
-      return new Promise(function(resolve, reject) {
-        _async(function(err, res) {
-          if (err) {
-            reject(err);
-            return;
-          }
-          resolve(res);
-        });
-      });
   }
   function safeStringCompare(known, unknown) {
     var diff = known.length ^ unknown.length;
@@ -2732,68 +2541,14 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
     }
     return diff === 0;
   }
-  function compareSync(password, hash2) {
-    if (typeof password !== "string" || typeof hash2 !== "string")
-      throw Error("Illegal arguments: " + typeof password + ", " + typeof hash2);
-    if (hash2.length !== 60) return false;
+  function compareSync(password, hash) {
+    if (typeof password !== "string" || typeof hash !== "string")
+      throw Error("Illegal arguments: " + typeof password + ", " + typeof hash);
+    if (hash.length !== 60) return false;
     return safeStringCompare(
-      hashSync(password, hash2.substring(0, hash2.length - 31)),
-      hash2
+      hashSync(password, hash.substring(0, hash.length - 31)),
+      hash
     );
-  }
-  function compare(password, hashValue, callback, progressCallback) {
-    function _async(callback2) {
-      if (typeof password !== "string" || typeof hashValue !== "string") {
-        nextTick(
-          callback2.bind(
-            this,
-            Error(
-              "Illegal arguments: " + typeof password + ", " + typeof hashValue
-            )
-          )
-        );
-        return;
-      }
-      if (hashValue.length !== 60) {
-        nextTick(callback2.bind(this, null, false));
-        return;
-      }
-      hash(
-        password,
-        hashValue.substring(0, 29),
-        function(err, comp) {
-          if (err) callback2(err);
-          else callback2(null, safeStringCompare(comp, hashValue));
-        },
-        progressCallback
-      );
-    }
-    if (callback) {
-      if (typeof callback !== "function")
-        throw Error("Illegal callback: " + typeof callback);
-      _async(callback);
-    } else
-      return new Promise(function(resolve, reject) {
-        _async(function(err, res) {
-          if (err) {
-            reject(err);
-            return;
-          }
-          resolve(res);
-        });
-      });
-  }
-  function getRounds(hash2) {
-    if (typeof hash2 !== "string")
-      throw Error("Illegal arguments: " + typeof hash2);
-    return parseInt(hash2.split("$")[2], 10);
-  }
-  function getSalt(hash2) {
-    if (typeof hash2 !== "string")
-      throw Error("Illegal arguments: " + typeof hash2);
-    if (hash2.length !== 60)
-      throw Error("Illegal hash length: " + hash2.length + " != 60");
-    return hash2.substring(0, 29);
   }
   function truncates(password) {
     if (typeof password !== "string")
@@ -3280,26 +3035,6 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
       );
     }
   }
-  function encodeBase64(bytes, length) {
-    return base64_encode(bytes, length);
-  }
-  function decodeBase64(string, length) {
-    return base64_decode(string, length);
-  }
-  var bcrypt_runtime_default = {
-    setRandomFallback,
-    genSaltSync,
-    genSalt,
-    hashSync,
-    hash,
-    compareSync,
-    compare,
-    getRounds,
-    getSalt,
-    truncates,
-    encodeBase64,
-    decodeBase64
-  };
 
   // hash/generated/hash-data-contract.js
   var HASH_DATA_URL = "https://www.ietf.org/archive/id/draft-schneier-blowfish-00.txt";
@@ -3311,7 +3046,7 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
   (function registerBircHashUtilitiesScript() {
     "use strict";
     var SCRIPT_ID = "com.github.aipokalyptik.birc-utils.hash";
-    var SCRIPT_VERSION = "1.0.0";
+    var SCRIPT_VERSION = "1.0.1";
     var SCRIPT_UPDATE_PAGE_URL = "https://github.com/aipokalyptik/birc-utils/tree/main/hash";
     var SCRIPT_UPDATE_FILE_URL = "https://github.com/aipokalyptik/birc-utils/blob/main/hash/birc-hash.js";
     var SCRIPT_RELEASE_TAG_PREFIX = "birc-utils-hash-v";
@@ -3766,7 +3501,7 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
     function phpassHash(password, prefix, countLogarithm, salt) {
       var count = 1 << countLogarithm;
       var countCharacter = PHPASS_ALPHABET.charAt(countLogarithm);
-      var hash2 = import_core.default.MD5(
+      var hash = import_core.default.MD5(
         import_core.default.enc.Utf8.parse(salt).concat(
           import_core.default.enc.Utf8.parse(password)
         )
@@ -3774,9 +3509,9 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
       var iterationIndex;
       var passwordWords = import_core.default.enc.Utf8.parse(password);
       for (iterationIndex = 0; iterationIndex < count; iterationIndex += 1) {
-        hash2 = import_core.default.MD5(hash2.clone().concat(passwordWords));
+        hash = import_core.default.MD5(hash.clone().concat(passwordWords));
       }
-      return prefix + countCharacter + salt + encodePhpassBytes(cryptoJsWordArrayToBytes(hash2), 22);
+      return prefix + countCharacter + salt + encodePhpassBytes(cryptoJsWordArrayToBytes(hash), 22);
     }
     function constantTimeStringsEqual(first, second) {
       var characterIndex;
@@ -3828,13 +3563,13 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
         printHashStatus("bcrypt salt must contain 22 bcrypt-alphabet characters.");
         return;
       }
-      if (bcrypt_runtime_default.truncates(saltAndPassword.right)) {
+      if (truncates(saltAndPassword.right)) {
         printHashStatus("bcrypt password exceeds its 72-byte limit.");
         return;
       }
       setting = "$2b$" + String(cost).padStart(2, "0") + "$" + saltAndPassword.left;
       try {
-        printHashStatus(bcrypt_runtime_default.hashSync(saltAndPassword.right, setting));
+        printHashStatus(hashSync(saltAndPassword.right, setting));
       } catch (error) {
         printHashStatus("bcrypt rejected the supplied setting.");
       }
@@ -3894,7 +3629,7 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
           printHashStatus("bcrypt setting or hash is malformed.");
           return;
         }
-        if (bcrypt_runtime_default.truncates(hashAndPassword.right)) {
+        if (truncates(hashAndPassword.right)) {
           printHashStatus("bcrypt password exceeds its 72-byte limit.");
           return;
         }
@@ -3903,7 +3638,7 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
           bcryptSetting = "$2b$" + suppliedFormat.slice(4);
         }
         try {
-          bcryptSetting = bcrypt_runtime_default.hashSync(
+          bcryptSetting = hashSync(
             hashAndPassword.right,
             bcryptSetting
           );
@@ -3981,7 +3716,7 @@ var setTimeout = function (callback, milliseconds) { return birc.setTimeout(call
           return;
         }
         try {
-          if (bcrypt_runtime_default.compareSync(hashAndPassword.right, expectedHash)) {
+          if (compareSync(hashAndPassword.right, expectedHash)) {
             printHashStatus("MATCH");
           } else {
             printHashStatus("NO MATCH");

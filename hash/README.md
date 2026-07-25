@@ -140,7 +140,7 @@ local exposure is acceptable.
 ## Script identity and updates
 
 - ID: `com.github.aipokalyptik.birc-utils.hash`
-- Version: `1.0.0`
+- Version: `1.0.1`
 
 At load time the script checks the public bIRC Utils version manifest at most
 once per 24 hours. A newer version notice includes the installed and available
