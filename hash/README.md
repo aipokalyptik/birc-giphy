@@ -13,6 +13,7 @@ in bIRC and run `/hash help`.
 /hash password phpass <count-log2 7-18> <8-character-salt> | <password>
 /hash password crypt <2-character-salt> | <password>
 /hash verify <encoded-password-hash> | <password>
+/hash data <status|refresh>
 ```
 
 The first `|` separates fields for HMAC and password commands. Values containing
@@ -23,6 +24,16 @@ a literal pipe cannot be represented by those commands.
 bIRC API version 1 does not expose Web Crypto. This script therefore requires
 the caller to supply password salts and never substitutes `Math.random()`.
 Generate salts with a cryptographically secure tool outside bIRC.
+
+The standalone script downloads bcrypt's immutable Blowfish initialization
+table from this repository. It pins the table's SHA-256 digest, validates its
+shape, and stores the validated JSON through `birc.store`. Later loads use the
+cached copy. bcrypt commands remain unavailable until initialization succeeds;
+all other commands remain usable. Use `/hash data status` to inspect state or
+`/hash data refresh` to retry.
+
+The script requires HTTPS permission for this data request. No password, HMAC
+key, message, digest, or salt is included in the request.
 
 For new password systems, use a platform password API with Argon2id or bcrypt
 and automatic secure salt generation. The bundled bcrypt command is provided
@@ -54,3 +65,8 @@ layer is `src/birc-hash.js`; rebuild the importable script with:
 npm install
 npm run build:hash
 ```
+
+The build also extracts bcrypt's fixed P/S tables from the pinned bcrypt.js
+dependency into `data/v1.json`, calculates the pinned SHA-256 digest, and
+generates the small runtime contract used by the standalone script. Generated
+build-input modules under `generated/` are intentionally not committed.

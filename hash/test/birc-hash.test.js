@@ -10,10 +10,22 @@ const scriptSource = fs.readFileSync(
     path.join(__dirname, "..", "birc-hash.js"),
     "utf8"
 );
+const runtimeData = fs.readFileSync(
+    path.join(__dirname, "..", "data", "v1.json"),
+    "utf8"
+);
 
-function createHashHarness() {
+function createHashHarness(options = {}) {
     const commands = {};
+    const eventHandlers = {};
+    const fetchUrls = [];
     const printedLines = [];
+    const storedValues = new Map();
+
+    if (options.cachedData !== false) {
+        storedValues.set("hash.runtimeData.v1", runtimeData);
+    }
+
     const birc = {
         print(text) {
             printedLines.push(text);
@@ -22,18 +34,40 @@ function createHashHarness() {
             commands[name] = handler;
         },
         onComplete() {},
-        on() {},
+        on(type, handler) {
+            eventHandlers[type] = handler;
+        },
+        fetch(url) {
+            fetchUrls.push(url);
+
+            if (options.fetchResponse !== undefined) {
+                return Promise.resolve(options.fetchResponse);
+            }
+
+            return Promise.reject(new Error("unexpected fetch"));
+        },
+        store: {
+            get(key) {
+                return storedValues.get(key);
+            },
+            set(key, value) {
+                storedValues.set(key, value);
+            }
+        },
         setTimeout
     };
 
     vm.runInNewContext(scriptSource, { birc, console });
+    eventHandlers.load();
 
     return {
         run(input) {
             commands.hash(input);
             return printedLines[printedLines.length - 1].slice("[Hash] ".length);
         },
-        printedLines
+        fetchUrls,
+        printedLines,
+        storedValues
     };
 }
 
@@ -109,6 +143,54 @@ test("password commands reject silent truncation and missing salts", () => {
     assert.equal(
         harness.run("password crypt ab | ninechars"),
         "DES crypt password must contain at most 8 ASCII characters."
+    );
+});
+
+test("cold cache downloads validates and persists bcrypt data", async () => {
+    const harness = createHashHarness({
+        cachedData: false,
+        fetchResponse: {
+            status: 200,
+            text: runtimeData
+        }
+    });
+
+    await new Promise((resolve) => {
+        setImmediate(resolve);
+    });
+
+    assert.equal(harness.fetchUrls.length, 1);
+    assert.equal(
+        harness.storedValues.get("hash.runtimeData.v1"),
+        runtimeData
+    );
+    assert.equal(harness.run("data status"), "bcrypt data is ready.");
+    assert.match(
+        harness.run("password bcrypt 4 ...................... | password"),
+        /^\$2b\$04\$/
+    );
+});
+
+test("downloaded bcrypt data must match the pinned SHA-256 digest", async () => {
+    const harness = createHashHarness({
+        cachedData: false,
+        fetchResponse: {
+            status: 200,
+            text: runtimeData.replace("\"version\":1", "\"version\":2")
+        }
+    });
+
+    await new Promise((resolve) => {
+        setImmediate(resolve);
+    });
+
+    assert.equal(
+        harness.run("data status"),
+        "bcrypt data is failed integrity validation."
+    );
+    assert.equal(
+        harness.storedValues.has("hash.runtimeData.v1"),
+        false
     );
 });
 

@@ -21,7 +21,14 @@ import "crypto-js/hmac-sha224.js";
 import "crypto-js/hmac-sha512.js";
 import "crypto-js/hmac-sha384.js";
 import "crypto-js/hmac-ripemd160.js";
-import bcrypt from "bcryptjs";
+import bcrypt, {
+    setHashTables as setBcryptHashTables
+} from "../generated/bcrypt-runtime.js";
+import {
+    HASH_DATA_SHA256,
+    HASH_DATA_STORE_KEY,
+    HASH_DATA_URL
+} from "../generated/hash-data-contract.js";
 import unixCrypt from "unix-crypt-td-js";
 
 (function registerBircHashUtilitiesScript() {
@@ -30,6 +37,102 @@ import unixCrypt from "unix-crypt-td-js";
     var PHPASS_ALPHABET =
         "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     var MAXIMUM_INPUT_LENGTH = 4096;
+    var bcryptDataDownloadInProgress = false;
+    var bcryptTablesReady = false;
+    var bcryptTablesStatus = "not loaded";
+
+    function validateAndActivateHashData(serializedData) {
+        var parsedData;
+
+        if (typeof serializedData !== "string") {
+            return false;
+        }
+
+        if (CryptoJS.SHA256(serializedData).toString() !== HASH_DATA_SHA256) {
+            bcryptTablesStatus = "failed integrity validation";
+            return false;
+        }
+
+        try {
+            parsedData = JSON.parse(serializedData);
+        } catch (error) {
+            bcryptTablesStatus = "contained invalid JSON";
+            return false;
+        }
+
+        if (parsedData.version !== 1) {
+            bcryptTablesStatus = "has an unsupported version";
+            return false;
+        }
+
+        if (!Array.isArray(parsedData.bcryptP)) {
+            bcryptTablesStatus = "has an invalid bcrypt P table";
+            return false;
+        }
+
+        if (parsedData.bcryptP.length !== 18) {
+            bcryptTablesStatus = "has an invalid bcrypt P table";
+            return false;
+        }
+
+        if (!Array.isArray(parsedData.bcryptS)) {
+            bcryptTablesStatus = "has an invalid bcrypt S table";
+            return false;
+        }
+
+        if (parsedData.bcryptS.length !== 1024) {
+            bcryptTablesStatus = "has an invalid bcrypt S table";
+            return false;
+        }
+
+        setBcryptHashTables(parsedData);
+        bcryptTablesReady = true;
+        bcryptTablesStatus = "ready";
+
+        return true;
+    }
+
+    function fetchAndCacheHashData() {
+        if (bcryptDataDownloadInProgress) {
+            printHashStatus("bcrypt data download is already in progress.");
+            return;
+        }
+
+        bcryptDataDownloadInProgress = true;
+        bcryptTablesStatus = "downloading";
+        birc.fetch(HASH_DATA_URL).then(function handleHashDataResponse(response) {
+            bcryptDataDownloadInProgress = false;
+
+            if (response.status !== 200) {
+                bcryptTablesStatus =
+                    "download failed with HTTP " + response.status;
+                printHashStatus("bcrypt data " + bcryptTablesStatus + ".");
+                return;
+            }
+
+            if (!validateAndActivateHashData(response.text)) {
+                printHashStatus("bcrypt data " + bcryptTablesStatus + ".");
+                return;
+            }
+
+            birc.store.set(HASH_DATA_STORE_KEY, response.text);
+            printHashStatus("bcrypt data downloaded, validated, and cached.");
+        }).catch(function handleHashDataFailure() {
+            bcryptDataDownloadInProgress = false;
+            bcryptTablesStatus = "download failed";
+            printHashStatus("bcrypt data download failed.");
+        });
+    }
+
+    function loadHashData() {
+        var cachedData = birc.store.get(HASH_DATA_STORE_KEY);
+
+        if (validateAndActivateHashData(cachedData)) {
+            return;
+        }
+
+        fetchAndCacheHashData();
+    }
 
     function printHashStatus(message) {
         birc.print("[Hash] " + message);
@@ -321,6 +424,15 @@ import unixCrypt from "unix-crypt-td-js";
         var saltAndPassword = splitAtPipe(costPart.remainder);
         var setting;
 
+        if (!bcryptTablesReady) {
+            printHashStatus(
+                "bcrypt data is " +
+                    bcryptTablesStatus +
+                    "; wait for initialization and try again."
+            );
+            return;
+        }
+
         if (!Number.isInteger(cost)) {
             printHashStatus("bcrypt cost must be between 4 and 12.");
             return;
@@ -415,6 +527,15 @@ import unixCrypt from "unix-crypt-td-js";
         expectedHash = hashAndPassword.left;
 
         if (expectedHash.indexOf("$2") === 0) {
+            if (!bcryptTablesReady) {
+                printHashStatus(
+                    "bcrypt data is " +
+                        bcryptTablesStatus +
+                        "; wait for initialization and try again."
+                );
+                return;
+            }
+
             try {
                 if (bcrypt.compareSync(hashAndPassword.right, expectedHash)) {
                     printHashStatus("MATCH");
@@ -486,6 +607,7 @@ import unixCrypt from "unix-crypt-td-js";
         printHashStatus("/hash password phpass <count-log2 7-18> <8-char-salt> | <password>");
         printHashStatus("/hash password crypt <2-char-salt> | <password>");
         printHashStatus("/hash verify <encoded-password-hash> | <password>");
+        printHashStatus("/hash data <status|refresh>");
         printHashStatus("Salts are required because bIRC exposes no cryptographic random source.");
         printHashStatus("MD5, SHA-1, phpass, and DES crypt are legacy-only; never choose them for new security.");
     }
@@ -494,6 +616,7 @@ import unixCrypt from "unix-crypt-td-js";
         var candidateIndex;
         var candidates = [
             "help", "digest", "checksum", "hmac", "password", "verify",
+            "data", "status", "refresh",
             "md5", "sha1", "sha224", "sha256", "sha384", "sha512",
             "ripemd160", "crc32", "crc32c", "adler32", "fnv1a32",
             "bcrypt", "phpass", "crypt"
@@ -598,6 +721,18 @@ import unixCrypt from "unix-crypt-td-js";
         } else if (operation === "verify") {
             verifyPassword(firstPart.remainder);
             return;
+        } else if (operation === "data") {
+            switch (algorithmPart.word.toLowerCase()) {
+                case "status":
+                    printHashStatus("bcrypt data is " + bcryptTablesStatus + ".");
+                    return;
+                case "refresh":
+                    fetchAndCacheHashData();
+                    return;
+                default:
+                    printHashStatus("Data operation must be status or refresh.");
+                    return;
+            }
         } else {
             printHashStatus("Unknown operation. Run /hash help.");
             return;
@@ -615,5 +750,6 @@ import unixCrypt from "unix-crypt-td-js";
     birc.onComplete(completeHashCommand);
     birc.on("load", function printHashLoadMessage() {
         printHashStatus("Loaded. Run /hash help.");
+        loadHashData();
     });
 }());
