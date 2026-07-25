@@ -2,8 +2,8 @@
   "accent" : "#73cef4",
   "appearance" : "dark",
   "background" : "#282828",
-  "customCSS" : "",
-  "id" : "36352699-8B84-56A3-9BE3-76B32A72FB5F",
+  "customCSS" : ".t, .history { color: #666666; }\n.join { color: #c9d05c; }\n.part, .quit { color: #666666; }\n.kick, .error { color: #f43753; }\n.notice { color: #d3b987; }\n.action { color: #d3b987; }\n.mode, .nick, .topic, .server { color: #b3deef; }\n.highlight { color: #eeeeee; background-color: #293b44; border-left: 3px solid #d3b987; padding-left: 8px; }\n.reply { color: #666666; border-left: 2px solid #73cef4; padding-left: 6px; }\n.oper { color: #282828; background-color: #d3b987; }\n.reactions { color: #73cef4; background-color: #383838; }\n.card { background-color: #383838; border-color: #666666; }\n.card-title { color: #73cef4; }\n.card-desc { color: #666666; }\n.daychange { color: #666666; border-color: #383838; }",
+  "id" : "DE167BD4-4859-5C30-9436-CC8C2B1408E1",
   "isBuiltIn" : false,
   "name" : "Tender",
   "text" : "#eeeeee"

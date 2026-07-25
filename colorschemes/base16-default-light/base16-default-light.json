@@ -1,9 +1,9 @@
 {
-  "accent" : "#7cafc2",
+  "accent" : "#397e96",
   "appearance" : "light",
   "background" : "#f8f8f8",
-  "customCSS" : "",
-  "id" : "66E2867F-0930-56A3-834C-02123F46FB5F",
+  "customCSS" : ".t, .history { color: #a0a0a0; }\n.join { color: #5f7d2d; }\n.part, .quit { color: #a0a0a0; }\n.kick, .error { color: #ab4642; }\n.notice { color: #ab4642; }\n.action { color: #8f5b89; }\n.mode, .nick, .topic, .server { color: #397f78; }\n.highlight { color: #383838; background-color: #d8d8d8; border-left: 3px solid #8f5b89; padding-left: 8px; }\n.reply { color: #a0a0a0; border-left: 2px solid #397e96; padding-left: 6px; }\n.oper { color: #f8f8f8; background-color: #ab4642; }\n.reactions { color: #397e96; background-color: #e8e8e8; }\n.card { background-color: #e8e8e8; border-color: #a0a0a0; }\n.card-title { color: #397e96; }\n.card-desc { color: #a0a0a0; }\n.daychange { color: #a0a0a0; border-color: #e8e8e8; }",
+  "id" : "174F38B0-591B-5E5F-8F95-D3395699F065",
   "isBuiltIn" : false,
   "name" : "Base16 Default Light",
   "text" : "#383838"

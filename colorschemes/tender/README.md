@@ -1,30 +1,43 @@
 # Tender
 
-A bIRC colorscheme adapted from [Tender](https://github.com/jacoborus/tender.vim).
+A transcript-aware bIRC adaptation of [Tender](https://github.com/jacoborus/tender.vim).
 
-![Approximate bIRC preview of Tender](preview.svg)
+![bIRC transcript preview of Tender](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `dark`
-- Background: `#282828`
-- Text: `#eeeeee`
-- Accent: `#73cef4`
-- Palette basis: Tender background, foreground, and blue.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#282828` |
+| Ordinary text | Normal/editor foreground | `#eeeeee` |
+| Native accent | Principal upstream highlight (blue) | `#73cef4` |
+| Timestamps and history | Comment/muted foreground | `#666666` |
+| Links, replies, and card titles | Link/function/blue | `#73cef4` |
+| Joins | String/diff-added/green | `#c9d05c` |
+| Parts and quits | Comment/muted foreground | `#666666` |
+| Notices | Warning/yellow | `#d3b987` |
+| Actions | Special/magenta | `#d3b987` |
+| Errors and kicks | Error/red | `#f43753` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#b3deef` |
+| Mention background | Search/Visual/selection | `#293b44` |
+| Cards and reaction surfaces | Secondary editor surface | `#383838` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/jacoborus/tender.vim](https://github.com/jacoborus/tender.vim)
+- Palette evidence: `colors/tender.vim highlight groups`
 - Upstream license: `MIT`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

@@ -2,8 +2,8 @@
   "accent" : "#78a9ff",
   "appearance" : "dark",
   "background" : "#161616",
-  "customCSS" : "",
-  "id" : "981FB862-2334-5AA7-B91F-BD63BB43E306",
+  "customCSS" : ".t, .history { color: #525252; }\n.join { color: #25be6a; }\n.part, .quit { color: #525252; }\n.kick, .error { color: #ee5396; }\n.notice { color: #08bdba; }\n.action { color: #be95ff; }\n.mode, .nick, .topic, .server { color: #33b1ff; }\n.highlight { color: #f2f4f8; background-color: #2a2a2a; border-left: 3px solid #be95ff; padding-left: 8px; }\n.reply { color: #525252; border-left: 2px solid #78a9ff; padding-left: 6px; }\n.oper { color: #161616; background-color: #08bdba; }\n.reactions { color: #78a9ff; background-color: #282828; }\n.card { background-color: #282828; border-color: #525252; }\n.card-title { color: #78a9ff; }\n.card-desc { color: #525252; }\n.daychange { color: #525252; border-color: #282828; }",
+  "id" : "13D8D6AF-175D-5651-A0E0-962B9AE26F7B",
   "isBuiltIn" : false,
   "name" : "Carbonfox",
   "text" : "#f2f4f8"

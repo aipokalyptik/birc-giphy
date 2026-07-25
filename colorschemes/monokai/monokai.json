@@ -1,9 +1,9 @@
 {
-  "accent" : "#f92672",
+  "accent" : "#66d9ef",
   "appearance" : "dark",
   "background" : "#272822",
-  "customCSS" : "",
-  "id" : "D21B8EF2-BF52-51D1-875E-C92CF1054D91",
+  "customCSS" : ".t, .history { color: #75715e; }\n.join { color: #a6e22e; }\n.part, .quit { color: #75715e; }\n.kick, .error { color: #f92672; }\n.notice { color: #e6db74; }\n.action { color: #ae81ff; }\n.mode, .nick, .topic, .server { color: #66d9ef; }\n.highlight { color: #f8f8f2; background-color: #49483e; border-left: 3px solid #ae81ff; padding-left: 8px; }\n.reply { color: #75715e; border-left: 2px solid #66d9ef; padding-left: 6px; }\n.oper { color: #272822; background-color: #e6db74; }\n.reactions { color: #66d9ef; background-color: #3e3d32; }\n.card { background-color: #3e3d32; border-color: #75715e; }\n.card-title { color: #66d9ef; }\n.card-desc { color: #75715e; }\n.daychange { color: #75715e; border-color: #3e3d32; }",
+  "id" : "16F6EAAC-5FA4-54BA-9F91-4919EFE4354F",
   "isBuiltIn" : false,
   "name" : "Monokai",
   "text" : "#f8f8f2"

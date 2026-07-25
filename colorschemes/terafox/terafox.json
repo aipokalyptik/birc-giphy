@@ -2,8 +2,8 @@
   "accent" : "#5a93aa",
   "appearance" : "dark",
   "background" : "#152528",
-  "customCSS" : "",
-  "id" : "6CD34FE9-1A8B-51F6-B01D-9177052E5175",
+  "customCSS" : ".t, .history { color: #4e5157; }\n.join { color: #7aa4a1; }\n.part, .quit { color: #4e5157; }\n.kick, .error { color: #e85c51; }\n.notice { color: #fda47f; }\n.action { color: #ad5c7c; }\n.mode, .nick, .topic, .server { color: #a1cdd8; }\n.highlight { color: #e6eaea; background-color: #293e40; border-left: 3px solid #ad5c7c; padding-left: 8px; }\n.reply { color: #4e5157; border-left: 2px solid #5a93aa; padding-left: 6px; }\n.oper { color: #152528; background-color: #fda47f; }\n.reactions { color: #5a93aa; background-color: #2f3239; }\n.card { background-color: #2f3239; border-color: #4e5157; }\n.card-title { color: #5a93aa; }\n.card-desc { color: #4e5157; }\n.daychange { color: #4e5157; border-color: #2f3239; }",
+  "id" : "2C769B64-5A59-5D0A-ADCC-6E7F6F7C7442",
   "isBuiltIn" : false,
   "name" : "Terafox",
   "text" : "#e6eaea"

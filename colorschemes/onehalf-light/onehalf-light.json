@@ -2,8 +2,8 @@
   "accent" : "#0184bc",
   "appearance" : "light",
   "background" : "#fafafa",
-  "customCSS" : "",
-  "id" : "B743EAD2-A435-522F-B830-FCC81C551FBE",
+  "customCSS" : ".t, .history { color: #a0a1a7; }\n.join { color: #50a14f; }\n.part, .quit { color: #a0a1a7; }\n.kick, .error { color: #e45649; }\n.notice { color: #c18401; }\n.action { color: #a626a4; }\n.mode, .nick, .topic, .server { color: #0997b3; }\n.highlight { color: #383a42; background-color: #bfceff; border-left: 3px solid #a626a4; padding-left: 8px; }\n.reply { color: #a0a1a7; border-left: 2px solid #0184bc; padding-left: 6px; }\n.oper { color: #fafafa; background-color: #c18401; }\n.reactions { color: #0184bc; background-color: #f0f0f0; }\n.card { background-color: #f0f0f0; border-color: #a0a1a7; }\n.card-title { color: #0184bc; }\n.card-desc { color: #a0a1a7; }\n.daychange { color: #a0a1a7; border-color: #f0f0f0; }",
+  "id" : "C1FE034E-6CA1-53E0-801C-C9CD5C5A6BE0",
   "isBuiltIn" : false,
   "name" : "One Half Light",
   "text" : "#383a42"

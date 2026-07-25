@@ -1,9 +1,9 @@
 {
-  "accent" : "#87afaf",
+  "accent" : "#85add4",
   "appearance" : "dark",
   "background" : "#3a3a3a",
-  "customCSS" : "",
-  "id" : "94EFCF0B-EB9E-5132-AFEA-24B203717A57",
+  "customCSS" : ".t, .history { color: #626262; }\n.join { color: #5f865f; }\n.part, .quit { color: #626262; }\n.kick, .error { color: #d68787; }\n.notice { color: #d8af5f; }\n.action { color: #d7afaf; }\n.mode, .nick, .topic, .server { color: #87afaf; }\n.highlight { color: #d0d0d0; background-color: #005f5f; border-left: 3px solid #d7afaf; padding-left: 8px; }\n.reply { color: #626262; border-left: 2px solid #85add4; padding-left: 6px; }\n.oper { color: #3a3a3a; background-color: #d8af5f; }\n.reactions { color: #85add4; background-color: #4e4e4e; }\n.card { background-color: #4e4e4e; border-color: #626262; }\n.card-title { color: #85add4; }\n.card-desc { color: #626262; }\n.daychange { color: #626262; border-color: #4e4e4e; }",
+  "id" : "E7453E8E-B716-5B08-A2F7-4F9D822223D7",
   "isBuiltIn" : false,
   "name" : "Seoul256",
   "text" : "#d0d0d0"

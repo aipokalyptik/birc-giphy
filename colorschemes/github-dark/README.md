@@ -1,30 +1,43 @@
 # GitHub Dark
 
-A bIRC colorscheme adapted from [GitHub Dark](https://github.com/projekt0n/github-nvim-theme).
+A transcript-aware bIRC adaptation of [GitHub Dark](https://github.com/projekt0n/github-nvim-theme).
 
-![Approximate bIRC preview of GitHub Dark](preview.svg)
+![bIRC transcript preview of GitHub Dark](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `dark`
-- Background: `#0d1117`
-- Text: `#c9d1d9`
-- Accent: `#58a6ff`
-- Palette basis: GitHub Dark canvas, foreground, and accent.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#0d1117` |
+| Ordinary text | Normal/editor foreground | `#c9d1d9` |
+| Native accent | Principal upstream highlight (blue) | `#58a6ff` |
+| Timestamps and history | Comment/muted foreground | `#8b949e` |
+| Links, replies, and card titles | Link/function/blue | `#58a6ff` |
+| Joins | String/diff-added/green | `#7ee787` |
+| Parts and quits | Comment/muted foreground | `#8b949e` |
+| Notices | Warning/yellow | `#d29922` |
+| Actions | Special/magenta | `#d2a8ff` |
+| Errors and kicks | Error/red | `#ff7b72` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#a5d6ff` |
+| Mention background | Search/Visual/selection | `#264f78` |
+| Cards and reaction surfaces | Secondary editor surface | `#161b22` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/projekt0n/github-nvim-theme](https://github.com/projekt0n/github-nvim-theme)
+- Palette evidence: `lua/github-theme/palette.lua dark defaults`
 - Upstream license: `MIT`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

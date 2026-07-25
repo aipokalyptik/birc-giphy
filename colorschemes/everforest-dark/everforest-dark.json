@@ -2,8 +2,8 @@
   "accent" : "#7fbbb3",
   "appearance" : "dark",
   "background" : "#2d353b",
-  "customCSS" : "",
-  "id" : "D969A6EF-08D6-55B5-A7D0-76E0C0340033",
+  "customCSS" : ".t, .history { color: #859289; }\n.join { color: #a7c080; }\n.part, .quit { color: #859289; }\n.kick, .error { color: #e67e80; }\n.notice { color: #dbbc7f; }\n.action { color: #d699b6; }\n.mode, .nick, .topic, .server { color: #83c092; }\n.highlight { color: #d3c6aa; background-color: #543a48; border-left: 3px solid #d699b6; padding-left: 8px; }\n.reply { color: #859289; border-left: 2px solid #7fbbb3; padding-left: 6px; }\n.oper { color: #2d353b; background-color: #dbbc7f; }\n.reactions { color: #7fbbb3; background-color: #3d484d; }\n.card { background-color: #3d484d; border-color: #859289; }\n.card-title { color: #7fbbb3; }\n.card-desc { color: #859289; }\n.daychange { color: #859289; border-color: #3d484d; }",
+  "id" : "791E0487-8382-5D2A-9417-1E1AF55E8315",
   "isBuiltIn" : false,
   "name" : "Everforest Dark",
   "text" : "#d3c6aa"

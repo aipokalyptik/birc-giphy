@@ -2,8 +2,8 @@
   "accent" : "#5079be",
   "appearance" : "light",
   "background" : "#fafafa",
-  "customCSS" : "",
-  "id" : "42EFFDD5-AC7D-5C0E-AFC7-BA510E26E831",
+  "customCSS" : ".t, .history { color: #8790a0; }\n.join { color: #608e32; }\n.part, .quit { color: #8790a0; }\n.kick, .error { color: #d05858; }\n.notice { color: #be7e05; }\n.action { color: #b05ccc; }\n.mode, .nick, .topic, .server { color: #3a8b84; }\n.highlight { color: #4b505b; background-color: #e8ebf0; border-left: 3px solid #b05ccc; padding-left: 8px; }\n.reply { color: #8790a0; border-left: 2px solid #5079be; padding-left: 6px; }\n.oper { color: #fafafa; background-color: #be7e05; }\n.reactions { color: #5079be; background-color: #e8ebf0; }\n.card { background-color: #e8ebf0; border-color: #8790a0; }\n.card-title { color: #5079be; }\n.card-desc { color: #8790a0; }\n.daychange { color: #8790a0; border-color: #e8ebf0; }",
+  "id" : "8F702FC8-2199-52E0-B86D-E6378F9238D1",
   "isBuiltIn" : false,
   "name" : "Edge Light",
   "text" : "#4b505b"

@@ -19,8 +19,9 @@ independently through bIRC's Scripts window (`⌘⌥S`).
 - [Text Art](text-art/README.md) — search reusable ASCII art with a durable
   local cache, or discover ANSI-scene packs without rebroadcasting protected
   artwork.
-- [Vim Colorscheme Adaptations](colorschemes/README.md) — importable bIRC
-  palettes derived from classic and popular Vim and Neovim themes.
+- [Vim Colorscheme Adaptations](colorschemes/README.md) — transcript-aware
+  bIRC themes rebuilt from canonical Vim and Neovim palettes with semantic
+  custom CSS and generated previews.
 
 Each subdirectory contains the importable `.js` file and its complete usage,
 configuration, and security notes.

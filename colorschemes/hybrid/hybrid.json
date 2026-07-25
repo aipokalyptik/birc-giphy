@@ -2,8 +2,8 @@
   "accent" : "#81a2be",
   "appearance" : "dark",
   "background" : "#1d1f21",
-  "customCSS" : "",
-  "id" : "DE71E6F4-E937-5809-8FBD-C72565075859",
+  "customCSS" : ".t, .history { color: #707880; }\n.join { color: #b5bd68; }\n.part, .quit { color: #707880; }\n.kick, .error { color: #cc6666; }\n.notice { color: #f0c674; }\n.action { color: #b294bb; }\n.mode, .nick, .topic, .server { color: #8abeb7; }\n.highlight { color: #c5c8c6; background-color: #373b41; border-left: 3px solid #b294bb; padding-left: 8px; }\n.reply { color: #707880; border-left: 2px solid #81a2be; padding-left: 6px; }\n.oper { color: #1d1f21; background-color: #f0c674; }\n.reactions { color: #81a2be; background-color: #282a2e; }\n.card { background-color: #282a2e; border-color: #707880; }\n.card-title { color: #81a2be; }\n.card-desc { color: #707880; }\n.daychange { color: #707880; border-color: #282a2e; }",
+  "id" : "261932C6-3E7D-53BF-8CAF-453D7410C6F6",
   "isBuiltIn" : false,
   "name" : "Hybrid",
   "text" : "#c5c8c6"

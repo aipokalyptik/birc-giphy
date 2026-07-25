@@ -2,8 +2,8 @@
   "accent" : "#4d699b",
   "appearance" : "light",
   "background" : "#f2ecbc",
-  "customCSS" : "",
-  "id" : "6500D2CF-2EA9-5918-B9E8-4EF63CE9F65B",
+  "customCSS" : ".t, .history { color: #8a8980; }\n.join { color: #6f894e; }\n.part, .quit { color: #8a8980; }\n.kick, .error { color: #c84053; }\n.notice { color: #77713f; }\n.action { color: #624c83; }\n.mode, .nick, .topic, .server { color: #597b75; }\n.highlight { color: #545464; background-color: #dcd5ac; border-left: 3px solid #624c83; padding-left: 8px; }\n.reply { color: #8a8980; border-left: 2px solid #4d699b; padding-left: 6px; }\n.oper { color: #f2ecbc; background-color: #77713f; }\n.reactions { color: #4d699b; background-color: #e7dba0; }\n.card { background-color: #e7dba0; border-color: #8a8980; }\n.card-title { color: #4d699b; }\n.card-desc { color: #8a8980; }\n.daychange { color: #8a8980; border-color: #e7dba0; }",
+  "id" : "69316D09-7DD8-548D-A8CF-0C03C340D7CC",
   "isBuiltIn" : false,
   "name" : "Kanagawa Lotus",
   "text" : "#545464"

@@ -2,8 +2,8 @@
   "accent" : "#c4a7e7",
   "appearance" : "dark",
   "background" : "#232136",
-  "customCSS" : "",
-  "id" : "1E2A046B-CE22-5567-B281-A30E4CD46AA1",
+  "customCSS" : ".t, .history { color: #6e6a86; }\n.join { color: #95b1ac; }\n.part, .quit { color: #6e6a86; }\n.kick, .error { color: #eb6f92; }\n.notice { color: #f6c177; }\n.action { color: #c4a7e7; }\n.mode, .nick, .topic, .server { color: #9ccfd8; }\n.highlight { color: #e0def4; background-color: #44415a; border-left: 3px solid #c4a7e7; padding-left: 8px; }\n.reply { color: #6e6a86; border-left: 2px solid #3e8fb0; padding-left: 6px; }\n.oper { color: #232136; background-color: #f6c177; }\n.reactions { color: #3e8fb0; background-color: #2a273f; }\n.card { background-color: #2a273f; border-color: #6e6a86; }\n.card-title { color: #3e8fb0; }\n.card-desc { color: #6e6a86; }\n.daychange { color: #6e6a86; border-color: #2a273f; }",
+  "id" : "0DFF4882-FA32-5E82-8A2D-8F3CC040D05E",
   "isBuiltIn" : false,
   "name" : "Rosé Pine Moon",
   "text" : "#e0def4"

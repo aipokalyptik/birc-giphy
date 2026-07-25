@@ -1,30 +1,43 @@
 # Duskfox
 
-A bIRC colorscheme adapted from [Duskfox](https://github.com/EdenEast/nightfox.nvim).
+A transcript-aware bIRC adaptation of [Duskfox](https://github.com/EdenEast/nightfox.nvim).
 
-![Approximate bIRC preview of Duskfox](preview.svg)
+![bIRC transcript preview of Duskfox](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `dark`
-- Background: `#232136`
-- Text: `#e0def4`
-- Accent: `#569fba`
-- Palette basis: Duskfox background, foreground, and cyan.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#232136` |
+| Ordinary text | Normal/editor foreground | `#e0def4` |
+| Native accent | Principal upstream highlight (blue) | `#569fba` |
+| Timestamps and history | Comment/muted foreground | `#6e6a86` |
+| Links, replies, and card titles | Link/function/blue | `#569fba` |
+| Joins | String/diff-added/green | `#a3be8c` |
+| Parts and quits | Comment/muted foreground | `#6e6a86` |
+| Notices | Warning/yellow | `#f6c177` |
+| Actions | Special/magenta | `#c4a7e7` |
+| Errors and kicks | Error/red | `#eb6f92` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#9ccfd8` |
+| Mention background | Search/Visual/selection | `#433c59` |
+| Cards and reaction surfaces | Secondary editor surface | `#393552` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/EdenEast/nightfox.nvim](https://github.com/EdenEast/nightfox.nvim)
+- Palette evidence: `extra/duskfox/duskfox.itermcolors`
 - Upstream license: `MIT`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

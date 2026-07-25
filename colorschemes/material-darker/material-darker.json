@@ -2,8 +2,8 @@
   "accent" : "#82aaff",
   "appearance" : "dark",
   "background" : "#212121",
-  "customCSS" : "",
-  "id" : "A17885D4-7FC8-551A-99CC-FBBDC924D508",
+  "customCSS" : ".t, .history { color: #545454; }\n.join { color: #c3e88d; }\n.part, .quit { color: #545454; }\n.kick, .error { color: #f07178; }\n.notice { color: #ffcb6b; }\n.action { color: #c792ea; }\n.mode, .nick, .topic, .server { color: #89ddff; }\n.highlight { color: #eeffff; background-color: #404040; border-left: 3px solid #c792ea; padding-left: 8px; }\n.reply { color: #545454; border-left: 2px solid #82aaff; padding-left: 6px; }\n.oper { color: #212121; background-color: #ffcb6b; }\n.reactions { color: #82aaff; background-color: #292929; }\n.card { background-color: #292929; border-color: #545454; }\n.card-title { color: #82aaff; }\n.card-desc { color: #545454; }\n.daychange { color: #545454; border-color: #292929; }",
+  "id" : "9136C362-D922-5FA8-A9EE-B98C3491D7FF",
   "isBuiltIn" : false,
   "name" : "Material Darker",
   "text" : "#eeffff"

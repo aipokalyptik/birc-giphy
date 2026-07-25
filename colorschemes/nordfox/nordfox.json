@@ -2,8 +2,8 @@
   "accent" : "#81a1c1",
   "appearance" : "dark",
   "background" : "#2e3440",
-  "customCSS" : "",
-  "id" : "6BDA5775-8A11-5F34-98D7-2DD4E0957A31",
+  "customCSS" : ".t, .history { color: #60728a; }\n.join { color: #a3be8c; }\n.part, .quit { color: #60728a; }\n.kick, .error { color: #bf616a; }\n.notice { color: #ebcb8b; }\n.action { color: #b48ead; }\n.mode, .nick, .topic, .server { color: #88c0d0; }\n.highlight { color: #cdcecf; background-color: #3e4a5b; border-left: 3px solid #b48ead; padding-left: 8px; }\n.reply { color: #60728a; border-left: 2px solid #81a1c1; padding-left: 6px; }\n.oper { color: #2e3440; background-color: #ebcb8b; }\n.reactions { color: #81a1c1; background-color: #3b4252; }\n.card { background-color: #3b4252; border-color: #60728a; }\n.card-title { color: #81a1c1; }\n.card-desc { color: #60728a; }\n.daychange { color: #60728a; border-color: #3b4252; }",
+  "id" : "8697E6FD-C03C-5231-9DFE-156D0E09B1F2",
   "isBuiltIn" : false,
   "name" : "Nordfox",
   "text" : "#cdcecf"

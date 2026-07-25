@@ -2,8 +2,8 @@
   "accent" : "#268bd2",
   "appearance" : "light",
   "background" : "#fdf6e3",
-  "customCSS" : "",
-  "id" : "B25430ED-D7AC-5368-A88D-6966A7ABB29A",
+  "customCSS" : ".t, .history { color: #93a1a1; }\n.join { color: #859900; }\n.part, .quit { color: #93a1a1; }\n.kick, .error { color: #dc322f; }\n.notice { color: #b58900; }\n.action { color: #d33682; }\n.mode, .nick, .topic, .server { color: #2aa198; }\n.highlight { color: #657b83; background-color: #eee8d5; border-left: 3px solid #d33682; padding-left: 8px; }\n.reply { color: #93a1a1; border-left: 2px solid #268bd2; padding-left: 6px; }\n.oper { color: #fdf6e3; background-color: #b58900; }\n.reactions { color: #268bd2; background-color: #eee8d5; }\n.card { background-color: #eee8d5; border-color: #93a1a1; }\n.card-title { color: #268bd2; }\n.card-desc { color: #93a1a1; }\n.daychange { color: #93a1a1; border-color: #eee8d5; }",
+  "id" : "75CC12FE-ECAF-56A3-8938-0CE13EBB0B10",
   "isBuiltIn" : false,
   "name" : "Solarized Light",
   "text" : "#657b83"

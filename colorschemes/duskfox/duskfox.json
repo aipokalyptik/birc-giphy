@@ -2,8 +2,8 @@
   "accent" : "#569fba",
   "appearance" : "dark",
   "background" : "#232136",
-  "customCSS" : "",
-  "id" : "8C4114DD-785C-5893-B383-8971A601D196",
+  "customCSS" : ".t, .history { color: #6e6a86; }\n.join { color: #a3be8c; }\n.part, .quit { color: #6e6a86; }\n.kick, .error { color: #eb6f92; }\n.notice { color: #f6c177; }\n.action { color: #c4a7e7; }\n.mode, .nick, .topic, .server { color: #9ccfd8; }\n.highlight { color: #e0def4; background-color: #433c59; border-left: 3px solid #c4a7e7; padding-left: 8px; }\n.reply { color: #6e6a86; border-left: 2px solid #569fba; padding-left: 6px; }\n.oper { color: #232136; background-color: #f6c177; }\n.reactions { color: #569fba; background-color: #393552; }\n.card { background-color: #393552; border-color: #6e6a86; }\n.card-title { color: #569fba; }\n.card-desc { color: #6e6a86; }\n.daychange { color: #6e6a86; border-color: #393552; }",
+  "id" : "E4AF707E-2196-5B8C-A9B4-27AC82505EE6",
   "isBuiltIn" : false,
   "name" : "Duskfox",
   "text" : "#e0def4"

@@ -2,8 +2,8 @@
   "accent" : "#569cd6",
   "appearance" : "dark",
   "background" : "#1e1e1e",
-  "customCSS" : "",
-  "id" : "D1267F0C-A9AB-52FA-8735-8992087CCAC7",
+  "customCSS" : ".t, .history { color: #808080; }\n.join { color: #6a9955; }\n.part, .quit { color: #808080; }\n.kick, .error { color: #f44747; }\n.notice { color: #dcdcaa; }\n.action { color: #c586c0; }\n.mode, .nick, .topic, .server { color: #4ec9b0; }\n.highlight { color: #d4d4d4; background-color: #264f78; border-left: 3px solid #c586c0; padding-left: 8px; }\n.reply { color: #808080; border-left: 2px solid #569cd6; padding-left: 6px; }\n.oper { color: #1e1e1e; background-color: #dcdcaa; }\n.reactions { color: #569cd6; background-color: #252526; }\n.card { background-color: #252526; border-color: #808080; }\n.card-title { color: #569cd6; }\n.card-desc { color: #808080; }\n.daychange { color: #808080; border-color: #252526; }",
+  "id" : "86B7497B-8CBF-536D-97ED-B105F2FCE0BF",
   "isBuiltIn" : false,
   "name" : "VSCode Dark+",
   "text" : "#d4d4d4"

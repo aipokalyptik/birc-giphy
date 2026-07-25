@@ -2,9 +2,9 @@
   "accent" : "#fad000",
   "appearance" : "dark",
   "background" : "#2d2b55",
-  "customCSS" : "",
-  "id" : "2456DB69-9066-5010-8696-A70E288E8B06",
+  "customCSS" : ".t, .history { color: #b362ff; }\n.join { color: #a5ff90; }\n.part, .quit { color: #b362ff; }\n.kick, .error { color: #ec3a37; }\n.notice { color: #fad000; }\n.action { color: #b362ff; }\n.mode, .nick, .topic, .server { color: #80ffbb; }\n.highlight { color: #e1efff; background-color: #7d44b2; border-left: 3px solid #b362ff; padding-left: 8px; }\n.reply { color: #b362ff; border-left: 2px solid #9effff; padding-left: 6px; }\n.oper { color: #2d2b55; background-color: #fad000; }\n.reactions { color: #9effff; background-color: #3b376e; }\n.card { background-color: #3b376e; border-color: #b362ff; }\n.card-title { color: #9effff; }\n.card-desc { color: #b362ff; }\n.daychange { color: #b362ff; border-color: #3b376e; }",
+  "id" : "BE71DC5C-15A3-51D2-9031-903B097F4DA3",
   "isBuiltIn" : false,
   "name" : "Shades of Purple",
-  "text" : "#ffffff"
+  "text" : "#e1efff"
 }

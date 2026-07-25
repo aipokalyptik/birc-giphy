@@ -1,30 +1,43 @@
 # VSCode Light+
 
-A bIRC colorscheme adapted from [VSCode Light+](https://github.com/Mofiqul/vscode.nvim).
+A transcript-aware bIRC adaptation of [VSCode Light+](https://github.com/Mofiqul/vscode.nvim).
 
-![Approximate bIRC preview of VSCode Light+](preview.svg)
+![bIRC transcript preview of VSCode Light+](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `light`
-- Background: `#ffffff`
-- Text: `#000000`
-- Accent: `#0000ff`
-- Palette basis: VSCode Light+ editor background, foreground, and blue.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#ffffff` |
+| Ordinary text | Normal/editor foreground | `#000000` |
+| Native accent | Principal upstream highlight (blue) | `#0000ff` |
+| Timestamps and history | Comment/muted foreground | `#008000` |
+| Links, replies, and card titles | Link/function/blue | `#0000ff` |
+| Joins | String/diff-added/green | `#008000` |
+| Parts and quits | Comment/muted foreground | `#008000` |
+| Notices | Warning/yellow | `#795e26` |
+| Actions | Special/magenta | `#af00db` |
+| Errors and kicks | Error/red | `#cd3131` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#267f99` |
+| Mention background | Search/Visual/selection | `#add6ff` |
+| Cards and reaction surfaces | Secondary editor surface | `#f3f3f3` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/Mofiqul/vscode.nvim](https://github.com/Mofiqul/vscode.nvim)
+- Palette evidence: `lua/vscode/colors.lua light defaults`
 - Upstream license: `MIT`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

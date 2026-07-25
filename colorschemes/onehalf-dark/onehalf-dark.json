@@ -2,8 +2,8 @@
   "accent" : "#61afef",
   "appearance" : "dark",
   "background" : "#282c34",
-  "customCSS" : "",
-  "id" : "699ABB09-BDDF-559A-A942-771648CD1803",
+  "customCSS" : ".t, .history { color: #5c6370; }\n.join { color: #98c379; }\n.part, .quit { color: #5c6370; }\n.kick, .error { color: #e06c75; }\n.notice { color: #e5c07b; }\n.action { color: #c678dd; }\n.mode, .nick, .topic, .server { color: #56b6c2; }\n.highlight { color: #dcdfe4; background-color: #474e5d; border-left: 3px solid #c678dd; padding-left: 8px; }\n.reply { color: #5c6370; border-left: 2px solid #61afef; padding-left: 6px; }\n.oper { color: #282c34; background-color: #e5c07b; }\n.reactions { color: #61afef; background-color: #21252b; }\n.card { background-color: #21252b; border-color: #5c6370; }\n.card-title { color: #61afef; }\n.card-desc { color: #5c6370; }\n.daychange { color: #5c6370; border-color: #21252b; }",
+  "id" : "EF2295F8-39D4-5AC9-9092-4571DE81B55B",
   "isBuiltIn" : false,
   "name" : "One Half Dark",
   "text" : "#dcdfe4"

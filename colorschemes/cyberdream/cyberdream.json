@@ -2,8 +2,8 @@
   "accent" : "#5ea1ff",
   "appearance" : "dark",
   "background" : "#16181a",
-  "customCSS" : "",
-  "id" : "84CB5459-BD43-5B43-A322-D695DFD80F55",
+  "customCSS" : ".t, .history { color: #7b8496; }\n.join { color: #5eff6c; }\n.part, .quit { color: #7b8496; }\n.kick, .error { color: #ff6e5e; }\n.notice { color: #f1ff5e; }\n.action { color: #bd5eff; }\n.mode, .nick, .topic, .server { color: #5ef1ff; }\n.highlight { color: #ffffff; background-color: #3c4048; border-left: 3px solid #bd5eff; padding-left: 8px; }\n.reply { color: #7b8496; border-left: 2px solid #5ea1ff; padding-left: 6px; }\n.oper { color: #16181a; background-color: #f1ff5e; }\n.reactions { color: #5ea1ff; background-color: #26292b; }\n.card { background-color: #26292b; border-color: #7b8496; }\n.card-title { color: #5ea1ff; }\n.card-desc { color: #7b8496; }\n.daychange { color: #7b8496; border-color: #26292b; }",
+  "id" : "F52CD795-ADEA-507A-97F7-509E2CC29DB4",
   "isBuiltIn" : false,
   "name" : "Cyberdream",
   "text" : "#ffffff"

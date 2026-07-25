@@ -2,8 +2,8 @@
   "accent" : "#0087af",
   "appearance" : "light",
   "background" : "#eeeeee",
-  "customCSS" : "",
-  "id" : "B1C6FDE6-C0AF-51FE-BF96-28545ED625E3",
+  "customCSS" : ".t, .history { color: #878787; }\n.join { color: #5f8700; }\n.part, .quit { color: #878787; }\n.kick, .error { color: #d70000; }\n.notice { color: #d70087; }\n.action { color: #d70087; }\n.mode, .nick, .topic, .server { color: #005f87; }\n.highlight { color: #444444; background-color: #ffff5f; border-left: 3px solid #d70087; padding-left: 8px; }\n.reply { color: #878787; border-left: 2px solid #0087af; padding-left: 6px; }\n.oper { color: #eeeeee; background-color: #d70087; }\n.reactions { color: #0087af; background-color: #e4e4e4; }\n.card { background-color: #e4e4e4; border-color: #878787; }\n.card-title { color: #0087af; }\n.card-desc { color: #878787; }\n.daychange { color: #878787; border-color: #e4e4e4; }",
+  "id" : "E752A0D9-B6D7-56FA-9FD5-90C9654A8F13",
   "isBuiltIn" : false,
   "name" : "PaperColor Light",
   "text" : "#444444"

@@ -2,8 +2,8 @@
   "accent" : "#7e9cd8",
   "appearance" : "dark",
   "background" : "#1f1f28",
-  "customCSS" : "",
-  "id" : "4B68C6E7-402C-5B2B-A452-88E8B2B6C095",
+  "customCSS" : ".t, .history { color: #727169; }\n.join { color: #76946a; }\n.part, .quit { color: #727169; }\n.kick, .error { color: #c34043; }\n.notice { color: #c0a36e; }\n.action { color: #957fb8; }\n.mode, .nick, .topic, .server { color: #6a9589; }\n.highlight { color: #dcd7ba; background-color: #2d4f67; border-left: 3px solid #957fb8; padding-left: 8px; }\n.reply { color: #727169; border-left: 2px solid #7e9cd8; padding-left: 6px; }\n.oper { color: #1f1f28; background-color: #c0a36e; }\n.reactions { color: #7e9cd8; background-color: #090618; }\n.card { background-color: #090618; border-color: #727169; }\n.card-title { color: #7e9cd8; }\n.card-desc { color: #727169; }\n.daychange { color: #727169; border-color: #090618; }",
+  "id" : "E0269FD3-0E11-5D85-8432-8C2A2397016C",
   "isBuiltIn" : false,
   "name" : "Kanagawa Wave",
   "text" : "#dcd7ba"

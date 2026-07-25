@@ -1,30 +1,43 @@
 # Kanagawa Lotus
 
-A bIRC colorscheme adapted from [Kanagawa Lotus](https://github.com/rebelot/kanagawa.nvim).
+A transcript-aware bIRC adaptation of [Kanagawa Lotus](https://github.com/rebelot/kanagawa.nvim).
 
-![Approximate bIRC preview of Kanagawa Lotus](preview.svg)
+![bIRC transcript preview of Kanagawa Lotus](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `light`
-- Background: `#f2ecbc`
-- Text: `#545464`
-- Accent: `#4d699b`
-- Palette basis: Kanagawa Lotus lotusWhite3, lotusInk1, and lotusBlue4.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#f2ecbc` |
+| Ordinary text | Normal/editor foreground | `#545464` |
+| Native accent | Principal upstream highlight (blue) | `#4d699b` |
+| Timestamps and history | Comment/muted foreground | `#8a8980` |
+| Links, replies, and card titles | Link/function/blue | `#4d699b` |
+| Joins | String/diff-added/green | `#6f894e` |
+| Parts and quits | Comment/muted foreground | `#8a8980` |
+| Notices | Warning/yellow | `#77713f` |
+| Actions | Special/magenta | `#624c83` |
+| Errors and kicks | Error/red | `#c84053` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#597b75` |
+| Mention background | Search/Visual/selection | `#dcd5ac` |
+| Cards and reaction surfaces | Secondary editor surface | `#e7dba0` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/rebelot/kanagawa.nvim](https://github.com/rebelot/kanagawa.nvim)
+- Palette evidence: `lua/kanagawa/colors.lua Lotus palette`
 - Upstream license: `MIT`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

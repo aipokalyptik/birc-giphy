@@ -2,9 +2,9 @@
   "accent" : "#907aa9",
   "appearance" : "light",
   "background" : "#faf4ed",
-  "customCSS" : "",
-  "id" : "0AD0B633-382E-5766-B588-231D67F1F083",
+  "customCSS" : ".t, .history { color: #9893a5; }\n.join { color: #6d8f89; }\n.part, .quit { color: #9893a5; }\n.kick, .error { color: #b4637a; }\n.notice { color: #ea9d34; }\n.action { color: #907aa9; }\n.mode, .nick, .topic, .server { color: #56949f; }\n.highlight { color: #464261; background-color: #dfdad9; border-left: 3px solid #907aa9; padding-left: 8px; }\n.reply { color: #9893a5; border-left: 2px solid #286983; padding-left: 6px; }\n.oper { color: #faf4ed; background-color: #ea9d34; }\n.reactions { color: #286983; background-color: #fffaf3; }\n.card { background-color: #fffaf3; border-color: #9893a5; }\n.card-title { color: #286983; }\n.card-desc { color: #9893a5; }\n.daychange { color: #9893a5; border-color: #fffaf3; }",
+  "id" : "A83E5120-354D-5FD5-8DBA-A6CCD5405102",
   "isBuiltIn" : false,
   "name" : "Rosé Pine Dawn",
-  "text" : "#575279"
+  "text" : "#464261"
 }

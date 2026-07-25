@@ -1,9 +1,9 @@
 {
-  "accent" : "#f92672",
+  "accent" : "#66d9ef",
   "appearance" : "dark",
   "background" : "#1b1d1e",
-  "customCSS" : "",
-  "id" : "C037ADBC-0FBD-5589-8200-9F1326C3D296",
+  "customCSS" : ".t, .history { color: #7e8e91; }\n.join { color: #a6e22e; }\n.part, .quit { color: #7e8e91; }\n.kick, .error { color: #f92672; }\n.notice { color: #e6db74; }\n.action { color: #ae81ff; }\n.mode, .nick, .topic, .server { color: #66d9ef; }\n.highlight { color: #f8f8f2; background-color: #403d3d; border-left: 3px solid #ae81ff; padding-left: 8px; }\n.reply { color: #7e8e91; border-left: 2px solid #66d9ef; padding-left: 6px; }\n.oper { color: #1b1d1e; background-color: #e6db74; }\n.reactions { color: #66d9ef; background-color: #232526; }\n.card { background-color: #232526; border-color: #7e8e91; }\n.card-title { color: #66d9ef; }\n.card-desc { color: #7e8e91; }\n.daychange { color: #7e8e91; border-color: #232526; }",
+  "id" : "DC25EA8C-4192-5A99-8A09-C8B6F7204B55",
   "isBuiltIn" : false,
   "name" : "Molokai",
   "text" : "#f8f8f2"

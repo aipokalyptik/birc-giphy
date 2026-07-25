@@ -2,8 +2,8 @@
   "accent" : "#8839ef",
   "appearance" : "light",
   "background" : "#eff1f5",
-  "customCSS" : "",
-  "id" : "2D086E5B-9036-5C13-BB2C-8D08B9ECBC2F",
+  "customCSS" : ".t, .history { color: #8c8fa1; }\n.join { color: #40a02b; }\n.part, .quit { color: #8c8fa1; }\n.kick, .error { color: #d20f39; }\n.notice { color: #df8e1d; }\n.action { color: #8839ef; }\n.mode, .nick, .topic, .server { color: #179299; }\n.highlight { color: #4c4f69; background-color: #ccd0da; border-left: 3px solid #8839ef; padding-left: 8px; }\n.reply { color: #8c8fa1; border-left: 2px solid #1e66f5; padding-left: 6px; }\n.oper { color: #eff1f5; background-color: #df8e1d; }\n.reactions { color: #1e66f5; background-color: #e6e9ef; }\n.card { background-color: #e6e9ef; border-color: #8c8fa1; }\n.card-title { color: #1e66f5; }\n.card-desc { color: #8c8fa1; }\n.daychange { color: #8c8fa1; border-color: #e6e9ef; }",
+  "id" : "DBB2F485-4C3A-5290-92B5-033B45F6AE7C",
   "isBuiltIn" : false,
   "name" : "Catppuccin Latte",
   "text" : "#4c4f69"

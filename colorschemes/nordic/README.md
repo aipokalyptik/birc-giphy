@@ -1,30 +1,43 @@
 # Nordic
 
-A bIRC colorscheme adapted from [Nordic](https://github.com/AlexvZyl/nordic.nvim).
+A transcript-aware bIRC adaptation of [Nordic](https://github.com/AlexvZyl/nordic.nvim).
 
-![Approximate bIRC preview of Nordic](preview.svg)
+![bIRC transcript preview of Nordic](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `dark`
-- Background: `#242933`
-- Text: `#d8dee9`
-- Accent: `#88c0d0`
-- Palette basis: Nordic dark background, foreground, and cyan.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#242933` |
+| Ordinary text | Normal/editor foreground | `#c0c8d8` |
+| Native accent | Principal upstream highlight (blue) | `#5e81ac` |
+| Timestamps and history | Comment/muted foreground | `#4c566a` |
+| Links, replies, and card titles | Link/function/blue | `#5e81ac` |
+| Joins | String/diff-added/green | `#a3be8c` |
+| Parts and quits | Comment/muted foreground | `#4c566a` |
+| Notices | Warning/yellow | `#ebcb8b` |
+| Actions | Special/magenta | `#b48ead` |
+| Errors and kicks | Error/red | `#bf616a` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#8fbcbb` |
+| Mention background | Search/Visual/selection | `#3b4252` |
+| Cards and reaction surfaces | Secondary editor surface | `#191d24` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/AlexvZyl/nordic.nvim](https://github.com/AlexvZyl/nordic.nvim)
+- Palette evidence: `assets/palette.toml and platforms/iTerm2/nordic.itermcolors`
 - Upstream license: `MIT`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

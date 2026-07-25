@@ -2,8 +2,8 @@
   "accent" : "#7aa2f7",
   "appearance" : "dark",
   "background" : "#24283b",
-  "customCSS" : "",
-  "id" : "322A0348-693F-599D-A5B6-318BF7C61EC9",
+  "customCSS" : ".t, .history { color: #565f89; }\n.join { color: #9ece6a; }\n.part, .quit { color: #565f89; }\n.kick, .error { color: #f7768e; }\n.notice { color: #e0af68; }\n.action { color: #bb9af7; }\n.mode, .nick, .topic, .server { color: #7dcfff; }\n.highlight { color: #c0caf5; background-color: #2e3c64; border-left: 3px solid #bb9af7; padding-left: 8px; }\n.reply { color: #565f89; border-left: 2px solid #7aa2f7; padding-left: 6px; }\n.oper { color: #24283b; background-color: #e0af68; }\n.reactions { color: #7aa2f7; background-color: #1d202f; }\n.card { background-color: #1d202f; border-color: #565f89; }\n.card-title { color: #7aa2f7; }\n.card-desc { color: #565f89; }\n.daychange { color: #565f89; border-color: #1d202f; }",
+  "id" : "491D8AB9-EA65-5A3A-A9F2-EBD0E247C19D",
   "isBuiltIn" : false,
   "name" : "Tokyo Night Storm",
   "text" : "#c0caf5"

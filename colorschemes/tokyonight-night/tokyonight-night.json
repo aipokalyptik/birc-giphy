@@ -2,8 +2,8 @@
   "accent" : "#7aa2f7",
   "appearance" : "dark",
   "background" : "#1a1b26",
-  "customCSS" : "",
-  "id" : "412A2344-D0AB-510E-A3D6-FBA138B099A4",
+  "customCSS" : ".t, .history { color: #565f89; }\n.join { color: #9ece6a; }\n.part, .quit { color: #565f89; }\n.kick, .error { color: #f7768e; }\n.notice { color: #e0af68; }\n.action { color: #bb9af7; }\n.mode, .nick, .topic, .server { color: #7dcfff; }\n.highlight { color: #c0caf5; background-color: #283457; border-left: 3px solid #bb9af7; padding-left: 8px; }\n.reply { color: #565f89; border-left: 2px solid #7aa2f7; padding-left: 6px; }\n.oper { color: #1a1b26; background-color: #e0af68; }\n.reactions { color: #7aa2f7; background-color: #15161e; }\n.card { background-color: #15161e; border-color: #565f89; }\n.card-title { color: #7aa2f7; }\n.card-desc { color: #565f89; }\n.daychange { color: #565f89; border-color: #15161e; }",
+  "id" : "5A985564-2287-53C4-9F96-FD78714E8044",
   "isBuiltIn" : false,
   "name" : "Tokyo Night",
   "text" : "#c0caf5"

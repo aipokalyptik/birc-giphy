@@ -2,9 +2,9 @@
   "accent" : "#6699cc",
   "appearance" : "dark",
   "background" : "#1b2b34",
-  "customCSS" : "",
-  "id" : "AA243249-C037-5AE9-82FE-89D57EECB64B",
+  "customCSS" : ".t, .history { color: #65737e; }\n.join { color: #99c794; }\n.part, .quit { color: #65737e; }\n.kick, .error { color: #ec5f67; }\n.notice { color: #fac863; }\n.action { color: #c594c5; }\n.mode, .nick, .topic, .server { color: #62b3b2; }\n.highlight { color: #d8dee9; background-color: #4f5b66; border-left: 3px solid #c594c5; padding-left: 8px; }\n.reply { color: #65737e; border-left: 2px solid #6699cc; padding-left: 6px; }\n.oper { color: #1b2b34; background-color: #fac863; }\n.reactions { color: #6699cc; background-color: #343d46; }\n.card { background-color: #343d46; border-color: #65737e; }\n.card-title { color: #6699cc; }\n.card-desc { color: #65737e; }\n.daychange { color: #65737e; border-color: #343d46; }",
+  "id" : "882B52A4-E3FF-501E-9559-CE6E802B5FAB",
   "isBuiltIn" : false,
   "name" : "Oceanic Next",
-  "text" : "#c0c5ce"
+  "text" : "#d8dee9"
 }

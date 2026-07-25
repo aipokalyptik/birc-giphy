@@ -2,8 +2,8 @@
   "accent" : "#82aaff",
   "appearance" : "dark",
   "background" : "#222436",
-  "customCSS" : "",
-  "id" : "F23824D6-8539-5BAE-9F67-6FE050F4A7B4",
+  "customCSS" : ".t, .history { color: #636da6; }\n.join { color: #c3e88d; }\n.part, .quit { color: #636da6; }\n.kick, .error { color: #ff757f; }\n.notice { color: #ffc777; }\n.action { color: #c099ff; }\n.mode, .nick, .topic, .server { color: #86e1fc; }\n.highlight { color: #c8d3f5; background-color: #2d3f76; border-left: 3px solid #c099ff; padding-left: 8px; }\n.reply { color: #636da6; border-left: 2px solid #82aaff; padding-left: 6px; }\n.oper { color: #222436; background-color: #ffc777; }\n.reactions { color: #82aaff; background-color: #1b1d2b; }\n.card { background-color: #1b1d2b; border-color: #636da6; }\n.card-title { color: #82aaff; }\n.card-desc { color: #636da6; }\n.daychange { color: #636da6; border-color: #1b1d2b; }",
+  "id" : "A057466E-5AFF-572A-8FF1-9D6D5619F5B6",
   "isBuiltIn" : false,
   "name" : "Tokyo Night Moon",
   "text" : "#c8d3f5"

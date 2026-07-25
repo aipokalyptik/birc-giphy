@@ -1,9 +1,9 @@
 {
-  "accent" : "#bd93f9",
+  "accent" : "#ff79c6",
   "appearance" : "dark",
   "background" : "#282a36",
-  "customCSS" : "",
-  "id" : "CE29DCF7-B7A0-530D-A3B4-A99BDCDBF129",
+  "customCSS" : ".t, .history { color: #6272a4; }\n.join { color: #50fa7b; }\n.part, .quit { color: #6272a4; }\n.kick, .error { color: #ff5555; }\n.notice { color: #f1fa8c; }\n.action { color: #ff79c6; }\n.mode, .nick, .topic, .server { color: #8be9fd; }\n.highlight { color: #f8f8f2; background-color: #44475a; border-left: 3px solid #ff79c6; padding-left: 8px; }\n.reply { color: #6272a4; border-left: 2px solid #8be9fd; padding-left: 6px; }\n.oper { color: #282a36; background-color: #f1fa8c; }\n.reactions { color: #8be9fd; background-color: #424450; }\n.card { background-color: #424450; border-color: #6272a4; }\n.card-title { color: #8be9fd; }\n.card-desc { color: #6272a4; }\n.daychange { color: #6272a4; border-color: #424450; }",
+  "id" : "07EF4721-31F9-5254-A07A-15CB2FC82051",
   "isBuiltIn" : false,
   "name" : "Dracula",
   "text" : "#f8f8f2"

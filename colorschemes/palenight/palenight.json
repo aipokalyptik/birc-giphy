@@ -1,10 +1,10 @@
 {
-  "accent" : "#c792ea",
+  "accent" : "#82b1ff",
   "appearance" : "dark",
   "background" : "#292d3e",
-  "customCSS" : "",
-  "id" : "9A080E2B-4FD1-5137-91AD-05FB181AC420",
+  "customCSS" : ".t, .history { color: #697098; }\n.join { color: #c3e88d; }\n.part, .quit { color: #697098; }\n.kick, .error { color: #ff5370; }\n.notice { color: #ffcb6b; }\n.action { color: #c792ea; }\n.mode, .nick, .topic, .server { color: #89ddff; }\n.highlight { color: #bfc7d5; background-color: #3e4452; border-left: 3px solid #c792ea; padding-left: 8px; }\n.reply { color: #697098; border-left: 2px solid #82b1ff; padding-left: 6px; }\n.oper { color: #292d3e; background-color: #ffcb6b; }\n.reactions { color: #82b1ff; background-color: #2c323c; }\n.card { background-color: #2c323c; border-color: #697098; }\n.card-title { color: #82b1ff; }\n.card-desc { color: #697098; }\n.daychange { color: #697098; border-color: #2c323c; }",
+  "id" : "AA4538A7-7A20-52C7-8861-217C7F51C0AB",
   "isBuiltIn" : false,
   "name" : "Palenight",
-  "text" : "#a6accd"
+  "text" : "#bfc7d5"
 }

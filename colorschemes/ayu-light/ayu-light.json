@@ -1,10 +1,10 @@
 {
-  "accent" : "#ff9940",
+  "accent" : "#3694d0",
   "appearance" : "light",
-  "background" : "#fafafa",
-  "customCSS" : "",
-  "id" : "AD35CF66-CA27-5620-83BE-A0891292BCF4",
+  "background" : "#f9f9f9",
+  "customCSS" : ".t, .history { color: #8a9199; }\n.join { color: #67c605; }\n.part, .quit { color: #8a9199; }\n.kick, .error { color: #ec420e; }\n.notice { color: #ed8515; }\n.action { color: #864cc0; }\n.mode, .nick, .topic, .server { color: #41b487; }\n.highlight { color: #4a5460; background-color: #eceade; border-left: 3px solid #864cc0; padding-left: 8px; }\n.reply { color: #8a9199; border-left: 2px solid #3694d0; padding-left: 6px; }\n.oper { color: #f9f9f9; background-color: #ed8515; }\n.reactions { color: #3694d0; background-color: #eceade; }\n.card { background-color: #eceade; border-color: #8a9199; }\n.card-title { color: #3694d0; }\n.card-desc { color: #8a9199; }\n.daychange { color: #8a9199; border-color: #eceade; }",
+  "id" : "954722AB-21C7-5FDA-BF1D-ABB1863E8991",
   "isBuiltIn" : false,
   "name" : "Ayu Light",
-  "text" : "#5c6166"
+  "text" : "#4a5460"
 }

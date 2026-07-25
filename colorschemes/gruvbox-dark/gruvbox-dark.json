@@ -1,9 +1,9 @@
 {
-  "accent" : "#d79921",
+  "accent" : "#fabd2f",
   "appearance" : "dark",
   "background" : "#282828",
-  "customCSS" : "",
-  "id" : "E1E38622-ADB6-5F0A-BD1C-08E0BA26D07B",
+  "customCSS" : ".t, .history { color: #928374; }\n.join { color: #b8bb26; }\n.part, .quit { color: #928374; }\n.kick, .error { color: #fb4934; }\n.notice { color: #fabd2f; }\n.action { color: #d3869b; }\n.mode, .nick, .topic, .server { color: #8ec07c; }\n.highlight { color: #ebdbb2; background-color: #665c54; border-left: 3px solid #d3869b; padding-left: 8px; }\n.reply { color: #928374; border-left: 2px solid #83a598; padding-left: 6px; }\n.oper { color: #282828; background-color: #fabd2f; }\n.reactions { color: #83a598; background-color: #3c3836; }\n.card { background-color: #3c3836; border-color: #928374; }\n.card-title { color: #83a598; }\n.card-desc { color: #928374; }\n.daychange { color: #928374; border-color: #3c3836; }",
+  "id" : "AE5FE853-A666-5C26-90A1-B0FC572F677C",
   "isBuiltIn" : false,
   "name" : "Gruvbox Dark",
   "text" : "#ebdbb2"

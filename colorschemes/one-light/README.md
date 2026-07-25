@@ -1,30 +1,43 @@
 # One Light
 
-A bIRC colorscheme adapted from [One Light](https://github.com/rakr/vim-one).
+A transcript-aware bIRC adaptation of [One Light](https://github.com/rakr/vim-one).
 
-![Approximate bIRC preview of One Light](preview.svg)
+![bIRC transcript preview of One Light](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `light`
-- Background: `#fafafa`
-- Text: `#383a42`
-- Accent: `#4078f2`
-- Palette basis: vim-one light background, foreground, and blue.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#fafafa` |
+| Ordinary text | Normal/editor foreground | `#494b53` |
+| Native accent | Principal upstream highlight (blue) | `#4078f2` |
+| Timestamps and history | Comment/muted foreground | `#a0a1a7` |
+| Links, replies, and card titles | Link/function/blue | `#4078f2` |
+| Joins | String/diff-added/green | `#50a14f` |
+| Parts and quits | Comment/muted foreground | `#a0a1a7` |
+| Notices | Warning/yellow | `#c18401` |
+| Actions | Special/magenta | `#a626a4` |
+| Errors and kicks | Error/red | `#e45649` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#0184bc` |
+| Mention background | Search/Visual/selection | `#d0d0d0` |
+| Cards and reaction surfaces | Secondary editor surface | `#f0f0f0` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/rakr/vim-one](https://github.com/rakr/vim-one)
+- Palette evidence: `colors/one.vim; background=light`
 - Upstream license: `MIT`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

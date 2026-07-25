@@ -1,30 +1,43 @@
 # Zenburn
 
-A bIRC colorscheme adapted from [Zenburn](https://github.com/jnurmine/Zenburn).
+A transcript-aware bIRC adaptation of [Zenburn](https://github.com/jnurmine/Zenburn).
 
-![Approximate bIRC preview of Zenburn](preview.svg)
+![bIRC transcript preview of Zenburn](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `dark`
-- Background: `#3f3f3f`
-- Text: `#dcdccc`
-- Accent: `#f0dfaf`
-- Palette basis: Zenburn Normal background, foreground, and yellow.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#3f3f3f` |
+| Ordinary text | Normal/editor foreground | `#dcdccc` |
+| Native accent | Principal upstream highlight (blue) | `#8cd0d3` |
+| Timestamps and history | Comment/muted foreground | `#7f9f7f` |
+| Links, replies, and card titles | Link/function/blue | `#8cd0d3` |
+| Joins | String/diff-added/green | `#7f9f7f` |
+| Parts and quits | Comment/muted foreground | `#7f9f7f` |
+| Notices | Warning/yellow | `#f0dfaf` |
+| Actions | Special/magenta | `#dc8cc3` |
+| Errors and kicks | Error/red | `#cc9393` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#93e0e3` |
+| Mention background | Search/Visual/selection | `#2f2f2f` |
+| Cards and reaction surfaces | Secondary editor surface | `#4f4f4f` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/jnurmine/Zenburn](https://github.com/jnurmine/Zenburn)
+- Palette evidence: `colors/zenburn.vim palette`
 - Upstream license: `GPL-2.0`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

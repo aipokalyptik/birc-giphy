@@ -1,30 +1,43 @@
 # Material Darker
 
-A bIRC colorscheme adapted from [Material Darker](https://github.com/marko-cerovac/material.nvim).
+A transcript-aware bIRC adaptation of [Material Darker](https://github.com/marko-cerovac/material.nvim).
 
-![Approximate bIRC preview of Material Darker](preview.svg)
+![bIRC transcript preview of Material Darker](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `dark`
-- Background: `#212121`
-- Text: `#eeffff`
-- Accent: `#82aaff`
-- Palette basis: Material darker background, foreground, and blue.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#212121` |
+| Ordinary text | Normal/editor foreground | `#eeffff` |
+| Native accent | Principal upstream highlight (blue) | `#82aaff` |
+| Timestamps and history | Comment/muted foreground | `#545454` |
+| Links, replies, and card titles | Link/function/blue | `#82aaff` |
+| Joins | String/diff-added/green | `#c3e88d` |
+| Parts and quits | Comment/muted foreground | `#545454` |
+| Notices | Warning/yellow | `#ffcb6b` |
+| Actions | Special/magenta | `#c792ea` |
+| Errors and kicks | Error/red | `#f07178` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#89ddff` |
+| Mention background | Search/Visual/selection | `#404040` |
+| Cards and reaction surfaces | Secondary editor surface | `#292929` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/marko-cerovac/material.nvim](https://github.com/marko-cerovac/material.nvim)
+- Palette evidence: `lua/material/colors.lua darker palette`
 - Upstream license: `MIT`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

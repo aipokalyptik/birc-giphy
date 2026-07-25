@@ -1,10 +1,10 @@
 {
-  "accent" : "#00ffff",
+  "accent" : "#80a0ff",
   "appearance" : "dark",
   "background" : "#000000",
-  "customCSS" : "",
-  "id" : "C67E7069-8C6B-56BD-9AAC-17F52E0BE0CB",
+  "customCSS" : ".t, .history { color: #80a0ff; }\n.join { color: #60ff60; }\n.part, .quit { color: #80a0ff; }\n.kick, .error { color: #ff0000; }\n.notice { color: #ffff00; }\n.action { color: #ff00ff; }\n.mode, .nick, .topic, .server { color: #40ffff; }\n.highlight { color: #00ffff; background-color: #303030; border-left: 3px solid #ff00ff; padding-left: 8px; }\n.reply { color: #80a0ff; border-left: 2px solid #80a0ff; padding-left: 6px; }\n.oper { color: #000000; background-color: #ffff00; }\n.reactions { color: #80a0ff; background-color: #303030; }\n.card { background-color: #303030; border-color: #80a0ff; }\n.card-title { color: #80a0ff; }\n.card-desc { color: #80a0ff; }\n.daychange { color: #80a0ff; border-color: #303030; }",
+  "id" : "3DD6F67F-7612-570B-98B3-91EEBE862E09",
   "isBuiltIn" : false,
   "name" : "Elflord",
-  "text" : "#ffffff"
+  "text" : "#00ffff"
 }

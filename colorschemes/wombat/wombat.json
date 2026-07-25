@@ -2,8 +2,8 @@
   "accent" : "#8ac6f2",
   "appearance" : "dark",
   "background" : "#242424",
-  "customCSS" : "",
-  "id" : "6DE7554E-0BB3-5C42-923A-C5FF9DFD5F6B",
+  "customCSS" : ".t, .history { color: #99968b; }\n.join { color: #95e454; }\n.part, .quit { color: #99968b; }\n.kick, .error { color: #e5786d; }\n.notice { color: #cae682; }\n.action { color: #f2c68a; }\n.mode, .nick, .topic, .server { color: #8ac6f2; }\n.highlight { color: #f6f3e8; background-color: #554d4b; border-left: 3px solid #f2c68a; padding-left: 8px; }\n.reply { color: #99968b; border-left: 2px solid #8ac6f2; padding-left: 6px; }\n.oper { color: #242424; background-color: #cae682; }\n.reactions { color: #8ac6f2; background-color: #444444; }\n.card { background-color: #444444; border-color: #99968b; }\n.card-title { color: #8ac6f2; }\n.card-desc { color: #99968b; }\n.daychange { color: #99968b; border-color: #444444; }",
+  "id" : "14C6768D-9A21-5626-B820-E39AC8967608",
   "isBuiltIn" : false,
   "name" : "Wombat",
   "text" : "#f6f3e8"

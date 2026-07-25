@@ -1,30 +1,43 @@
 # One Half Dark
 
-A bIRC colorscheme adapted from [One Half Dark](https://github.com/sonph/onehalf).
+A transcript-aware bIRC adaptation of [One Half Dark](https://github.com/sonph/onehalf).
 
-![Approximate bIRC preview of One Half Dark](preview.svg)
+![bIRC transcript preview of One Half Dark](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `dark`
-- Background: `#282c34`
-- Text: `#dcdfe4`
-- Accent: `#61afef`
-- Palette basis: One Half Dark background, foreground, and blue.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#282c34` |
+| Ordinary text | Normal/editor foreground | `#dcdfe4` |
+| Native accent | Principal upstream highlight (blue) | `#61afef` |
+| Timestamps and history | Comment/muted foreground | `#5c6370` |
+| Links, replies, and card titles | Link/function/blue | `#61afef` |
+| Joins | String/diff-added/green | `#98c379` |
+| Parts and quits | Comment/muted foreground | `#5c6370` |
+| Notices | Warning/yellow | `#e5c07b` |
+| Actions | Special/magenta | `#c678dd` |
+| Errors and kicks | Error/red | `#e06c75` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#56b6c2` |
+| Mention background | Search/Visual/selection | `#474e5d` |
+| Cards and reaction surfaces | Secondary editor surface | `#21252b` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/sonph/onehalf](https://github.com/sonph/onehalf)
+- Palette evidence: `iterm/OneHalfDark.itermcolors`
 - Upstream license: `MIT`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

@@ -1,9 +1,9 @@
 {
-  "accent" : "#ffff60",
+  "accent" : "#75a0ff",
   "appearance" : "dark",
   "background" : "#333333",
-  "customCSS" : "",
-  "id" : "BB0CF594-B129-52B1-855E-A44A68038B6E",
+  "customCSS" : ".t, .history { color: #6dceeb; }\n.join { color: #89fb98; }\n.part, .quit { color: #6dceeb; }\n.kick, .error { color: #ff0000; }\n.notice { color: #f0e68c; }\n.action { color: #ffde9b; }\n.mode, .nick, .topic, .server { color: #6dceeb; }\n.highlight { color: #ffffff; background-color: #6b8e24; border-left: 3px solid #ffde9b; padding-left: 8px; }\n.reply { color: #6dceeb; border-left: 2px solid #75a0ff; padding-left: 6px; }\n.oper { color: #333333; background-color: #f0e68c; }\n.reactions { color: #75a0ff; background-color: #4d4d4d; }\n.card { background-color: #4d4d4d; border-color: #6dceeb; }\n.card-title { color: #75a0ff; }\n.card-desc { color: #6dceeb; }\n.daychange { color: #6dceeb; border-color: #4d4d4d; }",
+  "id" : "827CA141-C07A-5C11-87AD-74B09450F803",
   "isBuiltIn" : false,
   "name" : "Desert",
   "text" : "#ffffff"

@@ -1,9 +1,9 @@
 {
-  "accent" : "#a3a9ce",
+  "accent" : "#7f91b2",
   "appearance" : "dark",
   "background" : "#292522",
-  "customCSS" : "",
-  "id" : "1071A4C3-D696-5596-AD27-5FF52691FAF8",
+  "customCSS" : ".t, .history { color: #867462; }\n.join { color: #78997a; }\n.part, .quit { color: #867462; }\n.kick, .error { color: #bd8183; }\n.notice { color: #e49b5d; }\n.action { color: #b380b0; }\n.mode, .nick, .topic, .server { color: #7b9695; }\n.highlight { color: #ece1d7; background-color: #403a36; border-left: 3px solid #b380b0; padding-left: 8px; }\n.reply { color: #867462; border-left: 2px solid #7f91b2; padding-left: 6px; }\n.oper { color: #292522; background-color: #e49b5d; }\n.reactions { color: #7f91b2; background-color: #34302c; }\n.card { background-color: #34302c; border-color: #867462; }\n.card-title { color: #7f91b2; }\n.card-desc { color: #867462; }\n.daychange { color: #867462; border-color: #34302c; }",
+  "id" : "50887D0A-9DA3-5ED9-8AE3-78FC5A122D25",
   "isBuiltIn" : false,
   "name" : "Mélange",
   "text" : "#ece1d7"

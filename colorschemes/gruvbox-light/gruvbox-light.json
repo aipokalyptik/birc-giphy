@@ -2,8 +2,8 @@
   "accent" : "#b57614",
   "appearance" : "light",
   "background" : "#fbf1c7",
-  "customCSS" : "",
-  "id" : "5FF0A91D-7083-5CA9-BA9B-D74D705EB771",
+  "customCSS" : ".t, .history { color: #928374; }\n.join { color: #79740e; }\n.part, .quit { color: #928374; }\n.kick, .error { color: #9d0006; }\n.notice { color: #b57614; }\n.action { color: #8f3f71; }\n.mode, .nick, .topic, .server { color: #427b58; }\n.highlight { color: #3c3836; background-color: #bdae93; border-left: 3px solid #8f3f71; padding-left: 8px; }\n.reply { color: #928374; border-left: 2px solid #076678; padding-left: 6px; }\n.oper { color: #fbf1c7; background-color: #b57614; }\n.reactions { color: #076678; background-color: #ebdbb2; }\n.card { background-color: #ebdbb2; border-color: #928374; }\n.card-title { color: #076678; }\n.card-desc { color: #928374; }\n.daychange { color: #928374; border-color: #ebdbb2; }",
+  "id" : "220D343A-2381-5E11-9F62-77D17A95BCF3",
   "isBuiltIn" : false,
   "name" : "Gruvbox Light",
   "text" : "#3c3836"

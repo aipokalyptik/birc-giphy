@@ -1,23 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="260" viewBox="0 0 640 260" role="img" aria-labelledby="title description">
-  <title id="title">Gruvbox Dark bIRC colorscheme preview</title>
-  <description id="description">Example chat window using the adapted background, text, and accent colors.</description>
-  <rect width="640" height="260" rx="12" fill="#282828"/>
-  <rect width="640" height="38" rx="12" fill="#d79921"/>
-  <rect y="26" width="640" height="12" fill="#d79921"/>
-  <circle cx="22" cy="19" r="6" fill="#282828" opacity="0.72"/>
-  <circle cx="42" cy="19" r="6" fill="#ebdbb2" opacity="0.72"/>
-  <text x="320" y="25" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="14" font-weight="700" fill="#282828">Gruvbox Dark</text>
-  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">
-    <text x="22" y="72" fill="#d79921" font-weight="700">#developers</text>
-    <text x="22" y="105" fill="#d79921">12:41  &lt;Ada&gt;</text>
-    <text x="164" y="105" fill="#ebdbb2">The new build is ready to test.</text>
-    <text x="22" y="137" fill="#d79921">12:42  &lt;Lin&gt;</text>
-    <text x="164" y="137" fill="#ebdbb2">Looks good — shipping it now.</text>
-    <text x="22" y="169" fill="#d79921">12:43  *</text>
-    <text x="111" y="169" fill="#ebdbb2">Ada tags @Lin in the release note.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="500" viewBox="0 0 760 500" role="img" aria-labelledby="title description">
+  <title id="title">Gruvbox Dark bIRC semantic colorscheme preview</title>
+  <description id="description">Transcript preview showing ordinary messages, history, a mention, an action, membership events, a notice, an error, a reply, a link card, and reactions using the generated custom CSS palette.</description>
+  <rect width="760" height="500" rx="12" fill="#282828"/>
+  <rect x="18" y="18" width="724" height="464" rx="9" fill="#282828" stroke="#3c3836"/>
+  <text x="32" y="50" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="18" font-weight="700" fill="#fabd2f">#palette-lab</text>
+  <text x="728" y="50" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#928374">Gruvbox Dark</text>
+  <line x1="30" y1="65" x2="730" y2="65" stroke="#3c3836"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">
+    <text x="28" y="92" fill="#928374">12:40</text>
+    <text x="104" y="92" fill="#8ec07c" font-weight="700">Ada</text>
+    <text x="205" y="92" fill="#ebdbb2">The semantic preview is ready.</text>
+    <text x="28" y="121" fill="#928374">12:41</text>
+    <text x="104" y="121" fill="#928374" font-weight="700">Lin</text>
+    <text x="205" y="121" fill="#928374">Older history remains deliberately quiet.</text>
+    <rect x="24" y="137" width="712" height="31" rx="3" fill="#665c54"/>
+    <rect x="24" y="137" width="4" height="31" fill="#d3869b"/>
+    <text x="28" y="158" fill="#928374">12:42</text>
+    <text x="104" y="158" fill="#83a598" font-weight="700">Mira</text>
+    <text x="205" y="158" fill="#ebdbb2">Ada: this mention uses the search/Visual color.</text>
+    <text x="28" y="193" fill="#928374">12:43</text>
+    <text x="104" y="193" fill="#d3869b" font-style="italic">* Lin ships the new palette</text>
+    <text x="28" y="222" fill="#b8bb26">→ Jo joined #palette-lab</text>
+    <text x="28" y="251" fill="#928374">← Pat left #palette-lab</text>
+    <text x="28" y="280" fill="#fabd2f">— Notice: preview regeneration completed</text>
+    <text x="28" y="309" fill="#fb4934">! Error: one unsafe declaration was rejected</text>
+    <rect x="28" y="328" width="4" height="44" fill="#83a598"/>
+    <text x="44" y="346" fill="#928374">↳ Ada: The semantic preview is ready.</text>
+    <text x="44" y="366" fill="#ebdbb2">The reply rail follows the upstream link color.</text>
+    <rect x="28" y="387" width="704" height="64" rx="6" fill="#3c3836" stroke="#928374"/>
+    <text x="44" y="412" fill="#83a598" font-weight="700">Canonical upstream palette</text>
+    <text x="44" y="435" fill="#928374">Editor roles adapted to transcript semantics</text>
+    <rect x="596" y="405" width="116" height="28" rx="14" fill="#3c3836" stroke="#83a598"/>
+    <text x="654" y="424" text-anchor="middle" fill="#83a598">✓ 4   ★ 2</text>
   </g>
-  <rect x="22" y="202" width="596" height="36" rx="6" fill="#ebdbb2" opacity="0.09"/>
-  <text x="36" y="225" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#ebdbb2">Message #developers</text>
-  <rect x="496" y="202" width="122" height="36" rx="6" fill="#d79921"/>
-  <text x="557" y="225" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700" fill="#282828">Send</text>
 </svg>

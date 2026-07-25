@@ -1,30 +1,43 @@
 # Palenight
 
-A bIRC colorscheme adapted from [Palenight](https://github.com/drewtempelmeyer/palenight.vim).
+A transcript-aware bIRC adaptation of [Palenight](https://github.com/drewtempelmeyer/palenight.vim).
 
-![Approximate bIRC preview of Palenight](preview.svg)
+![bIRC transcript preview of Palenight](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `dark`
-- Background: `#292d3e`
-- Text: `#a6accd`
-- Accent: `#c792ea`
-- Palette basis: Palenight background, foreground, and purple.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#292d3e` |
+| Ordinary text | Normal/editor foreground | `#bfc7d5` |
+| Native accent | Principal upstream highlight (blue) | `#82b1ff` |
+| Timestamps and history | Comment/muted foreground | `#697098` |
+| Links, replies, and card titles | Link/function/blue | `#82b1ff` |
+| Joins | String/diff-added/green | `#c3e88d` |
+| Parts and quits | Comment/muted foreground | `#697098` |
+| Notices | Warning/yellow | `#ffcb6b` |
+| Actions | Special/magenta | `#c792ea` |
+| Errors and kicks | Error/red | `#ff5370` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#89ddff` |
+| Mention background | Search/Visual/selection | `#3e4452` |
+| Cards and reaction surfaces | Secondary editor surface | `#2c323c` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/drewtempelmeyer/palenight.vim](https://github.com/drewtempelmeyer/palenight.vim)
+- Palette evidence: `colors/palenight.vim highlight groups`
 - Upstream license: `MIT`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

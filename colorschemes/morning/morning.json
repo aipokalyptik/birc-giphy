@@ -2,8 +2,8 @@
   "accent" : "#0000ff",
   "appearance" : "light",
   "background" : "#e4e4e4",
-  "customCSS" : "",
-  "id" : "E2FFB022-B4DE-53C2-8601-2C2DBA6B61E3",
+  "customCSS" : ".t, .history { color: #0000ff; }\n.join { color: #2e8b57; }\n.part, .quit { color: #0000ff; }\n.kick, .error { color: #ff0000; }\n.notice { color: #a52a2a; }\n.action { color: #6a0dad; }\n.mode, .nick, .topic, .server { color: #008787; }\n.highlight { color: #000000; background-color: #d0d0d0; border-left: 3px solid #6a0dad; padding-left: 8px; }\n.reply { color: #0000ff; border-left: 2px solid #0000ff; padding-left: 6px; }\n.oper { color: #e4e4e4; background-color: #a52a2a; }\n.reactions { color: #0000ff; background-color: #d0d0d0; }\n.card { background-color: #d0d0d0; border-color: #0000ff; }\n.card-title { color: #0000ff; }\n.card-desc { color: #0000ff; }\n.daychange { color: #0000ff; border-color: #d0d0d0; }",
+  "id" : "FAB1A59A-63AE-5BCC-862C-D72E1931322F",
   "isBuiltIn" : false,
   "name" : "Morning",
   "text" : "#000000"

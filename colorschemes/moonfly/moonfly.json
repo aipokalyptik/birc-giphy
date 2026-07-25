@@ -2,9 +2,9 @@
   "accent" : "#80a0ff",
   "appearance" : "dark",
   "background" : "#080808",
-  "customCSS" : "",
-  "id" : "C2AEF8B1-4ABE-5BA3-AC67-3B7B09F18934",
+  "customCSS" : ".t, .history { color: #949494; }\n.join { color: #8cc85f; }\n.part, .quit { color: #949494; }\n.kick, .error { color: #ff5d5d; }\n.notice { color: #e3c78a; }\n.action { color: #cf87e8; }\n.mode, .nick, .topic, .server { color: #79dac8; }\n.highlight { color: #bdbdbd; background-color: #323437; border-left: 3px solid #cf87e8; padding-left: 8px; }\n.reply { color: #949494; border-left: 2px solid #80a0ff; padding-left: 6px; }\n.oper { color: #080808; background-color: #e3c78a; }\n.reactions { color: #80a0ff; background-color: #323437; }\n.card { background-color: #323437; border-color: #949494; }\n.card-title { color: #80a0ff; }\n.card-desc { color: #949494; }\n.daychange { color: #949494; border-color: #323437; }",
+  "id" : "325ECF3D-25A4-54E8-AAAD-278B552B4399",
   "isBuiltIn" : false,
   "name" : "Moonfly",
-  "text" : "#b2b2b2"
+  "text" : "#bdbdbd"
 }

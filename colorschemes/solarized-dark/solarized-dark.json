@@ -2,8 +2,8 @@
   "accent" : "#268bd2",
   "appearance" : "dark",
   "background" : "#002b36",
-  "customCSS" : "",
-  "id" : "4745F426-6E83-5124-889E-F48DD641795F",
+  "customCSS" : ".t, .history { color: #586e75; }\n.join { color: #859900; }\n.part, .quit { color: #586e75; }\n.kick, .error { color: #dc322f; }\n.notice { color: #b58900; }\n.action { color: #d33682; }\n.mode, .nick, .topic, .server { color: #2aa198; }\n.highlight { color: #839496; background-color: #073642; border-left: 3px solid #d33682; padding-left: 8px; }\n.reply { color: #586e75; border-left: 2px solid #268bd2; padding-left: 6px; }\n.oper { color: #002b36; background-color: #b58900; }\n.reactions { color: #268bd2; background-color: #073642; }\n.card { background-color: #073642; border-color: #586e75; }\n.card-title { color: #268bd2; }\n.card-desc { color: #586e75; }\n.daychange { color: #586e75; border-color: #073642; }",
+  "id" : "B023054E-98AB-5C78-BA2D-D3F474D1CD53",
   "isBuiltIn" : false,
   "name" : "Solarized Dark",
   "text" : "#839496"

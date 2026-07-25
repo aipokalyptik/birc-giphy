@@ -2,8 +2,8 @@
   "accent" : "#ffcc00",
   "appearance" : "dark",
   "background" : "#000000",
-  "customCSS" : "",
-  "id" : "7DDF034E-7087-592A-8012-60FD77818AB9",
+  "customCSS" : ".t, .history { color: #9933cc; }\n.join { color: #66ff00; }\n.part, .quit { color: #9933cc; }\n.kick, .error { color: #ff0000; }\n.notice { color: #ffcc00; }\n.action { color: #ff00ff; }\n.mode, .nick, .topic, .server { color: #00ffff; }\n.highlight { color: #eeeeee; background-color: #555577; border-left: 3px solid #ff00ff; padding-left: 8px; }\n.reply { color: #9933cc; border-left: 2px solid #6699cc; padding-left: 6px; }\n.oper { color: #000000; background-color: #ffcc00; }\n.reactions { color: #6699cc; background-color: #1c1c1c; }\n.card { background-color: #1c1c1c; border-color: #9933cc; }\n.card-title { color: #6699cc; }\n.card-desc { color: #9933cc; }\n.daychange { color: #9933cc; border-color: #1c1c1c; }",
+  "id" : "2F7E650C-DC65-596D-A8A8-D4CBFA55305A",
   "isBuiltIn" : false,
   "name" : "Vividchalk",
   "text" : "#eeeeee"

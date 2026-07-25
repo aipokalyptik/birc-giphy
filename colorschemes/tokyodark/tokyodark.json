@@ -2,8 +2,8 @@
   "accent" : "#7199ee",
   "appearance" : "dark",
   "background" : "#11121d",
-  "customCSS" : "",
-  "id" : "E9B2D23A-B7BE-58AA-8F13-8B16BB1D40EF",
+  "customCSS" : ".t, .history { color: #4a5057; }\n.join { color: #95c561; }\n.part, .quit { color: #4a5057; }\n.kick, .error { color: #ee6d85; }\n.notice { color: #d7a65f; }\n.action { color: #a485dd; }\n.mode, .nick, .topic, .server { color: #38a89d; }\n.highlight { color: #a0a8cd; background-color: #25283b; border-left: 3px solid #a485dd; padding-left: 8px; }\n.reply { color: #4a5057; border-left: 2px solid #7199ee; padding-left: 6px; }\n.oper { color: #11121d; background-color: #d7a65f; }\n.reactions { color: #7199ee; background-color: #06080a; }\n.card { background-color: #06080a; border-color: #4a5057; }\n.card-title { color: #7199ee; }\n.card-desc { color: #4a5057; }\n.daychange { color: #4a5057; border-color: #06080a; }",
+  "id" : "5AF6BC15-3C5E-5320-8260-5B2324533527",
   "isBuiltIn" : false,
   "name" : "Tokyo Dark",
   "text" : "#a0a8cd"

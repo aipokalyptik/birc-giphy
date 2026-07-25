@@ -1,10 +1,10 @@
 {
-  "accent" : "#195466",
+  "accent" : "#33859e",
   "appearance" : "dark",
-  "background" : "#0a0f14",
-  "customCSS" : "",
-  "id" : "3E45029A-842C-50D1-8EA5-1878B439581B",
+  "background" : "#0c1014",
+  "customCSS" : ".t, .history { color: #195466; }\n.join { color: #2aa889; }\n.part, .quit { color: #195466; }\n.kick, .error { color: #c23127; }\n.notice { color: #edb443; }\n.action { color: #888ca6; }\n.mode, .nick, .topic, .server { color: #2aa889; }\n.highlight { color: #99d1ce; background-color: #0a3749; border-left: 3px solid #888ca6; padding-left: 8px; }\n.reply { color: #195466; border-left: 2px solid #33859e; padding-left: 6px; }\n.oper { color: #0c1014; background-color: #edb443; }\n.reactions { color: #33859e; background-color: #11151c; }\n.card { background-color: #11151c; border-color: #195466; }\n.card-title { color: #33859e; }\n.card-desc { color: #195466; }\n.daychange { color: #195466; border-color: #11151c; }",
+  "id" : "0C3FDC6F-B1B1-5AA8-A652-13C80D5B1FE1",
   "isBuiltIn" : false,
   "name" : "Gotham",
-  "text" : "#98d1ce"
+  "text" : "#99d1ce"
 }

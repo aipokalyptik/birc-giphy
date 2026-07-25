@@ -2,9 +2,9 @@
   "accent" : "#4078f2",
   "appearance" : "light",
   "background" : "#fafafa",
-  "customCSS" : "",
-  "id" : "81B6F697-1D90-595F-9071-5DDA4CDE70BB",
+  "customCSS" : ".t, .history { color: #a0a1a7; }\n.join { color: #50a14f; }\n.part, .quit { color: #a0a1a7; }\n.kick, .error { color: #e45649; }\n.notice { color: #c18401; }\n.action { color: #a626a4; }\n.mode, .nick, .topic, .server { color: #0184bc; }\n.highlight { color: #494b53; background-color: #d0d0d0; border-left: 3px solid #a626a4; padding-left: 8px; }\n.reply { color: #a0a1a7; border-left: 2px solid #4078f2; padding-left: 6px; }\n.oper { color: #fafafa; background-color: #c18401; }\n.reactions { color: #4078f2; background-color: #f0f0f0; }\n.card { background-color: #f0f0f0; border-color: #a0a1a7; }\n.card-title { color: #4078f2; }\n.card-desc { color: #a0a1a7; }\n.daychange { color: #a0a1a7; border-color: #f0f0f0; }",
+  "id" : "53C21643-CC48-5F35-9116-26201C79D336",
   "isBuiltIn" : false,
   "name" : "One Light",
-  "text" : "#383a42"
+  "text" : "#494b53"
 }

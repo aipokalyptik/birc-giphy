@@ -2,8 +2,8 @@
   "accent" : "#8197bf",
   "appearance" : "dark",
   "background" : "#151515",
-  "customCSS" : "",
-  "id" : "ED309411-C598-5992-9C37-9A60D3454FC4",
+  "customCSS" : ".t, .history { color: #888888; }\n.join { color: #99ad6a; }\n.part, .quit { color: #888888; }\n.kick, .error { color: #cf6a4c; }\n.notice { color: #fad07a; }\n.action { color: #c6b6ee; }\n.mode, .nick, .topic, .server { color: #8fbfdc; }\n.highlight { color: #e8e8d3; background-color: #404040; border-left: 3px solid #c6b6ee; padding-left: 8px; }\n.reply { color: #888888; border-left: 2px solid #8197bf; padding-left: 6px; }\n.oper { color: #151515; background-color: #fad07a; }\n.reactions { color: #8197bf; background-color: #302028; }\n.card { background-color: #302028; border-color: #888888; }\n.card-title { color: #8197bf; }\n.card-desc { color: #888888; }\n.daychange { color: #888888; border-color: #302028; }",
+  "id" : "2DE9BD6D-1B3B-5E31-ACB2-8AC12888034B",
   "isBuiltIn" : false,
   "name" : "Jellybeans",
   "text" : "#e8e8d3"

@@ -2,8 +2,8 @@
   "accent" : "#c6a0f6",
   "appearance" : "dark",
   "background" : "#24273a",
-  "customCSS" : "",
-  "id" : "BD299FC3-235F-53BC-89F9-88C044CBFB7D",
+  "customCSS" : ".t, .history { color: #6e738d; }\n.join { color: #a6da95; }\n.part, .quit { color: #6e738d; }\n.kick, .error { color: #ed8796; }\n.notice { color: #eed49f; }\n.action { color: #c6a0f6; }\n.mode, .nick, .topic, .server { color: #8bd5ca; }\n.highlight { color: #cad3f5; background-color: #494d64; border-left: 3px solid #c6a0f6; padding-left: 8px; }\n.reply { color: #6e738d; border-left: 2px solid #8aadf4; padding-left: 6px; }\n.oper { color: #24273a; background-color: #eed49f; }\n.reactions { color: #8aadf4; background-color: #363a4f; }\n.card { background-color: #363a4f; border-color: #6e738d; }\n.card-title { color: #8aadf4; }\n.card-desc { color: #6e738d; }\n.daychange { color: #6e738d; border-color: #363a4f; }",
+  "id" : "9CF96157-F2EE-5DBC-90D7-0FD2511A79B1",
   "isBuiltIn" : false,
   "name" : "Catppuccin Macchiato",
   "text" : "#cad3f5"

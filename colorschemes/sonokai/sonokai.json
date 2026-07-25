@@ -2,8 +2,8 @@
   "accent" : "#76cce0",
   "appearance" : "dark",
   "background" : "#2c2e34",
-  "customCSS" : "",
-  "id" : "1255F2D0-AC01-5E0B-BF11-162D9D4993A4",
+  "customCSS" : ".t, .history { color: #7f8490; }\n.join { color: #9ed072; }\n.part, .quit { color: #7f8490; }\n.kick, .error { color: #fc5d7c; }\n.notice { color: #e7c664; }\n.action { color: #b39df3; }\n.mode, .nick, .topic, .server { color: #f39660; }\n.highlight { color: #e2e2e3; background-color: #414550; border-left: 3px solid #b39df3; padding-left: 8px; }\n.reply { color: #7f8490; border-left: 2px solid #76cce0; padding-left: 6px; }\n.oper { color: #2c2e34; background-color: #e7c664; }\n.reactions { color: #76cce0; background-color: #3b3e48; }\n.card { background-color: #3b3e48; border-color: #7f8490; }\n.card-title { color: #76cce0; }\n.card-desc { color: #7f8490; }\n.daychange { color: #7f8490; border-color: #3b3e48; }",
+  "id" : "93EA64AC-516F-54F1-9899-E7C040D36AEF",
   "isBuiltIn" : false,
   "name" : "Sonokai",
   "text" : "#e2e2e3"

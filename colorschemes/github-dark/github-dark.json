@@ -2,8 +2,8 @@
   "accent" : "#58a6ff",
   "appearance" : "dark",
   "background" : "#0d1117",
-  "customCSS" : "",
-  "id" : "30E7E1FF-7501-5261-B269-8FB8BE23C9C3",
+  "customCSS" : ".t, .history { color: #8b949e; }\n.join { color: #7ee787; }\n.part, .quit { color: #8b949e; }\n.kick, .error { color: #ff7b72; }\n.notice { color: #d29922; }\n.action { color: #d2a8ff; }\n.mode, .nick, .topic, .server { color: #a5d6ff; }\n.highlight { color: #c9d1d9; background-color: #264f78; border-left: 3px solid #d2a8ff; padding-left: 8px; }\n.reply { color: #8b949e; border-left: 2px solid #58a6ff; padding-left: 6px; }\n.oper { color: #0d1117; background-color: #d29922; }\n.reactions { color: #58a6ff; background-color: #161b22; }\n.card { background-color: #161b22; border-color: #8b949e; }\n.card-title { color: #58a6ff; }\n.card-desc { color: #8b949e; }\n.daychange { color: #8b949e; border-color: #161b22; }",
+  "id" : "2BD29C8D-76E7-565D-9057-065555DD017C",
   "isBuiltIn" : false,
   "name" : "GitHub Dark",
   "text" : "#c9d1d9"

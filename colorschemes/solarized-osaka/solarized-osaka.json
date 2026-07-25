@@ -2,8 +2,8 @@
   "accent" : "#268bd2",
   "appearance" : "dark",
   "background" : "#001419",
-  "customCSS" : "",
-  "id" : "1C43469F-20EA-5A15-941A-1306B759119A",
+  "customCSS" : ".t, .history { color: #586e75; }\n.join { color: #859900; }\n.part, .quit { color: #586e75; }\n.kick, .error { color: #dc322f; }\n.notice { color: #b58900; }\n.action { color: #d33682; }\n.mode, .nick, .topic, .server { color: #2aa198; }\n.highlight { color: #839496; background-color: #073642; border-left: 3px solid #d33682; padding-left: 8px; }\n.reply { color: #586e75; border-left: 2px solid #268bd2; padding-left: 6px; }\n.oper { color: #001419; background-color: #b58900; }\n.reactions { color: #268bd2; background-color: #002b36; }\n.card { background-color: #002b36; border-color: #586e75; }\n.card-title { color: #268bd2; }\n.card-desc { color: #586e75; }\n.daychange { color: #586e75; border-color: #002b36; }",
+  "id" : "46A5ABA6-6296-5663-AA83-819F0FB9926C",
   "isBuiltIn" : false,
   "name" : "Solarized Osaka",
   "text" : "#839496"

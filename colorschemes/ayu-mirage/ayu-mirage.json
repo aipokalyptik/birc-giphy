@@ -1,10 +1,10 @@
 {
-  "accent" : "#ffcc66",
+  "accent" : "#2d91d0",
   "appearance" : "dark",
-  "background" : "#1f2430",
-  "customCSS" : "",
-  "id" : "89BBC492-5DDD-5AF1-A188-B98EA6158F33",
+  "background" : "#191d26",
+  "customCSS" : ".t, .history { color: #555555; }\n.join { color: #ade46b; }\n.part, .quit { color: #555555; }\n.kick, .error { color: #ea5965; }\n.notice { color: #fec254; }\n.action { color: #c9aeff; }\n.mode, .nick, .topic, .server { color: #86e2bf; }\n.highlight { color: #d0cec3; background-color: #252d37; border-left: 3px solid #c9aeff; padding-left: 8px; }\n.reply { color: #555555; border-left: 2px solid #2d91d0; padding-left: 6px; }\n.oper { color: #191d26; background-color: #fec254; }\n.reactions { color: #2d91d0; background-color: #252d37; }\n.card { background-color: #252d37; border-color: #555555; }\n.card-title { color: #2d91d0; }\n.card-desc { color: #555555; }\n.daychange { color: #555555; border-color: #252d37; }",
+  "id" : "D5049525-CDE7-5616-9509-0709E9A4D7F5",
   "isBuiltIn" : false,
   "name" : "Ayu Mirage",
-  "text" : "#cbccc6"
+  "text" : "#d0cec3"
 }

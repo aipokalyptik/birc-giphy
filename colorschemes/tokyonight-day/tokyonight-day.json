@@ -2,8 +2,8 @@
   "accent" : "#2e7de9",
   "appearance" : "light",
   "background" : "#e1e2e7",
-  "customCSS" : "",
-  "id" : "38A9132E-4B02-5823-A1DC-3636330945D4",
+  "customCSS" : ".t, .history { color: #848cb5; }\n.join { color: #587539; }\n.part, .quit { color: #848cb5; }\n.kick, .error { color: #f52a65; }\n.notice { color: #8c6c3e; }\n.action { color: #9854f1; }\n.mode, .nick, .topic, .server { color: #007197; }\n.highlight { color: #3760bf; background-color: #b7c1e3; border-left: 3px solid #9854f1; padding-left: 8px; }\n.reply { color: #848cb5; border-left: 2px solid #2e7de9; padding-left: 6px; }\n.oper { color: #e1e2e7; background-color: #8c6c3e; }\n.reactions { color: #2e7de9; background-color: #d0d5e3; }\n.card { background-color: #d0d5e3; border-color: #848cb5; }\n.card-title { color: #2e7de9; }\n.card-desc { color: #848cb5; }\n.daychange { color: #848cb5; border-color: #d0d5e3; }",
+  "id" : "FBA7B447-9523-5AB7-B570-C3C4654A77A8",
   "isBuiltIn" : false,
   "name" : "Tokyo Night Day",
   "text" : "#3760bf"

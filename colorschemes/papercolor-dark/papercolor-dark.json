@@ -2,8 +2,8 @@
   "accent" : "#5fafd7",
   "appearance" : "dark",
   "background" : "#1c1c1c",
-  "customCSS" : "",
-  "id" : "5586BA9B-9F4A-54E4-9F18-CD7638CD0F4F",
+  "customCSS" : ".t, .history { color: #808080; }\n.join { color: #afd700; }\n.part, .quit { color: #808080; }\n.kick, .error { color: #d75f5f; }\n.notice { color: #d7af5f; }\n.action { color: #d787af; }\n.mode, .nick, .topic, .server { color: #00afaf; }\n.highlight { color: #d0d0d0; background-color: #8787af; border-left: 3px solid #d787af; padding-left: 8px; }\n.reply { color: #808080; border-left: 2px solid #5fafd7; padding-left: 6px; }\n.oper { color: #1c1c1c; background-color: #d7af5f; }\n.reactions { color: #5fafd7; background-color: #303030; }\n.card { background-color: #303030; border-color: #808080; }\n.card-title { color: #5fafd7; }\n.card-desc { color: #808080; }\n.daychange { color: #808080; border-color: #303030; }",
+  "id" : "B6FCEECE-971B-5DBD-984B-F2FA45F7E5A6",
   "isBuiltIn" : false,
   "name" : "PaperColor Dark",
   "text" : "#d0d0d0"

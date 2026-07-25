@@ -2,8 +2,8 @@
   "accent" : "#0000ff",
   "appearance" : "light",
   "background" : "#ffffff",
-  "customCSS" : "",
-  "id" : "162CC7A6-38F2-5009-B2D0-3DA813CA8911",
+  "customCSS" : ".t, .history { color: #008000; }\n.join { color: #008000; }\n.part, .quit { color: #008000; }\n.kick, .error { color: #cd3131; }\n.notice { color: #795e26; }\n.action { color: #af00db; }\n.mode, .nick, .topic, .server { color: #267f99; }\n.highlight { color: #000000; background-color: #add6ff; border-left: 3px solid #af00db; padding-left: 8px; }\n.reply { color: #008000; border-left: 2px solid #0000ff; padding-left: 6px; }\n.oper { color: #ffffff; background-color: #795e26; }\n.reactions { color: #0000ff; background-color: #f3f3f3; }\n.card { background-color: #f3f3f3; border-color: #008000; }\n.card-title { color: #0000ff; }\n.card-desc { color: #008000; }\n.daychange { color: #008000; border-color: #f3f3f3; }",
+  "id" : "B1D5A9D4-F2A8-53FE-8763-42E6D72B831F",
   "isBuiltIn" : false,
   "name" : "VSCode Light+",
   "text" : "#000000"

@@ -1,9 +1,9 @@
 {
-  "accent" : "#73b3e7",
+  "accent" : "#6cb6eb",
   "appearance" : "dark",
   "background" : "#2c2e34",
-  "customCSS" : "",
-  "id" : "C9E931D2-C09A-5266-A24B-1FA1C3AFE62E",
+  "customCSS" : ".t, .history { color: #758094; }\n.join { color: #a0c980; }\n.part, .quit { color: #758094; }\n.kick, .error { color: #ec7279; }\n.notice { color: #deb974; }\n.action { color: #d38aea; }\n.mode, .nick, .topic, .server { color: #5dbbc1; }\n.highlight { color: #c5cdd9; background-color: #3b3e48; border-left: 3px solid #d38aea; padding-left: 8px; }\n.reply { color: #758094; border-left: 2px solid #6cb6eb; padding-left: 6px; }\n.oper { color: #2c2e34; background-color: #deb974; }\n.reactions { color: #6cb6eb; background-color: #363944; }\n.card { background-color: #363944; border-color: #758094; }\n.card-title { color: #6cb6eb; }\n.card-desc { color: #758094; }\n.daychange { color: #758094; border-color: #363944; }",
+  "id" : "09537069-0562-5218-BD04-B0F18E04F1E1",
   "isBuiltIn" : false,
   "name" : "Edge Dark",
   "text" : "#c5cdd9"

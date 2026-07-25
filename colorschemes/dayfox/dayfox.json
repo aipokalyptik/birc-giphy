@@ -1,9 +1,9 @@
 {
-  "accent" : "#287980",
+  "accent" : "#2848a9",
   "appearance" : "light",
   "background" : "#f6f2ee",
-  "customCSS" : "",
-  "id" : "43D129C4-94A3-5CDA-B930-986F5EA44C6C",
+  "customCSS" : ".t, .history { color: #534c45; }\n.join { color: #396847; }\n.part, .quit { color: #534c45; }\n.kick, .error { color: #a5222f; }\n.notice { color: #ac5402; }\n.action { color: #6e33ce; }\n.mode, .nick, .topic, .server { color: #287980; }\n.highlight { color: #3d2b5a; background-color: #e7d2be; border-left: 3px solid #6e33ce; padding-left: 8px; }\n.reply { color: #534c45; border-left: 2px solid #2848a9; padding-left: 6px; }\n.oper { color: #f6f2ee; background-color: #ac5402; }\n.reactions { color: #2848a9; background-color: #eee4df; }\n.card { background-color: #eee4df; border-color: #534c45; }\n.card-title { color: #2848a9; }\n.card-desc { color: #534c45; }\n.daychange { color: #534c45; border-color: #eee4df; }",
+  "id" : "0F9256B7-FF02-5A06-98C5-9535F14962C0",
   "isBuiltIn" : false,
   "name" : "Dayfox",
   "text" : "#3d2b5a"

@@ -1,30 +1,43 @@
 # Base16 Default Dark
 
-A bIRC colorscheme adapted from [Base16 Default Dark](https://github.com/chriskempson/base16-vim).
+A transcript-aware bIRC adaptation of [Base16 Default Dark](https://github.com/chriskempson/base16-vim).
 
-![Approximate bIRC preview of Base16 Default Dark](preview.svg)
+![bIRC transcript preview of Base16 Default Dark](preview.svg)
 
-The preview is illustrative: actual typography, spacing, and interface
-chrome are controlled by bIRC. The three colors match the JSON exactly.
+The SVG is generated from the same semantic palette and CSS embedded in
+the import file. It demonstrates transcript states rather than imitating
+bIRC's native window chrome.
 
-## Mapping
+## Semantic mapping
 
-- Appearance: `dark`
-- Background: `#181818`
-- Text: `#d8d8d8`
-- Accent: `#7cafc2`
-- Palette basis: Base16 Default Dark base00, base05, and base0D.
+| bIRC transcript role | Upstream intent | Color |
+| --- | --- | --- |
+| Canvas | Normal/editor background | `#181818` |
+| Ordinary text | Normal/editor foreground | `#d8d8d8` |
+| Native accent | Principal upstream highlight (blue) | `#7cafc2` |
+| Timestamps and history | Comment/muted foreground | `#585858` |
+| Links, replies, and card titles | Link/function/blue | `#7cafc2` |
+| Joins | String/diff-added/green | `#a1b56c` |
+| Parts and quits | Comment/muted foreground | `#585858` |
+| Notices | Warning/yellow | `#f7ca88` |
+| Actions | Special/magenta | `#ba8baf` |
+| Errors and kicks | Error/red | `#ab4642` |
+| Modes, nicks, topics, and server lines | Type/cyan | `#86c1b9` |
+| Mention background | Search/Visual/selection | `#383838` |
+| Cards and reaction surfaces | Secondary editor surface | `#282828` |
 
-The original editor theme has many syntax and interface colors. bIRC's
-export format has one background, one text color, and one accent, so this
-adaptation preserves the upstream Normal/editor canvas and chooses a
-representative upstream highlight color for the accent.
+The native JSON fields retain the upstream canvas, foreground, principal
+accent, and light/dark appearance. `customCSS` supplies the additional
+transcript distinctions using only selectors and visual properties listed
+in bIRC's Custom transcript CSS documentation.
 
-## Upstream
+## Upstream evidence
 
 - Canonical Vim/Neovim source: [https://github.com/chriskempson/base16-vim](https://github.com/chriskempson/base16-vim)
+- Palette evidence: `colors/base16-default-dark.vim`
 - Upstream license: `MIT`
 
-The upstream project remains the authority for its name, palette, license,
-variants, and current maintenance status. This directory contains only a
-small interoperable palette adaptation, not upstream Vim or Neovim code.
+The upstream project remains authoritative for its palette, variants,
+name, and license. This adaptation contains independently generated bIRC
+configuration and preview data, not copied Vim or Neovim implementation
+code.

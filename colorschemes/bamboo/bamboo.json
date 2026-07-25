@@ -1,9 +1,9 @@
 {
-  "accent" : "#5d9b9b",
+  "accent" : "#57a5e5",
   "appearance" : "dark",
   "background" : "#252623",
-  "customCSS" : "",
-  "id" : "467F85DC-9BE9-52EE-9E00-0DB75CF50233",
+  "customCSS" : ".t, .history { color: #5b5e5a; }\n.join { color: #8fb573; }\n.part, .quit { color: #5b5e5a; }\n.kick, .error { color: #e75a7c; }\n.notice { color: #dbb671; }\n.action { color: #aaaaff; }\n.mode, .nick, .topic, .server { color: #70c2be; }\n.highlight { color: #f1e9d2; background-color: #5b5e5a; border-left: 3px solid #aaaaff; padding-left: 8px; }\n.reply { color: #5b5e5a; border-left: 2px solid #57a5e5; padding-left: 6px; }\n.oper { color: #252623; background-color: #dbb671; }\n.reactions { color: #57a5e5; background-color: #1c1e1b; }\n.card { background-color: #1c1e1b; border-color: #5b5e5a; }\n.card-title { color: #57a5e5; }\n.card-desc { color: #5b5e5a; }\n.daychange { color: #5b5e5a; border-color: #1c1e1b; }",
+  "id" : "C1266485-52C7-555E-953C-38237F303D57",
   "isBuiltIn" : false,
   "name" : "Bamboo",
   "text" : "#f1e9d2"

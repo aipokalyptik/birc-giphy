@@ -2,8 +2,8 @@
   "accent" : "#3a94c5",
   "appearance" : "light",
   "background" : "#fdf6e3",
-  "customCSS" : "",
-  "id" : "18781B66-5001-5125-AD11-D1F7BECA564C",
+  "customCSS" : ".t, .history { color: #939f91; }\n.join { color: #8da101; }\n.part, .quit { color: #939f91; }\n.kick, .error { color: #f85552; }\n.notice { color: #dfa000; }\n.action { color: #df69ba; }\n.mode, .nick, .topic, .server { color: #35a77c; }\n.highlight { color: #5c6a72; background-color: #eaedc8; border-left: 3px solid #df69ba; padding-left: 8px; }\n.reply { color: #939f91; border-left: 2px solid #3a94c5; padding-left: 6px; }\n.oper { color: #fdf6e3; background-color: #dfa000; }\n.reactions { color: #3a94c5; background-color: #efebd4; }\n.card { background-color: #efebd4; border-color: #939f91; }\n.card-title { color: #3a94c5; }\n.card-desc { color: #939f91; }\n.daychange { color: #939f91; border-color: #efebd4; }",
+  "id" : "CBFEB938-3CBF-5063-9F7D-C5A7E08E724E",
   "isBuiltIn" : false,
   "name" : "Everforest Light",
   "text" : "#5c6a72"

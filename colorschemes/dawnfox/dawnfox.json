@@ -2,8 +2,8 @@
   "accent" : "#286983",
   "appearance" : "light",
   "background" : "#faf4ed",
-  "customCSS" : "",
-  "id" : "084FE807-07C6-5CA8-9426-D2DBA34CDC68",
+  "customCSS" : ".t, .history { color: #9893a5; }\n.join { color: #618774; }\n.part, .quit { color: #9893a5; }\n.kick, .error { color: #b4637a; }\n.notice { color: #ea9d34; }\n.action { color: #907aa9; }\n.mode, .nick, .topic, .server { color: #56949f; }\n.highlight { color: #575279; background-color: #d0d8d8; border-left: 3px solid #907aa9; padding-left: 8px; }\n.reply { color: #9893a5; border-left: 2px solid #286983; padding-left: 6px; }\n.oper { color: #faf4ed; background-color: #ea9d34; }\n.reactions { color: #286983; background-color: #f2e9e1; }\n.card { background-color: #f2e9e1; border-color: #9893a5; }\n.card-title { color: #286983; }\n.card-desc { color: #9893a5; }\n.daychange { color: #9893a5; border-color: #f2e9e1; }",
+  "id" : "06415818-F733-55E6-806C-57C5B85C8F01",
   "isBuiltIn" : false,
   "name" : "Dawnfox",
   "text" : "#575279"

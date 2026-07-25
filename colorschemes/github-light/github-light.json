@@ -2,8 +2,8 @@
   "accent" : "#0969da",
   "appearance" : "light",
   "background" : "#ffffff",
-  "customCSS" : "",
-  "id" : "A54D0CDB-9FAA-5855-B857-A64F0215CFA2",
+  "customCSS" : ".t, .history { color: #57606a; }\n.join { color: #116329; }\n.part, .quit { color: #57606a; }\n.kick, .error { color: #cf222e; }\n.notice { color: #9a6700; }\n.action { color: #8250df; }\n.mode, .nick, .topic, .server { color: #1b7c83; }\n.highlight { color: #24292f; background-color: #ddf4ff; border-left: 3px solid #8250df; padding-left: 8px; }\n.reply { color: #57606a; border-left: 2px solid #0969da; padding-left: 6px; }\n.oper { color: #ffffff; background-color: #9a6700; }\n.reactions { color: #0969da; background-color: #f6f8fa; }\n.card { background-color: #f6f8fa; border-color: #57606a; }\n.card-title { color: #0969da; }\n.card-desc { color: #57606a; }\n.daychange { color: #57606a; border-color: #f6f8fa; }",
+  "id" : "B6C19D04-069E-59D5-AC12-42D0AF8482F4",
   "isBuiltIn" : false,
   "name" : "GitHub Light",
   "text" : "#24292f"

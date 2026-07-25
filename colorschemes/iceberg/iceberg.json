@@ -2,8 +2,8 @@
   "accent" : "#84a0c6",
   "appearance" : "dark",
   "background" : "#161821",
-  "customCSS" : "",
-  "id" : "E84182E5-317B-5A78-80A2-129DBD8B3B53",
+  "customCSS" : ".t, .history { color: #6b7089; }\n.join { color: #b4be82; }\n.part, .quit { color: #6b7089; }\n.kick, .error { color: #e27878; }\n.notice { color: #e2a478; }\n.action { color: #a093c7; }\n.mode, .nick, .topic, .server { color: #89b8c2; }\n.highlight { color: #c6c8d1; background-color: #272c42; border-left: 3px solid #a093c7; padding-left: 8px; }\n.reply { color: #6b7089; border-left: 2px solid #84a0c6; padding-left: 6px; }\n.oper { color: #161821; background-color: #e2a478; }\n.reactions { color: #84a0c6; background-color: #1e2132; }\n.card { background-color: #1e2132; border-color: #6b7089; }\n.card-title { color: #84a0c6; }\n.card-desc { color: #6b7089; }\n.daychange { color: #6b7089; border-color: #1e2132; }",
+  "id" : "DA481F6B-4EA1-5D66-993D-6ACE5A424C7F",
   "isBuiltIn" : false,
   "name" : "Iceberg",
   "text" : "#c6c8d1"

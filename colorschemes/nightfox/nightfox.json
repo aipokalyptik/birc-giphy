@@ -2,8 +2,8 @@
   "accent" : "#719cd6",
   "appearance" : "dark",
   "background" : "#192330",
-  "customCSS" : "",
-  "id" : "12BEBE73-B273-533D-94E0-7A1B9860111E",
+  "customCSS" : ".t, .history { color: #575860; }\n.join { color: #81b29a; }\n.part, .quit { color: #575860; }\n.kick, .error { color: #c94f6d; }\n.notice { color: #dbc074; }\n.action { color: #9d79d6; }\n.mode, .nick, .topic, .server { color: #63cdcf; }\n.highlight { color: #cdcecf; background-color: #2b3b51; border-left: 3px solid #9d79d6; padding-left: 8px; }\n.reply { color: #575860; border-left: 2px solid #719cd6; padding-left: 6px; }\n.oper { color: #192330; background-color: #dbc074; }\n.reactions { color: #719cd6; background-color: #393b44; }\n.card { background-color: #393b44; border-color: #575860; }\n.card-title { color: #719cd6; }\n.card-desc { color: #575860; }\n.daychange { color: #575860; border-color: #393b44; }",
+  "id" : "8CD22C45-B177-597A-A385-23421D54548E",
   "isBuiltIn" : false,
   "name" : "Nightfox",
   "text" : "#cdcecf"

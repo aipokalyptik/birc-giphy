@@ -1,10 +1,10 @@
 {
-  "accent" : "#ffb454",
+  "accent" : "#2d91d0",
   "appearance" : "dark",
-  "background" : "#0a0e14",
-  "customCSS" : "",
-  "id" : "7060E043-988E-5867-8C73-E4DE361ACA85",
+  "background" : "#0d1013",
+  "customCSS" : ".t, .history { color: #555555; }\n.join { color: #aac441; }\n.part, .quit { color: #555555; }\n.kick, .error { color: #fc6028; }\n.notice { color: #fda543; }\n.action { color: #bb00bb; }\n.mode, .nick, .topic, .server { color: #86e2bf; }\n.highlight { color: #e0dac4; background-color: #1c2631; border-left: 3px solid #bb00bb; padding-left: 8px; }\n.reply { color: #555555; border-left: 2px solid #2d91d0; padding-left: 6px; }\n.oper { color: #0d1013; background-color: #fda543; }\n.reactions { color: #2d91d0; background-color: #1c2631; }\n.card { background-color: #1c2631; border-color: #555555; }\n.card-title { color: #2d91d0; }\n.card-desc { color: #555555; }\n.daychange { color: #555555; border-color: #1c2631; }",
+  "id" : "AB3CB113-9B76-590F-8048-85B7218DD299",
   "isBuiltIn" : false,
   "name" : "Ayu Dark",
-  "text" : "#b3b1ad"
+  "text" : "#e0dac4"
 }

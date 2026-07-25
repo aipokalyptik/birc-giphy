@@ -2,8 +2,8 @@
   "accent" : "#ca9ee6",
   "appearance" : "dark",
   "background" : "#303446",
-  "customCSS" : "",
-  "id" : "9E9BCF2B-76C4-5D2D-BC6D-6289D3C00C0E",
+  "customCSS" : ".t, .history { color: #737994; }\n.join { color: #a6d189; }\n.part, .quit { color: #737994; }\n.kick, .error { color: #e78284; }\n.notice { color: #e5c890; }\n.action { color: #ca9ee6; }\n.mode, .nick, .topic, .server { color: #81c8be; }\n.highlight { color: #c6d0f5; background-color: #51576d; border-left: 3px solid #ca9ee6; padding-left: 8px; }\n.reply { color: #737994; border-left: 2px solid #8caaee; padding-left: 6px; }\n.oper { color: #303446; background-color: #e5c890; }\n.reactions { color: #8caaee; background-color: #414559; }\n.card { background-color: #414559; border-color: #737994; }\n.card-title { color: #8caaee; }\n.card-desc { color: #737994; }\n.daychange { color: #737994; border-color: #414559; }",
+  "id" : "CFA40BD8-FB82-50D1-A7FF-D99D8CBE0A07",
   "isBuiltIn" : false,
   "name" : "Catppuccin Frappé",
   "text" : "#c6d0f5"
