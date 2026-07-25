@@ -1,5 +1,7 @@
 # bIRC Codec Utilities
 
+## Summary
+
 `birc-codec.js` encodes, decodes, and converts common computer-science and web
 development formats entirely inside bIRC.
 
@@ -39,6 +41,28 @@ The same result can still be inspected locally without `say`.
 
 Input is limited to 4,096 characters to avoid accidental transcript stalls.
 
+## Operation reference
+
+`encode` interprets input as text for text/web transforms, or as UTF-8 bytes
+for byte encodings. `decode` reverses the named operation. `convert` decodes
+one byte format and re-encodes the same bytes in another byte format.
+
+```text
+/codec encode base32 hello
+/codec decode base64 aGVsbG8=
+/codec convert base64 hex aGVsbG8=
+/codec formats
+```
+
+`say` precedes the operation:
+
+```text
+/codec say convert hex base64 48656c6c6f
+```
+
+Local output uses `[Codec]` transcript lines. `say` sends only successful,
+single-line, NUL-free output to the command's conversation.
+
 ## Optional remote use
 
 Remote use is disabled by default. Enable it with `/codec remote on`; the
@@ -54,6 +78,10 @@ direct message, and is prefixed with their nick. Self-authored and backlog
 messages are ignored. Remote replies are limited to four lines and 400
 characters per line; `say` is not accepted remotely. Disable the listener with
 `/codec remote off`.
+
+`/codec remote status` reports the persistent setting. Remote callers cannot
+change it. Both `@YourNick codec ...` and `@YourNick /codec ...` are accepted,
+using bIRC's network-aware nick comparison.
 
 ## Byte formats
 

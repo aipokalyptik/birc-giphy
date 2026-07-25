@@ -809,18 +809,41 @@ import unixCrypt from "unix-crypt-td-js";
     }
 
     function printHashHelp() {
+        printHashStatus("bIRC Hash Utilities — complete help");
+        printHashStatus("DIGESTS, CHECKSUMS, AND HMAC");
         printHashStatus("/hash digest <md5|sha1|sha224|sha256|sha384|sha512|ripemd160> <text>");
         printHashStatus("/hash checksum <crc32|crc32c|adler32|fnv1a32> <text>");
         printHashStatus("/hash hmac <md5|sha1|sha224|sha256|sha384|sha512|ripemd160> <key> | <message>");
+        printHashStatus("HMAC uses the first | as the key/message separator.");
+        printHashStatus("PASSWORD HASHING");
         printHashStatus("/hash password <setting-or-hash> | <password>");
         printHashStatus("/hash password bcrypt <cost 4-12> <22-char-salt> | <password>");
         printHashStatus("/hash password phpass <count-log2 7-18> <8-char-salt> | <password>");
         printHashStatus("/hash password crypt <2-char-salt> | <password>");
         printHashStatus("/hash verify <encoded-password-hash> | <password>");
+        printHashStatus("Stored forms: bcrypt $2a$/$2b$/$2y$, phpass $P$/$H$, or 2/13-character DES crypt.");
+        printHashStatus("A full stored hash reuses its embedded parameters and salt. verify prints MATCH or NO MATCH.");
+        printHashStatus("bcrypt rejects passwords beyond 72 UTF-8 bytes; DES crypt accepts at most 8 ASCII characters.");
+        printHashStatus("BCRYPT RUNTIME DATA");
         printHashStatus("/hash data <status|refresh>");
+        printHashStatus("bcrypt loads pinned Blowfish tables from the IETF archive and caches validated data; other operations work without it.");
+        printHashStatus("REMOTE USE");
         printHashStatus("/hash remote <on|off|status>");
+        printHashStatus("When enabled: @YourNick hash digest sha256 hello");
+        printHashStatus("Remote use permits only digest and checksum, ignores self/backlog, and replies in context.");
+        printHashStatus("EXAMPLES");
+        printHashStatus("/hash digest sha256 hello");
+        printHashStatus("/hash checksum crc32 123456789");
+        printHashStatus("/hash hmac sha256 secret | message");
+        printHashStatus("/hash password bcrypt 4 ...................... | password");
+        printHashStatus("/hash password $2b$04$...................... | password");
+        printHashStatus("/hash verify $P$612345678U1QdGJQj/LH52EnuhEn170 | password");
+        printHashStatus("/hash data status");
+        printHashStatus("LIMITS AND SECURITY");
+        printHashStatus("Input is limited to 4096 characters. Password salts must come from a cryptographically secure external tool.");
         printHashStatus("Salts are required because bIRC exposes no cryptographic random source.");
-        printHashStatus("MD5, SHA-1, phpass, and DES crypt are legacy-only; never choose them for new security.");
+        printHashStatus("MD5, SHA-1, phpass, and DES crypt are legacy-only. CRC, Adler-32, and FNV are non-cryptographic checksums.");
+        printHashStatus("HMAC keys and passwords typed in the composer may remain in local input history.");
     }
 
     function completeHashCommand(word) {

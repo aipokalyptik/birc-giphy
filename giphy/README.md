@@ -1,5 +1,7 @@
 # bIRC GIPHY Search
 
+## Summary
+
 A personal-use bIRC script that searches GIPHY, prints numbered GIF previews
 locally, and sends only the result you choose.
 
@@ -78,6 +80,46 @@ Defaults:
 
 - Content rating: `pg-13`
 - Results per search: `3`
+
+`config key` and `config test` require a non-empty key. `config rating` accepts
+only the four listed ratings, and `config results` accepts whole numbers from
+1 through 10. `config show` masks the key. `config clear key` preserves other
+preferences; `config clear all` restores every default.
+
+## Complete command reference
+
+- `/gif <terms>` starts a search, replaces prior results, and prints numbered
+  titles plus HTTPS preview URLs locally.
+- `/gif send <number>` sends that current result to the conversation where
+  the search began.
+- `/gif more` fetches the next page and replaces the numbered result set.
+- `/gif random <terms>` immediately sends a random matching GIF to the active
+  conversation.
+- `/gif cancel` discards the active query, offset, target, and results.
+- `/gif help`, or `/gif` without arguments, prints the complete manual.
+
+Complete workflow:
+
+```text
+/gif config key YOUR_GIPHY_API_KEY
+/gif config rating pg
+/gif config results 5
+/gif config test
+/gif excited penguin
+/gif send 2
+```
+
+Inspection and reset:
+
+```text
+/gif config show
+/gif config clear key
+/gif config clear all
+```
+
+HTTP failures, malformed provider JSON, missing media URLs, invalid selections,
+missing conversations, and unconfigured access produce visible local errors
+rather than sending incomplete output.
 
 ## Security and privacy
 

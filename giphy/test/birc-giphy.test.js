@@ -300,6 +300,9 @@ test("help documents setup every command defaults and operational cautions", () 
     assert.equal(completeHelp.includes("/gif config clear all"), true);
     assert.equal(completeHelp.includes("default pg-13"), true);
     assert.equal(completeHelp.includes("default 3"), true);
+    assert.equal(completeHelp.includes("/gif excited penguin"), true);
+    assert.equal(completeHelp.includes("/gif config rating pg"), true);
+    assert.equal(completeHelp.includes("50 characters"), true);
     assert.equal(completeHelp.includes("not document the store as encrypted"), true);
     assert.equal(completeHelp.includes("Never paste it into IRC"), true);
     assert.equal(completeHelp.includes("Powered by GIPHY"), true);

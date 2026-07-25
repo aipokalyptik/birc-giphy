@@ -689,6 +689,12 @@
         printGiphyStatus("/gif random <terms> — immediately send a random matching GIF");
         printGiphyStatus("/gif cancel — discard the current results");
         printGiphyStatus("/gif help — print this complete guide");
+        printGiphyStatus("EXAMPLES");
+        printGiphyStatus("/gif excited penguin");
+        printGiphyStatus("/gif send 2");
+        printGiphyStatus("/gif more");
+        printGiphyStatus("/gif random celebration");
+        printGiphyStatus("/gif cancel");
         printGiphyStatus("CONFIGURATION");
         printGiphyStatus("/gif config key <key> — persist the GIPHY API key");
         printGiphyStatus("/gif config rating <g|pg|pg-13|r> — set the content ceiling; default pg-13");
@@ -697,6 +703,7 @@
         printGiphyStatus("/gif config test — verify the stored key and HTTPS access");
         printGiphyStatus("/gif config clear key — delete only the stored API key");
         printGiphyStatus("/gif config clear all — restore every setting to its default");
+        printGiphyStatus("Configuration examples: /gif config rating pg; /gif config results 5; /gif config show");
         printGiphyStatus("NOTES");
         printGiphyStatus("Search terms are limited to 50 characters and are sent to GIPHY.");
         printGiphyStatus("Enable inline images in bIRC to see animated previews.");

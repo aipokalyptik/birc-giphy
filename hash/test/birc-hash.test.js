@@ -317,7 +317,12 @@ test("help labels legacy algorithms and salt requirements", () => {
         "crypt",
         "verify",
         "no cryptographic random source",
-        "legacy-only"
+        "legacy-only",
+        "/hash digest sha256 hello",
+        "/hash hmac sha256 secret | message",
+        "/hash data status",
+        "72 UTF-8 bytes",
+        "Remote use permits only"
     ]) {
         assert.equal(help.includes(term), true, `help missing ${term}`);
     }

@@ -1,5 +1,7 @@
 # bIRC Hash Utilities
 
+## Summary
+
 `birc-hash.js` calculates hashes locally. Import that generated standalone file
 in bIRC and run `/hash help`.
 
@@ -43,8 +45,65 @@ commands could expose secrets or consume excessive work. Replies are limited
 to four lines and 400 characters per line. Disable the listener with
 `/hash remote off`.
 
+`/hash remote status` reports the persistent setting. Remote callers cannot
+change it. Both `@YourNick hash ...` and `@YourNick /hash ...` are accepted,
+using bIRC's network-aware nick comparison.
+
 The first `|` separates fields for HMAC and password commands. Values containing
 a literal pipe cannot be represented by those commands.
+
+## Command reference and examples
+
+Digests hash the UTF-8 text following the algorithm:
+
+```text
+/hash digest md5 abc
+/hash digest sha256 hello
+/hash digest sha512 The quick brown fox
+```
+
+Checksums emit lowercase, zero-padded hexadecimal:
+
+```text
+/hash checksum crc32 123456789
+/hash checksum crc32c 123456789
+/hash checksum adler32 Wikipedia
+/hash checksum fnv1a32 hello
+```
+
+HMAC places the key left of the first pipe and the message on its right:
+
+```text
+/hash hmac sha256 secret | message
+```
+
+Password hashing accepts explicit parameters:
+
+```text
+/hash password bcrypt 4 ...................... | password
+/hash password phpass 8 12345678 | password
+/hash password crypt ab | password
+```
+
+It also accepts a stored setting or complete hash:
+
+```text
+/hash password $2b$04$...................... | password
+/hash password $P$612345678 | password
+/hash password abJnggxhB/yWI | password
+```
+
+A complete stored hash is not reversed. Its parameters and salt are reused to
+hash the supplied candidate. For comparison, use:
+
+```text
+/hash verify $P$612345678U1QdGJQj/LH52EnuhEn170 | password
+```
+
+The result is exactly `MATCH` or `NO MATCH`; malformed or unsupported formats
+produce visible errors. `/hash data status` reports bcrypt readiness, while
+`/hash data refresh` downloads and validates the authoritative tables again.
+Digest, checksum, HMAC, phpass, and DES operations do not require those tables.
 
 ## Security boundaries
 

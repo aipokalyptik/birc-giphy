@@ -471,7 +471,12 @@ test("help and formats document the complete public contract", () => {
         "mime-q",
         "punycode",
         "php-serialize",
-        "Base128 is not included"
+        "Base128 is not included",
+        "/codec encode hex Hello",
+        "/codec say encode base64 hello",
+        "4096 characters",
+        "Remote requests",
+        "does not perform IDNA validation"
     ];
 
     for (const requiredTerm of requiredTerms) {

@@ -2493,7 +2493,8 @@
     }
 
     function printCodecHelp() {
-        printCodecStatus("Encode, decode, and convert common developer formats.");
+        printCodecStatus("bIRC Codec Utilities — complete help");
+        printCodecStatus("OPERATIONS");
         printCodecStatus("/codec encode <format> <text>");
         printCodecStatus("/codec decode <format> <encoded-data>");
         printCodecStatus(
@@ -2504,18 +2505,38 @@
         );
         printCodecStatus("/codec formats lists every supported format.");
         printCodecStatus("/codec remote <on|off|status>");
-        printCodecStatus("Examples:");
+        printCodecStatus("BYTE FORMATS");
+        printCodecStatus("text/utf8, hex/base16, base32, base64, base64url, base58, binary/bits, bytes/decimal/numbers, integer.");
+        printCodecStatus("bytes is decimal octets; integer is one unsigned big-endian value; Base58 uses the Bitcoin alphabet.");
+        printCodecStatus("TEXT AND WEB TRANSFORMS");
+        printCodecStatus("url/percent, html, json, unicode/codepoints, rot13, quoted-printable/qp, mime/mime-b/mime-q, punycode, php-serialize/php.");
+        printCodecStatus("Punycode transforms labels but does not perform IDNA validation.");
+        printCodecStatus("MIME creates or decodes one UTF-8/US-ASCII encoded-word and enforces its 75-character limit.");
+        printCodecStatus("PHP decode returns JSON; PHP class names are discarded and no classes or hooks execute.");
+        printCodecStatus("PHP encode accepts JSON; objects become bare stdClass values and arrays become PHP arrays.");
+        printCodecStatus("REMOTE USE");
+        printCodecStatus("When enabled: @YourNick codec encode base64 hello");
+        printCodecStatus("Remote requests ignore self/backlog, reply in context, and cap output at 4 lines of 400 characters.");
+        printCodecStatus("EXAMPLES");
         printCodecStatus("/codec encode hex Hello");
         printCodecStatus("/codec decode hex 48656C6C6F");
         printCodecStatus("/codec convert hex bytes 48656C6C6F");
         printCodecStatus("/codec convert hex integer FF");
+        printCodecStatus("/codec convert integer hex 65535");
+        printCodecStatus("/codec encode url query string & value");
+        printCodecStatus("/codec encode unicode A🚀");
         printCodecStatus("/codec encode punycode münich.example");
         printCodecStatus("/codec encode mime-b Résumé");
         printCodecStatus(
             "/codec decode php-serialize a:1:{s:4:\"name\";s:3:\"Ada\";}"
         );
+        printCodecStatus("/codec encode php {\"name\":\"Ada\",\"active\":true}");
+        printCodecStatus("/codec say encode base64 hello");
+        printCodecStatus("LIMITS AND FAILURE BEHAVIOR");
+        printCodecStatus("Input is limited to 4096 characters. Decoders reject bad alphabets, padding, UTF-8, scalar values, and syntax.");
+        printCodecStatus("say refuses NUL and line breaks so one result cannot inject multiple IRC messages.");
         printCodecStatus(
-            "All operations are local. Malformed encodings fail instead of decoding partially."
+            "All operations are local. No HTTPS permission is required and malformed data never returns a partial result."
         );
     }
 
