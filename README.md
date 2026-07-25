@@ -16,6 +16,9 @@ independently through bIRC's Scripts window (`⌘⌥S`).
   HMACs, and interoperable legacy password-hash formats locally.
 - [Text Effects](text-effects/README.md) — create leetspeak, Zalgo, Unicode
   novelty text, IRC colors, ANSI notation, and compact block lettering.
+- [Text Art](text-art/README.md) — search reusable ASCII art with a durable
+  local cache, or discover ANSI-scene packs without rebroadcasting protected
+  artwork.
 - [Vim Colorscheme Adaptations](colorschemes/README.md) — importable bIRC
   palettes derived from classic and popular Vim and Neovim themes.
 
