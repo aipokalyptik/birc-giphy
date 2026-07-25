@@ -1,0 +1,619 @@
+/*
+ * bIRC Hash Utilities source entrypoint.
+ *
+ * Run `npm run build:hash` to create the standalone ../birc-hash.js import.
+ */
+
+import CryptoJS from "crypto-js/core.js";
+import "crypto-js/md5.js";
+import "crypto-js/sha1.js";
+import "crypto-js/sha256.js";
+import "crypto-js/sha224.js";
+import "crypto-js/x64-core.js";
+import "crypto-js/sha512.js";
+import "crypto-js/sha384.js";
+import "crypto-js/ripemd160.js";
+import "crypto-js/hmac.js";
+import "crypto-js/hmac-md5.js";
+import "crypto-js/hmac-sha1.js";
+import "crypto-js/hmac-sha256.js";
+import "crypto-js/hmac-sha224.js";
+import "crypto-js/hmac-sha512.js";
+import "crypto-js/hmac-sha384.js";
+import "crypto-js/hmac-ripemd160.js";
+import bcrypt from "bcryptjs";
+import unixCrypt from "unix-crypt-td-js";
+
+(function registerBircHashUtilitiesScript() {
+    "use strict";
+
+    var PHPASS_ALPHABET =
+        "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    var MAXIMUM_INPUT_LENGTH = 4096;
+
+    function printHashStatus(message) {
+        birc.print("[Hash] " + message);
+    }
+
+    function splitFirstWord(input) {
+        var firstWhitespaceIndex;
+        var trimmedInput = input.trim();
+
+        firstWhitespaceIndex = trimmedInput.search(/\s/);
+
+        if (firstWhitespaceIndex === -1) {
+            return { word: trimmedInput, remainder: "" };
+        }
+
+        return {
+            word: trimmedInput.slice(0, firstWhitespaceIndex),
+            remainder: trimmedInput.slice(firstWhitespaceIndex).trim()
+        };
+    }
+
+    function splitAtPipe(input) {
+        var pipeIndex = input.indexOf("|");
+
+        if (pipeIndex === -1) {
+            return null;
+        }
+
+        return {
+            left: input.slice(0, pipeIndex).trim(),
+            right: input.slice(pipeIndex + 1).trim()
+        };
+    }
+
+    function cryptoJsDigest(algorithm, message) {
+        switch (algorithm) {
+            case "md5":
+                return CryptoJS.MD5(message).toString();
+            case "sha1":
+            case "sha-1":
+                return CryptoJS.SHA1(message).toString();
+            case "sha256":
+            case "sha-256":
+                return CryptoJS.SHA256(message).toString();
+            case "sha224":
+            case "sha-224":
+                return CryptoJS.SHA224(message).toString();
+            case "sha512":
+            case "sha-512":
+                return CryptoJS.SHA512(message).toString();
+            case "sha384":
+            case "sha-384":
+                return CryptoJS.SHA384(message).toString();
+            case "ripemd160":
+            case "ripemd-160":
+                return CryptoJS.RIPEMD160(message).toString();
+            default:
+                return "";
+        }
+    }
+
+    function cryptoJsHmac(algorithm, key, message) {
+        switch (algorithm) {
+            case "md5":
+                return CryptoJS.HmacMD5(message, key).toString();
+            case "sha1":
+            case "sha-1":
+                return CryptoJS.HmacSHA1(message, key).toString();
+            case "sha256":
+            case "sha-256":
+                return CryptoJS.HmacSHA256(message, key).toString();
+            case "sha224":
+            case "sha-224":
+                return CryptoJS.HmacSHA224(message, key).toString();
+            case "sha512":
+            case "sha-512":
+                return CryptoJS.HmacSHA512(message, key).toString();
+            case "sha384":
+            case "sha-384":
+                return CryptoJS.HmacSHA384(message, key).toString();
+            case "ripemd160":
+            case "ripemd-160":
+                return CryptoJS.HmacRIPEMD160(message, key).toString();
+            default:
+                return "";
+        }
+    }
+
+    function utf8Bytes(text) {
+        var byteIndex;
+        var bytes = [];
+        var wordArray = CryptoJS.enc.Utf8.parse(text);
+
+        for (byteIndex = 0; byteIndex < wordArray.sigBytes; byteIndex += 1) {
+            bytes.push(
+                (wordArray.words[byteIndex >>> 2] >>>
+                    (24 - ((byteIndex % 4) * 8))) &
+                    255
+            );
+        }
+
+        return bytes;
+    }
+
+    function checksumTable(polynomial) {
+        var bitIndex;
+        var table = [];
+        var tableIndex;
+        var value;
+
+        for (tableIndex = 0; tableIndex < 256; tableIndex += 1) {
+            value = tableIndex;
+
+            for (bitIndex = 0; bitIndex < 8; bitIndex += 1) {
+                if ((value & 1) !== 0) {
+                    value = (value >>> 1) ^ polynomial;
+                } else {
+                    value >>>= 1;
+                }
+            }
+
+            table.push(value >>> 0);
+        }
+
+        return table;
+    }
+
+    var CRC32_TABLE = checksumTable(0xEDB88320);
+    var CRC32C_TABLE = checksumTable(0x82F63B78);
+
+    function crcChecksum(bytes, table) {
+        var byteIndex;
+        var value = 0xFFFFFFFF;
+
+        for (byteIndex = 0; byteIndex < bytes.length; byteIndex += 1) {
+            value = (value >>> 8) ^ table[(value ^ bytes[byteIndex]) & 255];
+        }
+
+        return ((value ^ 0xFFFFFFFF) >>> 0).toString(16).padStart(8, "0");
+    }
+
+    function adler32Checksum(bytes) {
+        var byteIndex;
+        var firstSum = 1;
+        var secondSum = 0;
+
+        for (byteIndex = 0; byteIndex < bytes.length; byteIndex += 1) {
+            firstSum = (firstSum + bytes[byteIndex]) % 65521;
+            secondSum = (secondSum + firstSum) % 65521;
+        }
+
+        return (((secondSum << 16) | firstSum) >>> 0)
+            .toString(16)
+            .padStart(8, "0");
+    }
+
+    function fnv1a32Checksum(bytes) {
+        var byteIndex;
+        var value = 0x811C9DC5;
+
+        for (byteIndex = 0; byteIndex < bytes.length; byteIndex += 1) {
+            value ^= bytes[byteIndex];
+            value = Math.imul(value, 0x01000193);
+        }
+
+        return (value >>> 0).toString(16).padStart(8, "0");
+    }
+
+    function calculateChecksum(algorithm, message) {
+        var bytes = utf8Bytes(message);
+
+        switch (algorithm) {
+            case "crc32":
+                return crcChecksum(bytes, CRC32_TABLE);
+            case "crc32c":
+                return crcChecksum(bytes, CRC32C_TABLE);
+            case "adler32":
+                return adler32Checksum(bytes);
+            case "fnv1a32":
+                return fnv1a32Checksum(bytes);
+            default:
+                return "";
+        }
+    }
+
+    function encodePhpassBytes(inputBytes, outputCharacterCount) {
+        var byteIndex = 0;
+        var output = "";
+        var value;
+
+        while (byteIndex < inputBytes.length) {
+            value = inputBytes[byteIndex];
+            byteIndex += 1;
+            output += PHPASS_ALPHABET.charAt(value & 63);
+
+            if (byteIndex < inputBytes.length) {
+                value |= inputBytes[byteIndex] << 8;
+            }
+
+            output += PHPASS_ALPHABET.charAt((value >> 6) & 63);
+
+            if (byteIndex >= inputBytes.length) {
+                break;
+            }
+
+            byteIndex += 1;
+
+            if (byteIndex < inputBytes.length) {
+                value |= inputBytes[byteIndex] << 16;
+            }
+
+            output += PHPASS_ALPHABET.charAt((value >> 12) & 63);
+
+            if (byteIndex >= inputBytes.length) {
+                break;
+            }
+
+            byteIndex += 1;
+            output += PHPASS_ALPHABET.charAt((value >> 18) & 63);
+        }
+
+        return output.slice(0, outputCharacterCount);
+    }
+
+    function cryptoJsWordArrayToBytes(wordArray) {
+        var byteIndex;
+        var bytes = [];
+
+        for (byteIndex = 0; byteIndex < wordArray.sigBytes; byteIndex += 1) {
+            bytes.push(
+                (wordArray.words[byteIndex >>> 2] >>>
+                    (24 - ((byteIndex % 4) * 8))) &
+                    255
+            );
+        }
+
+        return bytes;
+    }
+
+    function phpassHash(password, prefix, countLogarithm, salt) {
+        var count = 1 << countLogarithm;
+        var countCharacter = PHPASS_ALPHABET.charAt(countLogarithm);
+        var hash = CryptoJS.MD5(
+            CryptoJS.enc.Utf8.parse(salt).concat(
+                CryptoJS.enc.Utf8.parse(password)
+            )
+        );
+        var iterationIndex;
+        var passwordWords = CryptoJS.enc.Utf8.parse(password);
+
+        for (iterationIndex = 0; iterationIndex < count; iterationIndex += 1) {
+            hash = CryptoJS.MD5(hash.clone().concat(passwordWords));
+        }
+
+        return prefix +
+            countCharacter +
+            salt +
+            encodePhpassBytes(cryptoJsWordArrayToBytes(hash), 22);
+    }
+
+    function constantTimeStringsEqual(first, second) {
+        var characterIndex;
+        var difference = first.length ^ second.length;
+        var firstCharacterCode;
+        var maximumLength = Math.max(first.length, second.length);
+        var secondCharacterCode;
+
+        for (characterIndex = 0; characterIndex < maximumLength; characterIndex += 1) {
+            firstCharacterCode = first.charCodeAt(characterIndex);
+            secondCharacterCode = second.charCodeAt(characterIndex);
+
+            if (Number.isNaN(firstCharacterCode)) {
+                firstCharacterCode = 0;
+            }
+
+            if (Number.isNaN(secondCharacterCode)) {
+                secondCharacterCode = 0;
+            }
+
+            difference |= firstCharacterCode ^ secondCharacterCode;
+        }
+
+        return difference === 0;
+    }
+
+    function hashBcrypt(argumentsText) {
+        var costPart = splitFirstWord(argumentsText);
+        var cost = Number(costPart.word);
+        var saltAndPassword = splitAtPipe(costPart.remainder);
+        var setting;
+
+        if (!Number.isInteger(cost)) {
+            printHashStatus("bcrypt cost must be between 4 and 12.");
+            return;
+        }
+
+        if (cost < 4) {
+            printHashStatus("bcrypt cost must be between 4 and 12.");
+            return;
+        }
+
+        if (cost > 12) {
+            printHashStatus("bcrypt cost must be between 4 and 12.");
+            return;
+        }
+
+        if (saltAndPassword === null) {
+            printHashStatus("bcrypt requires: <cost> <22-character-salt> | <password>.");
+            return;
+        }
+
+        if (!/^[./A-Za-z0-9]{22}$/.test(saltAndPassword.left)) {
+            printHashStatus("bcrypt salt must contain 22 bcrypt-alphabet characters.");
+            return;
+        }
+
+        if (bcrypt.truncates(saltAndPassword.right)) {
+            printHashStatus("bcrypt password exceeds its 72-byte limit.");
+            return;
+        }
+
+        setting =
+            "$2b$" +
+            String(cost).padStart(2, "0") +
+            "$" +
+            saltAndPassword.left;
+
+        try {
+            printHashStatus(bcrypt.hashSync(saltAndPassword.right, setting));
+        } catch (error) {
+            printHashStatus("bcrypt rejected the supplied setting.");
+        }
+    }
+
+    function hashPhpass(argumentsText) {
+        var countPart = splitFirstWord(argumentsText);
+        var countLogarithm = Number(countPart.word);
+        var saltAndPassword = splitAtPipe(countPart.remainder);
+
+        if (!Number.isInteger(countLogarithm)) {
+            printHashStatus("phpass count logarithm must be a whole number.");
+            return;
+        }
+
+        if (countLogarithm < 7 || countLogarithm > 18) {
+            printHashStatus("phpass count logarithm must be between 7 and 18.");
+            return;
+        }
+
+        if (saltAndPassword === null) {
+            printHashStatus("phpass requires: <count-log2> <8-character-salt> | <password>.");
+            return;
+        }
+
+        if (!/^[./0-9A-Za-z]{8}$/.test(saltAndPassword.left)) {
+            printHashStatus("phpass salt must contain 8 phpass-alphabet characters.");
+            return;
+        }
+
+        printHashStatus(
+            phpassHash(
+                saltAndPassword.right,
+                "$P$",
+                countLogarithm,
+                saltAndPassword.left
+            )
+        );
+    }
+
+    function verifyPassword(argumentsText) {
+        var computedCryptHash;
+        var computedHash;
+        var countLogarithm;
+        var hashAndPassword = splitAtPipe(argumentsText);
+        var expectedHash;
+        var prefix;
+
+        if (hashAndPassword === null) {
+            printHashStatus("verify requires: <encoded-hash> | <password>.");
+            return;
+        }
+
+        expectedHash = hashAndPassword.left;
+
+        if (expectedHash.indexOf("$2") === 0) {
+            try {
+                if (bcrypt.compareSync(hashAndPassword.right, expectedHash)) {
+                    printHashStatus("MATCH");
+                } else {
+                    printHashStatus("NO MATCH");
+                }
+            } catch (error) {
+                printHashStatus("bcrypt hash is malformed.");
+            }
+
+            return;
+        }
+
+        prefix = expectedHash.slice(0, 3);
+
+        if (prefix === "$P$" || prefix === "$H$") {
+            if (expectedHash.length !== 34) {
+                printHashStatus("phpass hash has an invalid length.");
+                return;
+            }
+
+            countLogarithm = PHPASS_ALPHABET.indexOf(
+                expectedHash.charAt(3)
+            );
+
+            if (countLogarithm < 7 || countLogarithm > 18) {
+                printHashStatus("phpass hash has an unsupported count.");
+                return;
+            }
+
+            computedHash = phpassHash(
+                hashAndPassword.right,
+                prefix,
+                countLogarithm,
+                expectedHash.slice(4, 12)
+            );
+            if (constantTimeStringsEqual(expectedHash, computedHash)) {
+                printHashStatus("MATCH");
+            } else {
+                printHashStatus("NO MATCH");
+            }
+
+            return;
+        }
+
+        if (expectedHash.length === 13) {
+            computedCryptHash = unixCrypt(
+                hashAndPassword.right,
+                expectedHash.slice(0, 2)
+            );
+
+            if (constantTimeStringsEqual(expectedHash, computedCryptHash)) {
+                printHashStatus("MATCH");
+            } else {
+                printHashStatus("NO MATCH");
+            }
+
+            return;
+        }
+
+        printHashStatus("Unsupported password-hash format.");
+    }
+
+    function printHashHelp() {
+        printHashStatus("/hash digest <md5|sha1|sha224|sha256|sha384|sha512|ripemd160> <text>");
+        printHashStatus("/hash checksum <crc32|crc32c|adler32|fnv1a32> <text>");
+        printHashStatus("/hash hmac <md5|sha1|sha224|sha256|sha384|sha512|ripemd160> <key> | <message>");
+        printHashStatus("/hash password bcrypt <cost 4-12> <22-char-salt> | <password>");
+        printHashStatus("/hash password phpass <count-log2 7-18> <8-char-salt> | <password>");
+        printHashStatus("/hash password crypt <2-char-salt> | <password>");
+        printHashStatus("/hash verify <encoded-password-hash> | <password>");
+        printHashStatus("Salts are required because bIRC exposes no cryptographic random source.");
+        printHashStatus("MD5, SHA-1, phpass, and DES crypt are legacy-only; never choose them for new security.");
+    }
+
+    function completeHashCommand(word) {
+        var candidateIndex;
+        var candidates = [
+            "help", "digest", "checksum", "hmac", "password", "verify",
+            "md5", "sha1", "sha224", "sha256", "sha384", "sha512",
+            "ripemd160", "crc32", "crc32c", "adler32", "fnv1a32",
+            "bcrypt", "phpass", "crypt"
+        ];
+        var completions = [];
+        var lowerWord = word.toLowerCase();
+
+        for (
+            candidateIndex = 0;
+            candidateIndex < candidates.length;
+            candidateIndex += 1
+        ) {
+            if (candidates[candidateIndex].indexOf(lowerWord) === 0) {
+                completions.push(candidates[candidateIndex]);
+            }
+        }
+
+        return completions;
+    }
+
+    function runHashCommand(argumentsText) {
+        var algorithmPart;
+        var firstPart = splitFirstWord(argumentsText);
+        var operation = firstPart.word.toLowerCase();
+        var pair;
+        var passwordAlgorithmPart;
+        var result;
+
+        if (argumentsText.length > MAXIMUM_INPUT_LENGTH) {
+            printHashStatus(
+                "Input must be " + MAXIMUM_INPUT_LENGTH + " characters or fewer."
+            );
+            return;
+        }
+
+        if (operation.length === 0 || operation === "help") {
+            printHashHelp();
+            return;
+        }
+
+        algorithmPart = splitFirstWord(firstPart.remainder);
+
+        if (operation === "digest") {
+            result = cryptoJsDigest(
+                algorithmPart.word.toLowerCase(),
+                algorithmPart.remainder
+            );
+        } else if (operation === "checksum") {
+            result = calculateChecksum(
+                algorithmPart.word.toLowerCase(),
+                algorithmPart.remainder
+            );
+        } else if (operation === "hmac") {
+            pair = splitAtPipe(algorithmPart.remainder);
+
+            if (pair === null) {
+                printHashStatus("HMAC requires: <key> | <message>.");
+                return;
+            }
+
+            result = cryptoJsHmac(
+                algorithmPart.word.toLowerCase(),
+                pair.left,
+                pair.right
+            );
+        } else if (operation === "password") {
+            passwordAlgorithmPart = splitFirstWord(firstPart.remainder);
+
+            switch (passwordAlgorithmPart.word.toLowerCase()) {
+                case "bcrypt":
+                    hashBcrypt(passwordAlgorithmPart.remainder);
+                    return;
+                case "phpass":
+                    hashPhpass(passwordAlgorithmPart.remainder);
+                    return;
+                case "crypt":
+                    pair = splitAtPipe(passwordAlgorithmPart.remainder);
+
+                    if (pair === null) {
+                        printHashStatus("DES crypt requires: <2-character-salt> | <password>.");
+                        return;
+                    }
+
+                    if (!/^[./0-9A-Za-z]{2}$/.test(pair.left)) {
+                        printHashStatus("DES crypt requires: <2-character-salt> | <password>.");
+                        return;
+                    }
+
+                    if (!/^[\x01-\x7F]{0,8}$/.test(pair.right)) {
+                        printHashStatus(
+                            "DES crypt password must contain at most 8 ASCII characters."
+                        );
+                        return;
+                    }
+
+                    printHashStatus(unixCrypt(pair.right, pair.left));
+                    return;
+                default:
+                    printHashStatus("Password algorithm must be bcrypt, phpass, or crypt.");
+                    return;
+            }
+        } else if (operation === "verify") {
+            verifyPassword(firstPart.remainder);
+            return;
+        } else {
+            printHashStatus("Unknown operation. Run /hash help.");
+            return;
+        }
+
+        if (result.length === 0) {
+            printHashStatus("Unknown algorithm. Run /hash help.");
+            return;
+        }
+
+        printHashStatus(result);
+    }
+
+    birc.onCommand("hash", runHashCommand);
+    birc.onComplete(completeHashCommand);
+    birc.on("load", function printHashLoadMessage() {
+        printHashStatus("Loaded. Run /hash help.");
+    });
+}());

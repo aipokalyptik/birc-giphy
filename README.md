@@ -12,6 +12,8 @@ independently through bIRC's Scripts window (`⌘⌥S`).
   text, colors, identifiers, encodings, and network-shaped data locally.
 - [Codec Utilities](codec/README.md) — encode, decode, and convert common
   binary, text, web, email, and international-domain formats.
+- [Hash Utilities](hash/README.md) — calculate checksums, message digests,
+  HMACs, and interoperable legacy password-hash formats locally.
 
 Each subdirectory contains the importable `.js` file and its complete usage,
 configuration, and security notes.

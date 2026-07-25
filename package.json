@@ -4,7 +4,16 @@
   "private": true,
   "description": "A collection of utility scripts for bIRC.",
   "scripts": {
-    "test": "node --test"
+    "build:hash": "esbuild hash/src/birc-hash.js --bundle --platform=browser --format=iife --target=es2020 --banner:js='var setTimeout = function (callback, milliseconds) { return birc.setTimeout(callback, milliseconds); };' --outfile=hash/birc-hash.js",
+    "test": "npm run build:hash && node --test"
+  },
+  "dependencies": {
+    "bcryptjs": "3.0.3",
+    "crypto-js": "4.2.0",
+    "unix-crypt-td-js": "1.1.4"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.8"
   },
   "engines": {
     "node": ">=18"
